@@ -3,6 +3,11 @@ Paradigmas de Linguagem de Programação - Computação@UFCG
 
 ## Especificação
 
+## [CriptoForca](https://docs.google.com/document/d/1cnkKXrk-Lf3PzPZ3xhAi__eRP8nL56bAANoro7BQN1o/edit)
+
+
+
+
 ## Integrantes
 
 - Héricles Emanuel ([@hericlesme](https://github.com/hericlesme/))  
