@@ -1,4 +1,2 @@
 todo:
-reescrever a funcao main para "int main(void)"
-refatorar os prints dos desenhos pra funçoes
 criar uma função que recebe uma string, e cifra a string de acordo com o estado de algum parametro
