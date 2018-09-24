@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include "cripto_functions.h"
 
 //Chama a função de cifragem adequada
 //adicionado por Laerson
