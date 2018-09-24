@@ -2,7 +2,15 @@
 #include<string.h>
 #include <stdlib.h>
 
-void printDoll_5_Lives()
+void printDoll_5_lives(void);
+void printDoll_4_lives(void);
+void printDoll_3_lives(void);
+void printDoll_2_lives(void);
+void printDoll_1_lives(void);
+void printDoll_0_lives(void);
+void printDoll_dead(void);
+
+void printDoll_5_Lives(void)
 {
 	printf("\n\n");
 	printf("  ##########***##  \n");
@@ -20,7 +28,7 @@ void printDoll_5_Lives()
 	printf("  ##              \n");
 }
 
-void printDoll_4_lives()
+void printDoll_4_lives(void)
 {
 	printf("\n\n");
 	printf("  ##########***##  \n");
@@ -38,7 +46,7 @@ void printDoll_4_lives()
 	printf("  ##              \n");
 }
 
-void printDoll_3_lives()
+void printDoll_3_lives(void)
 {
 	printf("\n\n");
 	printf("  ##########***##  \n");
@@ -56,7 +64,7 @@ void printDoll_3_lives()
 	printf("  ##              \n");
 }
 
-void printDoll_2_lives()
+void printDoll_2_lives(void)
 {
 	printf("\n\n");
 	printf("  ##########***##  \n");
@@ -74,7 +82,7 @@ void printDoll_2_lives()
 	printf("  ##              \n");
 }
 
-void printDoll_1_lives()
+void printDoll_1_lives(void)
 {
 	printf("\n\n");
 	printf("  ##########***##  \n");
@@ -92,7 +100,7 @@ void printDoll_1_lives()
 	printf("  ##              \n");
 }
 
-void printDoll_0_lives()
+void printDoll_0_lives(void)
 {
 	printf("\n\n");
 	printf("  ##########***##  \n");
@@ -110,7 +118,7 @@ void printDoll_0_lives()
 	printf("  ##       /      \n");
 }
 
-void printDoll_dead()
+void printDoll_dead(void)
 {
 	printf("\n\n");
 	printf("  ##########***##  \n");
