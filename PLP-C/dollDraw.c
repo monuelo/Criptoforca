@@ -2,7 +2,19 @@
 #include <stdio.h>
 #include "dollDraw.h"
 
-void printDoll_5_lives(void)
+//desenhos dos vários estágios da forca, de acordo com as vidas restantes
+static void printDoll_5_lives(void);
+static void printDoll_4_lives(void);
+static void printDoll_3_lives(void);
+static void printDoll_2_lives(void);
+static void printDoll_1_lives(void);
+static void printDoll_0_lives(void);
+
+//desenho do final do jogo (derrota)
+static void printDoll_dead(void);
+
+
+static void printDoll_5_lives(void)
 {
 	printf("\n\n");
 	printf("  ##########***##  \n");
@@ -20,7 +32,7 @@ void printDoll_5_lives(void)
 	printf("  ##              \n");
 }
 
-void printDoll_4_lives(void)
+static void printDoll_4_lives(void)
 {
 	printf("\n\n");
 	printf("  ##########***##  \n");
@@ -38,7 +50,7 @@ void printDoll_4_lives(void)
 	printf("  ##              \n");
 }
 
-void printDoll_3_lives(void)
+static void printDoll_3_lives(void)
 {
 	printf("\n\n");
 	printf("  ##########***##  \n");
@@ -56,7 +68,7 @@ void printDoll_3_lives(void)
 	printf("  ##              \n");
 }
 
-void printDoll_2_lives(void)
+static void printDoll_2_lives(void)
 {
 	printf("\n\n");
 	printf("  ##########***##  \n");
@@ -74,7 +86,7 @@ void printDoll_2_lives(void)
 	printf("  ##              \n");
 }
 
-void printDoll_1_lives(void)
+static void printDoll_1_lives(void)
 {
 	printf("\n\n");
 	printf("  ##########***##  \n");
@@ -92,7 +104,7 @@ void printDoll_1_lives(void)
 	printf("  ##              \n");
 }
 
-void printDoll_0_lives(void)
+static void printDoll_0_lives(void)
 {
 	printf("\n\n");
 	printf("  ##########***##  \n");
@@ -110,7 +122,7 @@ void printDoll_0_lives(void)
 	printf("  ##       /      \n");
 }
 
-void printDoll_dead(void)
+static void printDoll_dead(void)
 {
 	printf("\n\n");
 	printf("  ##########***##  \n");
