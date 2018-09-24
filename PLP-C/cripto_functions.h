@@ -5,6 +5,9 @@
 
 
 void cipherStrategy(int strategy, char *uncrypted_word);
-int fibonacciSequence(int n);
 
-char* shift(char *palavra);
+
+char* shift(char *palavra); //cifra de troca(?)
+char* cesar1(char* palavra); //cifra de cesar
+char* fibonacciCripto(char* palavra); //cifra que usa sequencia de Fibonnacci 
+
