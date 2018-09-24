@@ -9,6 +9,7 @@ void printDoll_2_lives(void);
 void printDoll_1_lives(void);
 void printDoll_0_lives(void);
 void printDoll_dead(void);
+void printDoll_state(int nextState);
 
 void printDoll_5_Lives(void)
 {
@@ -136,47 +137,35 @@ void printDoll_dead(void)
 	printf("  ##       /   \\  \n");
 }
 
+void printDoll_state(int nextState)
+{
+	switch (nextState) {
+	case 0: printDoll_5_Lives();
+		break;
 
+	case 1: printDoll_4_lives();
+		break;
+
+	case 2: printDoll_3_lives();
+		break;
+
+	case 3: printDoll_2_lives();
+		break;
+
+	case 4: printDoll_1_lives();
+		break;
+
+	case 5: printDoll_0_lives();
+		break;
+
+	case 6: printDoll_dead();
+		break;
+
+	default: printf("Exception: Invalid state");
+	}
+}
 
 int main(void) {
-
-
-
-	switch (desenho) {
-	case 0: printDoll_5_Lives();
-		
-		break;
-	case 1: printDoll_4_lives();
-		
-		break;
-	case 2: printDoll_3_lives();
-		
-		break;
-	case 3: printDoll_2_lives();
-		
-		break;
-	case 4: printDoll_1_lives();
-		
-		break;
-	case 5: printDoll_0_lives();
-		
-		break;
-	case 6: printDoll_dead();
-		
-		break;
-	}
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -240,3 +229,4 @@ int main(void) {
 		MNMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMNNNmmNmmdddmmmmmh::smmmmmmmmmmmmNmNmmNNNNNNmNNNmNNNNNNNmmmNNNNNN
 		MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMNNNNNNmdddddddmdm++mmmmmmmmmmmmmNNmmmmNNNNNNNNNNNNNmmNNNmmNNNNNN
 		MMMMMMMMMMMMMMMMMMMMMMMMMMNNMMMMMMMMMMMNMNNNmmddmddmmyhNmmmmmmmmmmmmmNNNmmmmmNNNNNNNNNNNNNNNNNNNNNNN*/
+}
