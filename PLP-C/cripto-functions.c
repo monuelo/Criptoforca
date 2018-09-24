@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include "cripto_functions.h"
 
+static int fibonacciSequence(int n);
+
 //Chama a função de cifragem adequada
 //adicionado por Laerson
 //Futuramente, seja melhor definir constantes com nomes significativos (ex: #define CESAR1 0), pra passar como argumento
@@ -46,7 +48,7 @@ char* cesar1(char* palavra) {
 	return word;
 }
 
-int fibonacciSequence(int n) {
+static int fibonacciSequence(int n) {
 	int auxiliar;
 	int a = 1;
 	int b = 0;
