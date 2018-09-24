@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include "dollDraw.h"
+#include "cripto_functions.h"
 
 
 
