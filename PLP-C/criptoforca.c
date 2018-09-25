@@ -4,13 +4,97 @@
 #include "dollDraw.h"
 #include "cripto_functions.h"
 
+struct gameConfig {
+	int attemps;
+	int currentLevel;
+	word *currentWord;
+}
 
+struct gameConfig Match;
+
+typedef struct Word {
+	int level;
+	char* text;
+} word;
+
+typedef struct cipherType {
+	char* type;
+	char* description;
+} cipherType;
+
+enum level {
+	RASGADO = 1,
+	FACIL,
+	MEDIO,
+	ENIGMA
+};
+
+/*** vectors ***/
+vector<word> words;
+vector<word> exampleWords;
+vector<cipherType> cipherTypes;
+
+/*** prototypes ***/
+void selectDifficulty(int level);
+void resetMatch();
+void clrscreen();
+int userInput();
+
+int userInput() {
+	int selected;
+	gets( selected );
+
+	return selected;
+}
+
+void clrscreen() {
+	system('clear');
+}
+
+void resetMatch() {
+	Match.attemps = 0;
+	Match.currentLevel = NULL;
+	&Match.currentWord = NULL;
+}
+
+
+// Verificar a necessidade deste método...
+void selectDifficulty(int level) {
+	switch (level) {
+		case RASGADO:
+			// TODO
+			break;
+		case FACIL:
+			// TODO
+			break;
+		case MEDIO:
+			// TODO
+			break;
+		case ENIGMA:
+			// TODO
+			break;
+		default:
+			// TODO
+			break;
+	}
+}
+
+/*
+void initGame() {
+	int difficulty = selectDifficulty(userInput());
+	startMatch(difficulty);
+} >> "main"
+*/ 
+
+void startMatch(int level) {
+	resetMatch();
+	Match.level = level;
+	&Match.currentWord = NULL; //???
+}
 
 int main(void) {
 	//printDoll_state(int state);
-
-
-
+	
 	/*hhyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyysyyyyssssyyhhddddddmmmmddddhhhhyyysssssssyyyyyyyyyhhhhhhhhhhhhhh
 		hhhyhhyyyyyyyyyyyyyyyyyyyyyyyyyyyyyysssssshdmNNNNmmmmmmmmmmdddddmmmddddhysssssyyyyyyyyhhhhhhhhhhhhhh
 		yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyssssssydmNNNmmNmmmmmmmddmdddddddmmmmmNNNNdyysyyyyyyyyhhhhhhhhhhhhhh
