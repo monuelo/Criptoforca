@@ -93,6 +93,7 @@ void startMatch(int level) {
 }
 
 int main(void) {
+	srand(time(NULL));
 	//printDoll_state(int state);
 	
 	/*hhyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyysyyyyssssyyhhddddddmmmmddddhhhhyyysssssssyyyyyyyyyhhhhhhhhhhhhhh
