@@ -78,13 +78,28 @@ void switchHelp(int option) {
 			return switchHelp(option);
 	}
 }
-
 #include<stdio.h>
 #include<string.h>
 #include <stdlib.h>
 #include <time.h>
 
 int main() {
+
+
+const MAX_WORDS = 20;
+
+
+	char paises[20][12] = { "brasil", "alemanha", "italia",
+			"holanda", "argentina", "equador", "bolivia", "suriname",
+			"japao", "belgica", "nigeria", "camaroes", "coreia",
+			"espanha", "franca", "suecia", "noruega", "finlandia", "islandia",
+			"china" };
+	char frutas[20][12] = { "banana", "graviola", "uva",
+			"tangerina", "laranja", "abacaxi", "jambo", "caja",
+			"caju", "acerola", "nigeria", "kiwi", "tomate",
+			"morango", "melancia", "umbu", "manga", "pessego", "jaca",
+			"maracuja" };
+	
 
 
 int option;
@@ -156,6 +171,5 @@ printf("\n\n Explicacao, agora volte e va jogar (: \n\n");
 
 	return 0;
 }
-
 
 
