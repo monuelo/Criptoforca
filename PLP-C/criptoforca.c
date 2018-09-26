@@ -78,6 +78,7 @@ void switchHelp(int option) {
 			return switchHelp(option);
 	}
 }
+
 #include<stdio.h>
 #include<string.h>
 #include <stdlib.h>
@@ -85,69 +86,100 @@ void switchHelp(int option) {
 
 int main() {
 
+	// Number of itens for each category in the game
+	const NUM_ITENS = 20;
 
-const MAX_WORDS = 20;
-
-
-	char paises[20][12] = { "brasil", "alemanha", "italia",
-			"holanda", "argentina", "equador", "bolivia", "suriname",
-			"japao", "belgica", "nigeria", "camaroes", "coreia",
-			"espanha", "franca", "suecia", "noruega", "finlandia", "islandia",
-			"china" };
-	char frutas[20][12] = { "banana", "graviola", "uva",
-			"tangerina", "laranja", "abacaxi", "jambo", "caja",
-			"caju", "acerola", "nigeria", "kiwi", "tomate",
-			"morango", "melancia", "umbu", "manga", "pessego", "jaca",
-			"maracuja" };
+	
+	char paises[20][12] = { "ALEMANHA", "BRASIL", "ARGENTINA",
+			"ITALIA", "ESCOCIA", "NIGERIA", "INGLATERRA", "CHINA",
+			"HOLANDA", "AUSTRALIA", "RUSSIA", "CROACIA", "INDIA",
+			"ESPANHA", "DINAMARCA", "CANADA", "EQUADADOR", "MEXICO", "CUBA",
+			"VENEZUELA" };
+	char frutas[20][12] = { "JAMBO", "BANANA", "CARAMBOLA", "MELAO", "FIGO",
+			"GOIABA", "JABUTICABA", "KIWI", "LARANJA", "MELANCIA", "MANGA",
+			"MARACUJA", "PESSEGO", "PITOMBA", "BANANA", "TANGERINA", "TOMATE",
+			"TAMARINDO", "UVA", "UMBU" };
 	
 
-
-int option;
-int level;
-
-while (option != 3) {
+	//For for :P
+	int i;
 
 
-printf("!#$$CriptoForca$!#$");
-printf("\n\n Bem vindo! Escolha uma das opcoes abaixo!: ");
-printf("\n\n 1 - Jogar ");
-printf("\n\n 2 - Informacoes: ");
-printf("\n\n 3 - Sair: ");
-printf("\n\n Digite opcao escolhida: ");
-scanf("%d", &option);
+	char backMenu;
 
-if ( option == 1) {
+	//Tip
+	char tip[20];
+	//Word to  be encrypted
+	char word[12];
 
-
-printf("\n!#$$CriptoForca$!#$\n");
-printf("\n\n Bem vindo! Escolha um dos niveis abaixo!: ");
-printf("\n\n 1 - Rasgado ");
-printf("\n\n 2 - Facil: ");
-printf("\n\n 3 - Medio: ");
-printf("\n\n 4 - Enigma: ");
-scanf("%d", &level);
+	//if correct == word,the player wins.
+	char correct[12];
 
 
+	char guess;
 
- while (level < 1 || level > 5);
 
-				//Para gerar números aleatórios
+	int containsGuess = 0;
+	int option = 0;
+	int level = 0;
+
+
+	while (option != 3) {
+
+		//Letras usadas pelo usuário e contador de letras usadas para repetições.
+		char usedLetters[26];
+		int numUsedLetters = 0;
+		int used;
+
+
+		int erros = 0;
+
+		do {
+
+			system("clear");
+
+
+			for (i = 0; i < strlen(usedLetters); i++) {
+				usedLetters[i] = '*';
+			}
+
+			printf("#$&!CRIPTOForca#$&!");
+			printf("\n\n Escolha o que deseja fazer: ");
+			printf("\n\n 1 - Jogar: ");
+			printf("\n\n 2 - Cifrar uma palavra: ");
+			printf("\n\n 3 - Sair: ");
+			printf("\n\n Opção escolhida: ");
+			scanf("%d", &option);
+
+			if (option == 1) {
+
+				do {
+
+					system("clear");
+
+					printf("#$&!CRIPTOForca#$&!");
+					printf("\n\n Escolha o nivel para jogar: ");
+					printf("\n\n 1 - Rasgado: ");
+					printf("\n\n 2 - Facil: ");
+					printf("\n\n 3 - Medio: ");
+					printf("\n\n 4 - Enigma: ");
+					printf("\n\n Tema escolhido: ");
+					scanf(" %d", &level);
+
+				} while (level < 1 || level > 4);
+
+
 				srand(time(NULL));
 
 				switch (level) {
 				case 1:
-					printf("\n\n 1 - Rasgado ");
-
-// a preguica consome, colocar as funcoes aqui e chamar.
+					strcpy(tip, "paises");
+					//Seleciona uma palavra aleatória
+					strcpy(word, paises[rand() % NUM_ITENS]);
 					break;
 				case 2:
-					printf("\n\n 2 - Facil: ");;
-					break;
-				case 3:
-					printf("\n\n 3 - Medio: ");
-					break;
-				case 4:
-					printf("\n\n 4 - Enigma: ");
+					strcpy(tip, "frutas");
+					strcpy(word, frutas[rand() % NUM_ITENS]);
 					break;
 				
 				default:
@@ -155,21 +187,107 @@ scanf("%d", &level);
 				}
 
 
+			} else if (option == 2) { // need a real fix.
 
-}
+				printf("\n Digite a palavra para ser cifrada: ");
+				scanf(" %[^\n]", tip);
+				printf("\n Digite a palavra a ser adivinhada: ");
+				scanf(" %[^\n]", word);
+
+				for (i = 0; i < strlen(word); i++) {
+					word[i] = toupper(word[i]);
+				}
+
+			} else if (option == 3) {
+				break;
+			}
+
+		} while (option != 1 && option != 2 && option != 3);
+
+		if (option != 3) {
 
 
-else if (option == 2) {
-printf("\n\n Projeto de PLP 2018.2 - CriptoForca ");
-printf("\n\n Equipe composta por:");
-printf("\n\n Explicacao, agora volte e va jogar (: \n\n");
-}
+			for (i = 0; i < strlen(word); i++) {
+				correct[i] = '*';
+			}
+
+			correct[strlen(word)] = '\0';
+
+			while (strcmp(word, correct) != 0 && erros != 5) {
+
+				system("clear");
+
+							printf("#$&!CRIPTOForca#$&!");
+				printf("\n\n  Dica: %s erros: %d palavra: %s Letras usadas: ", tip,erros,word);
+				
+				for (i = 0; i < numUsedLetters; i++) {
+					printf("%c ", usedLetters[i]);
+
+				}
+
+				
+				printf("  ##               \n");
+				printf("  #######################\n\n  ");
 
 
+				for (i = 0; i < strlen(word); i++) {
+					if (correct[i] == '*') {
+						printf("_ ");
+					} else {
+						printf("%c ", correct[i]);
+					}
+				}
 
-}
+				if (strcmp(word, correct) != 0 && erros != 5) {
+
+					used = 0;
+
+					printf("\n\n  Digite seu palpite: ");
+					scanf(" %c", &guess);
+					guess = toupper(guess);
+
+					//checa se a letra já foi usada
+					for (i = 0; i < 26; i++) {
+						if (usedLetters[i] == guess) {
+							used = 1;
+						}
+					}
+
+					//Se não foi usada
+					if (used == 0) {
+						usedLetters[numUsedLetters] = guess;
+						numUsedLetters++;
+
+						containsGuess = 0;
+
+						//Verifica se a palavra contém o palpite do usuário. A variável contemPalpite é usada para o controle dos erros
+						for (i = 0; i < strlen(word); i++) {
+							if (guess == word[i]) {
+								correct[i] = guess;
+								containsGuess = 1;
+							}
+						}
+
+						if (containsGuess == 0) {
+							erros++;
+						}
+					}
+
+				}
+
+			}
+
+			if (erros == 5) {
+				printf("\n  YOU LOSE!!!\n  Palavra correta era %s", word);
+			} else {
+				printf("\n  YOU WIN!!!\n   Palavra correta era %s", word);
+			}
+
+			printf("\n\n Aperte algo para voltar ao menu");
+			scanf(" %c", &backMenu);
+		}
+
+	}
 
 	return 0;
 }
-
-
