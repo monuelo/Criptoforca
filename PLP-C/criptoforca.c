@@ -4,18 +4,15 @@
 #include "dollDraw.h"
 #include "cripto_functions.h"
 
+
+
 struct gameConfig {
 	int attemps;
 	int currentLevel;
-	word *currentWord;
-}
+	char* currentWord;
+};
 
 struct gameConfig Match;
-
-typedef struct Word {
-	int level;
-	char* text;
-} word;
 
 typedef struct cipherType {
 	char* type;
@@ -30,9 +27,9 @@ enum level {
 };
 
 /*** vectors ***/
-vector<word> words;
-vector<word> exampleWords;
-vector<cipherType> cipherTypes;
+char* words[0];
+char* exampleWords[0];
+cipherType cipherTypes[0];
 
 /*** prototypes ***/
 void selectDifficulty(int level);
@@ -42,19 +39,18 @@ int userInput();
 
 int userInput() {
 	int selected;
-	gets( selected );
-
+	scanf("%d", &selected);
 	return selected;
 }
 
 void clrscreen() {
-	system('clear');
+	system("clear");
 }
 
 void resetMatch() {
 	Match.attemps = 0;
-	Match.currentLevel = NULL;
-	&Match.currentWord = NULL;
+	Match.currentLevel = (int) NULL;
+	Match.currentWord =  NULL;
 }
 
 
@@ -79,6 +75,60 @@ void selectDifficulty(int level) {
 	}
 }
 
+void getHelp(){
+	
+	int opc;
+
+	printf("\n\n Selecione uma Dica: ");
+			printf("\n\n [1] - Revelar categoria: ");
+			printf("\n\n [2] - Revelar uma letra: ");
+			printf("\n\n [3] - Ajuda dos Universitários: ");
+			printf("\n\n [4] - Quantidade de vogais: ");
+			printf("\n\n Opção escolhida: ");
+			scanf("%d", &opc);
+
+}
+
+
+/*** Dicas ***/
+
+void revealCategory() {
+	// TODO	
+}
+
+void revealWord() {
+	// TODO
+}
+
+void undergradHelp() {
+	// todo
+}
+
+void vowelsNumber() {
+	// TODO
+}
+
+
+void countVowelNumber() {
+	// TODO
+}
+
+
+void switchHelp(int option) {
+	switch(option){
+		case 1:
+			revealCategory();
+		case 2:
+			revealWord();
+		case 3:
+			undergradHelp();
+		case 4:
+			vowelsNumber();
+		default:
+			return switchHelp(option);
+	}
+}
+
 /*
 void initGame() {
 	int difficulty = selectDifficulty(userInput());
@@ -88,8 +138,7 @@ void initGame() {
 
 void startMatch(int level) {
 	resetMatch();
-	Match.level = level;
-	&Match.currentWord = NULL; //???
+	Match.currentLevel = level;
 }
 
 int main(void) {
