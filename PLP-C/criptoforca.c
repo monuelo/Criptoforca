@@ -19,61 +19,11 @@ typedef struct cipherType {
 	char* description;
 } cipherType;
 
-enum level {
-	RASGADO = 1,
-	FACIL,
-	MEDIO,
-	ENIGMA
-};
-
 /*** vectors ***/
 char* words[0];
 char* exampleWords[0];
 cipherType cipherTypes[0];
 
-/*** prototypes ***/
-void selectDifficulty(int level);
-void resetMatch();
-void clrscreen();
-int userInput();
-
-int userInput() {
-	int selected;
-	scanf("%d", &selected);
-	return selected;
-}
-
-void clrscreen() {
-	system("clear");
-}
-
-void resetMatch() {
-	Match.attemps = 0;
-	Match.currentLevel = (int) NULL;
-	Match.currentWord =  NULL;
-}
-
-
-// Verificar a necessidade deste método...
-void selectDifficulty(int level) {
-	switch (level) {
-		case RASGADO:
-			// TODO
-			break;
-		case FACIL:
-			// TODO
-			break;
-		case MEDIO:
-			// TODO
-			break;
-		case ENIGMA:
-			// TODO
-			break;
-		default:
-			// TODO
-			break;
-	}
-}
 
 void getHelp(){
 	
@@ -129,80 +79,83 @@ void switchHelp(int option) {
 	}
 }
 
-/*
-void initGame() {
-	int difficulty = selectDifficulty(userInput());
-	startMatch(difficulty);
-} >> "main"
-*/ 
+#include<stdio.h>
+#include<string.h>
+#include <stdlib.h>
+#include <time.h>
 
-void startMatch(int level) {
-	resetMatch();
-	Match.currentLevel = level;
+int main() {
+
+
+int option;
+int level;
+
+while (option != 3) {
+
+
+printf("!#$$CriptoForca$!#$");
+printf("\n\n Bem vindo! Escolha uma das opcoes abaixo!: ");
+printf("\n\n 1 - Jogar ");
+printf("\n\n 2 - Informacoes: ");
+printf("\n\n 3 - Sair: ");
+printf("\n\n Digite opcao escolhida: ");
+scanf("%d", &option);
+
+if ( option == 1) {
+
+
+printf("\n!#$$CriptoForca$!#$\n");
+printf("\n\n Bem vindo! Escolha um dos niveis abaixo!: ");
+printf("\n\n 1 - Rasgado ");
+printf("\n\n 2 - Facil: ");
+printf("\n\n 3 - Medio: ");
+printf("\n\n 4 - Enigma: ");
+scanf("%d", &level);
+
+
+
+ while (level < 1 || level > 5);
+
+				//Para gerar números aleatórios
+				srand(time(NULL));
+
+				switch (level) {
+				case 1:
+					printf("\n\n 1 - Rasgado ");
+
+// a preguica consome, colocar as funcoes aqui e chamar.
+					break;
+				case 2:
+					printf("\n\n 2 - Facil: ");;
+					break;
+				case 3:
+					printf("\n\n 3 - Medio: ");
+					break;
+				case 4:
+					printf("\n\n 4 - Enigma: ");
+					break;
+				
+				default:
+					break;
+				}
+
+
+
 }
 
-int main(void) {
-	srand(time(NULL));
-	//printDoll_state(int state);
-	
-	/*hhyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyysyyyyssssyyhhddddddmmmmddddhhhhyyysssssssyyyyyyyyyhhhhhhhhhhhhhh
-		hhhyhhyyyyyyyyyyyyyyyyyyyyyyyyyyyyyysssssshdmNNNNmmmmmmmmmmdddddmmmddddhysssssyyyyyyyyhhhhhhhhhhhhhh
-		yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyssssssydmNNNmmNmmmmmmmddmdddddddmmmmmNNNNdyysyyyyyyyyhhhhhhhhhhhhhh
-		yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyysssssyhmmNNNNNNNNNNNNNmmmmmNNNmmmmmmmNNNNMMNdyyyyyyyyyhhhhhhhhhhhhhh
-		yyyyyyyyyyyyyyyyyyyyyyyyyyyssssssssydNNNNNNNNNNNNNNNmmmmddddmmmmNNNNNNNNNNMMMdyyyyyyyyhhhhhhhhhhhhhh
-		hyyyyyyyyyyyyyyyyyyyyyyyyssssssssydmNNMMMMNNNNNNNNNNmmmddddddddmmmNNNNNNMMMMMmyyyyyyyyyyhhhhhhhhhhhh
-		yyyyyyyyyyyyyyyyyyyyyyyysssssssshmNMMMMMMMMMMMNNNNNNNmmddhdddmmmmmmNNMMMMMMMMNdyyyyyyyyyhyhhhhhhhhhh
-		hhhhyyyyyyyyyyyyyyyyyyyyssssssymNMMMMMMMMMMMMMMNNNNmmddddddddmmmmNNNNNNMMNmmNNmdhyyyyyyyyyhhhhhhhhhh
-		hhhhyyyyyyyyyyyyyyyyyyyysssssdNMMMMMMMMMMMMMMMNNNNNmmddddddddmmNNNNNMNMMNmdmdddddhyyyyyyyyyhhhhhhhhh
-		hhhyyyyyyyyyyyyyyyyyyyyysssssNMMMMMMMMMMMMMMMMNNNNNmmdddddddmmNNNNNNMMMNdmmmhhdmmdhyyyyyyyyyhhyyhhhy
-		hhhhhyyyyyyyyyyyyyyyyyyyssssyMMMMMMMMMMMMMMMMMMNNNNmmddddddddmNNNNNNNmdhhddddddmdddhsyyyyyyyyyyyhhyy
-		hhhhhyyyyyyyyyyyyyyyyyyysssshMNMMMMMMMMMMMMMNNNNmmmdddhhhyyyyhhhddhhysoyyhhddhdddmmmyssyyyyyyyyyyyyy
-		yyyyyyyyyyyyyyyyyyyyyyyyssssmNddmNNNmmmmddhyyysssssssoo++ +/////+++++///+syhdhhddmmNNdysyyyyyyyyyyyyy
-		yyyyyyyyyyyyyyyyyyyyyyyyssssNmyyyyysoooooo++++++ +//////:::::::::::::::/+oyddhdddmNNNNyssyyyyyyyyyyyy
-		hhyyyyyyyyyyyyyyyyyyyyyysssyNhsssoo++++////////////::::::::::::::::::///+yddddNmmNNNMysssyyyyyyyyyyy
-		hhyyyyyyyyyyyyyyyyyyyyyssssymyssooo++ +////////////::::::::::::::::::////+sdmNmNNNNNMMysssyyyyyyyyyyy
-		yyyyyyyyyyyyyyyyyyyyyysssssshyyssoo++ +///////////::::::::::::::::::////+oshmNMMMMMMMNssssyyyyyyyyyyy
-		yyyyyyyyyyyyyyyyyysyssssssshmNmmmdhso + / +//////////::::::::::::::::////++oydNNNMMMMMMhssssyyyyyyyyyyy
-		yyyyyyyyyyyyyyyyyyssysssssdNNNNNNMNNmhyo++ +/////////:::::::::::::::///++shmNNNMMMMMNyssssyyyyyyyyyyy
-		yyyyyyyyyyyyyyyyyyyyssssssNNNNNNNNNMMMNmhso++++ + ooosyyyyyyyssoo +///////+ohdmmNNNMNMdssyssyyyyyyyyyyy
-		yyyyyyyyyyyyyyyysyysysssssmmmNNMMNMMMMMNNmyo++oshdmNNNNNmmmddhyyyso////++oydmmNNNNmyssssyyyyyyyyyyyy
-		yyyyyyyyyyyyyyyyysssssssssddhdmNNdmNNNNNNms +///+sydmmNNNmddddhhyyyyo+//+/+ydmmmNNNhssssyyyyyyyyyyyyy
-		yyyyyyyyyyysyyyyyyyysssssshhyyyyyyyyyyhhdy + / ::: / +oydNNmNNNdhhdmhyyys++ + / +oddddmmhsoosssyyyyyyyyyyyyy
-		yyyyyyyyyyysssssssssysssssyysoossosooooso + / :::::: / +osyyyhhshddddhsso++++ + sddhys++syyssyyyyyyyyyyyyyy
-		yyyyyyyyyyyyyyyyyyysysssssyyso + oo + oo++ + o//:::::::://+++ooo++++++oo+++++++yhsooyy+ohNNsssyyyyyyyyyyyy
-		yyyyyyyyyyyyyyyyyyyysssssshso++++++++ + o / :::::::::::: :////////////////+++oyosyho+//odmsyyyyyyyyyyyyyy
-		hyyyyyyyyyyyyyyyyyyysssssshyoo++++ + / +oo//::::::::::::::://///////////++++++hNMmd+/oysysyyyyyyyyyyyyy
-		hyyyyyyyyyyyyyyyyyyssssssshhysooo++ + hmmyso++ + / : -:: / :::::::::::: ://///++++/+sshdh++ossyyyyyyyyyyyyyyy
-		yyyyyyyyyyyyyyyyyyysssssssydhyssooooymNNmdhhdmdo / ::///::::::::::////+//+/+osoooo+osssssssssyyyyyyyyy
-		yyyyyyyyyyyyyyyyyyyyyyssssydhyssoooosyhdmdhsooo + / :: :////::::::::///++//+++//+osoosyssssssyysyyyyyyyy
-		hhyyyyyyyyyyyyyyyyyyysssssydhhysooooooossso +//:::::::////////////////////////+ssssyssssssssssyyyyyyy
-		hhhhyyyyyhhyyyyyyyyysssssssddhhhddhyyys +////:::::::::://+//////////////++//+osssssssssssssssssyyyyyy
-		hhhhhhyyhhhyyyyyyyyyysssssshdhhhdmmNNmNmdhhhso + / :: ://////++++++///////osssssssssssssssssssssssyyyyyy
-		hhhhhhhhhhhyyyyyyyyyyssssssydhysysyddyyyyhhhyyyyyyyyo/////+++++//+++++ssssssssssssssssssssssyyyysyyy
-		hhhhhhhhhyyhyyyyyyyyyyssssssdhysssyhdmmmdhyso++///+oo++///+++++++++++sssssssssssssssssssssssyyysssss
-		hhhhhhhhyhhyyyyyyyyyyyssssssymhssossyyhhddhhso +//////++++/+++++++++osyssssssssssssssssssssssyyyyyyyy
-		hhhhhhhhhhyyhhhhyyyyyysssssssmhys + oo++++++++ +///::////++++++++++++osdmyssssssssssssssssssssssyyyyyyy
-		ddhhdhhhhhhyyyyhyyyyysssssssdMNdhsoo +///:::::::::::///+++++++++ooss/ymmyooossssssssssssssssssyyyyyyy
-		ddddddhhhhhhhyyyyyyyyssssyhmMMdsmmdhso++//:::::::::///++++ooooooso/-ymmmhsooooossssssssssssssysyyyyy
-		ddddddhhhhhhhhyyyyyssssymNMMMMy / ohmNmdhyyso +///////+++++ooooooo+/:-:ddmmmmdyysoosssssssssssssysyyyyy
-		ddddhdhhhhhhhhyyyyyhdmNMMMMMMMh / ++ohNNNNmmdhyysoooooosssooooo + / :-- - oddmmmmmmmmdhysoossssssssssssyyyy
-		dddddddhhhhhhhhdmNNMMMMMMMMMMMm///++sdNNNNNNNmmdhhhyyssooo++/:----:hddmmmmmmmmmmmmdhysoossssssssssyy
-		dddhdddhhhhdmNNMMMMMMMMMMMMMMMNo////++ohmNNNNNmdhysooo+++/:-------ohhdmmmmmmmmmmmNNmmdyssoosssssssyy
-		dddddmmmNNNMMMMMMMMMMMMMMMMMMMMy//////+++oydmNmdyyso+++:---------:ydhdmmmmmmmmmmmmNNNmmddhyyssssssss
-		NNNMMMMMMMMMMMMMMMMMMMMMMMMMMMMd//////////:/+yyhyyo+::-----------ohdddmmmmmmmmNmmmNNNNNmmmmdmmdhyyss
-		MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMNo//////::::odmdddds/------------/hdddmmmmmmmmmNNmmmNNNNNNNmmmmmmmmdh
-		MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMNNy///:::::+hmNMMNmmmmy:---------:yddddmmmmmmmmmNNNmmNNNNNNNNNmmmmmmmm
-		MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMNNd + ::::: / sddydMNmmdysys : --------odddddmmmmmmmmmNNNmmmNNNNNNNNNNNmmmmm
-		MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMNNmo:::: + hmmddNNNmh / :: + yy + ------ + hdddmmmmmmmmmmmNNNmmmNNNNNNNNNNNmmmmm
-		MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMNNNs / : / +ooyhdNNNNNh:: : / oyho---- / ydddmmmmmmmmmmmmNNNmNNmNNNNNNNNNNmmmmm
-		MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMNNNm + oo / : / odNNNNNNy----:: + ho-- : ydddmmmmmmmmmmmmmNNNNNNNmNNNNNNNNNmmmmN
-		MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMNNNNdmy///dMNNNmNNdy/----:/oo-odddmmmmmmmmNNmmmNNNNNNNmmNNNNNNNNNNmmmm
-		MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMNNmyhyo + hMNMNNmmNmdd / ---- - / dhddmmmmmmmmmmmNNNmNNmmmNNmmNNNNNNNNNNNmmm
-		MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMNNNo + osdNNNNNmmNNddds---- : odmddmmmmmmmmmmmmNmmmmmmmmmmmmNNNNNNNNNNNNN
-		MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMNNMh//hNNNMNmmddmdddh---:/sdmdmmmmmmmmmmmmmNmNNNmmmmNNNNNNNNNNNNNNNNN
-		MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMNNMNosNNmNNmmmdddddmd / -- / symmmmmmmmmmmmmmNmNNNNNNNmmNNNNNmmNNNNNNNNNN
-		MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMNMMddNNmNNmdddddmmddo - : +ymmmmmmmmmmmmmmmmmNNNNNNNmmNNNNNNNmNNNNmmNNN
-		MNMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMNNNmmNmmdddmmmmmh::smmmmmmmmmmmmNmNmmNNNNNNmNNNmNNNNNNNmmmNNNNNN
-		MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMNNNNNNmdddddddmdm++mmmmmmmmmmmmmNNmmmmNNNNNNNNNNNNNmmNNNmmNNNNNN
-		MMMMMMMMMMMMMMMMMMMMMMMMMMNNMMMMMMMMMMMNMNNNmmddmddmmyhNmmmmmmmmmmmmmNNNmmmmmNNNNNNNNNNNNNNNNNNNNNNN*/
+
+else if (option == 2) {
+printf("\n\n Projeto de PLP 2018.2 - CriptoForca ");
+printf("\n\n Equipe composta por:");
+printf("\n\n Explicacao, agora volte e va jogar (: \n\n");
 }
+
+
+
+}
+
+	return 0;
+}
+
+
+
