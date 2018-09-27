@@ -1,4 +1,4 @@
-/*cripto_functions.h -- constantes e declarações para criptoFunctions.c*/
+/*criptoFunctions.h -- constantes e declarações para criptoFunctions.c*/
 
 //Definição das constantes
 //ex: #define CESAR1 0
