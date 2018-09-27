@@ -2,7 +2,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include <time.h>
-#include "cripto_functions.h"
+#include "criptoFunctions.h"
+#include "RSA.h"
 
 static int fibonacciSequence(int n);
 
@@ -49,6 +50,24 @@ char* cesar1(char* palavra) {
 	return word;
 }
 
+char* rsa(char* palavra) {
+	int messageSize = sizeof(palavra);
+
+	/*char *word = malloc(sizeof(char) * sizeof(palavra));
+	strcpy(word, palavra);*/
+
+	struct public_key_class pub[1];
+	struct private_key_class priv[1];
+
+	void keyGen(struct public_key_class *pub, struct private_key_class *priv);
+	long long cifra = rsa_encrypt(palavra, messageSize, pub);
+
+	char cifraString[sizeof(cifra)];
+	sprintf(cifraString, "%lld", cifra);
+
+	return cifraString;
+}
+
 static int fibonacciSequence(int n) {
 	int auxiliar;
 	int a = 1;
@@ -76,23 +95,23 @@ char* fibonacciCripto(char* palavra) {
  * logo, seu complementar é 127-65 = 62.
  * PS.: Os caracteres de códigos complementares entre 0 e 31 sao deslocados 31 caracteres para frente
  */
-char* complementarAscii (char* palavra){
-	char *word = malloc(sizeof(char) * strlen (palavra));
-	for (int i = 0; i < strlen (palavra); i++){
-		int codeAsc = ( 127 - (int)palavra[i]);
+char* complementarAscii(char* palavra) {
+	char *word = malloc(sizeof(char) * strlen(palavra));
+	for (int i = 0; i < strlen(palavra); i++) {
+		int codeAsc = (127 - (int)palavra[i]);
 		if (codeAsc < 31)
-			codeAsc += 31;	
+			codeAsc += 31;
 		word[i] = (char)codeAsc;
 	}
 	return word;
 }
 
 /**
- * checkIndex:  auxiliar de shuffle 
+ * checkIndex:  auxiliar de shuffle
  */
-int checkIndex (int j, int* indices, int size){
+int checkIndex(int j, int* indices, int size) {
 	for (int i = 0; i < size; i++)
-		if (j == indices[i]){	// se o indice j ja foi utilizado, test = 1
+		if (j == indices[i]) {	// se o indice j ja foi utilizado, test = 1
 			return 1;
 		}
 	return 0;
@@ -108,11 +127,11 @@ char* shuffle(char* palavra) {
 	for (int i = 0; i < strlen(palavra); i++)
 		indices[i] = -1;
 
-	for (int i = 0; i < strlen(palavra); i++){
+	for (int i = 0; i < strlen(palavra); i++) {
 		int j = rand() % strlen(palavra);
 		int test = checkIndex(j, indices, strlen(palavra));
 
-		if (test == 0){
+		if (test == 0) {
 			word[j] = palavra[i];
 			indices[i] = j;
 		}
@@ -125,10 +144,10 @@ char* shuffle(char* palavra) {
 /**
  * criptoMix: realiza 4 criptografias em sequencia para a mesma palavra
  */
-char* criptoMix (char* palavra){
+char* criptoMix(char* palavra) {
 	char *word = malloc(sizeof(char) * strlen(palavra));
-	word = shuffle (palavra);
-	word = cesar1 (word);
+	word = shuffle(palavra);
+	word = cesar1(word);
 	word = complementarAscii(word);
 	word = fibonacciCripto(word);
 
@@ -145,4 +164,4 @@ char* criptoMix (char* palavra){
 	printf("complementarAscii: %s\n", complementarAscii(oi));
 	printf("Criptomix: %s\n", criptomix(oi));
 	return 0;
-}*/ 
+}*/
