@@ -6,6 +6,14 @@
 #include "RSA.h"
 
 static int fibonacciSequence(int n);
+static char* complementarAscii(char* palavra);
+static char* shift(char *palavra); //cifra de troca(?)
+static char* cesar1(char* palavra); //cifra de cesar
+static char* fibonacciCripto(char* palavra); //cifra que usa sequencia de Fibonnacci 
+static char* rsa(char* palavra);
+static char* shuffle(char* palavra);
+static char* criptoMix(char* palavra);
+static int checkIndex(int j, int* indices, int size);
 
 //Chama a função de cifragem adequada
 //adicionado por Laerson
@@ -19,12 +27,33 @@ void cipherStrategy(int strategy, char *uncrypted_word)
 		case: CIFRAGEM_DO_TIPO_A
 		funcao_de_cifragem_do_tipo_a(uncrypted_word);
 		*/
-	default:
-		break;
+		case CESAR: cesar1(uncrypted_word);
+			break;
+
+		case SHIFT: shift(uncrypted_word);
+			break;
+
+		case RSA: rsa(uncrypted_word);
+			break;
+
+		case FIBONACCI: fibonacciCripto(uncrypted_word);
+			break;
+
+		case COMPLEMENTAR_ASCII : complementarAscii(uncrypted_word);
+			break;
+
+		case SHUFFLE: shuffle(uncrypted_word);
+			break;
+
+		case CRIPTOMIX: criptoMix(uncrypted_word);
+			break;
+
+		default:
+			break;
 	}
 }
 
-char* shift(char *palavra) {
+static char* shift(char *palavra) {
 	char *word = malloc(sizeof(char) * sizeof(palavra));
 	strcpy(word, palavra);
 	int i = 0;
@@ -37,7 +66,7 @@ char* shift(char *palavra) {
 	return word;
 }
 
-char* cesar1(char* palavra) {
+static char* cesar1(char* palavra) {
 	char *word = malloc(sizeof(char) * sizeof(palavra));
 	strcpy(word, palavra);
 
@@ -50,7 +79,7 @@ char* cesar1(char* palavra) {
 	return word;
 }
 
-char* rsa(char* palavra) {
+static char* rsa(char* palavra) {
 	int messageSize = sizeof(palavra);
 
 	/*char *word = malloc(sizeof(char) * sizeof(palavra));
@@ -80,7 +109,7 @@ static int fibonacciSequence(int n) {
 	return auxiliar;
 }
 
-char* fibonacciCripto(char* palavra) {
+static char* fibonacciCripto(char* palavra) {
 	char *word = malloc(sizeof(char) * sizeof(palavra));
 	strcpy(word, palavra);
 	int i = 0;
@@ -95,7 +124,7 @@ char* fibonacciCripto(char* palavra) {
  * logo, seu complementar é 127-65 = 62.
  * PS.: Os caracteres de códigos complementares entre 0 e 31 sao deslocados 31 caracteres para frente
  */
-char* complementarAscii(char* palavra) {
+static char* complementarAscii(char* palavra) {
 	char *word = malloc(sizeof(char) * strlen(palavra));
 	for (int i = 0; i < strlen(palavra); i++) {
 		int codeAsc = (127 - (int)palavra[i]);
@@ -109,7 +138,7 @@ char* complementarAscii(char* palavra) {
 /**
  * checkIndex:  auxiliar de shuffle
  */
-int checkIndex(int j, int* indices, int size) {
+static int checkIndex(int j, int* indices, int size) {
 	for (int i = 0; i < size; i++)
 		if (j == indices[i]) {	// se o indice j ja foi utilizado, test = 1
 			return 1;
@@ -119,7 +148,7 @@ int checkIndex(int j, int* indices, int size) {
 /**
  * shuffle:  criptografia para embaralhar as letras da string
  */
-char* shuffle(char* palavra) {
+static char* shuffle(char* palavra) {
 	srand(time(NULL));
 	char *word = malloc(sizeof(char) * strlen(palavra));
 	int *indices = malloc(sizeof(int)* strlen(palavra));
@@ -144,7 +173,7 @@ char* shuffle(char* palavra) {
 /**
  * criptoMix: realiza 4 criptografias em sequencia para a mesma palavra
  */
-char* criptoMix(char* palavra) {
+static char* criptoMix(char* palavra) {
 	char *word = malloc(sizeof(char) * strlen(palavra));
 	word = shuffle(palavra);
 	word = cesar1(word);
