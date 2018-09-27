@@ -6,46 +6,29 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include "dollDraw.h"
-#include "cripto_functions.h"
+#include "criptoFunctions.h"
 
 int vowels[5] = {'A', 'E', 'I', 'O', 'U'}; 
+
 char usedLetters[26];
-bool usedTips[4];
 char prompt[30];
 
-//Tip
+//Tips
 char tip[20];
+bool usedTips[4];
 char revealedTip[20];
 
-struct gameConfig {
-	int attemps;
-	int currentLevel;
-	char* currentWord;
-};
-
-bool belongs(char letter, char* list) {
+/*bool belongs(char letter, char* list) {
 	for(int i = 0; i < sizeof(list); i++){
 		if(letter == list[i])
 			return true;
 	} return false;
-}
-
-struct gameConfig Match;
-
-typedef struct cipherType {
-	char* type;
-	char* description;
-} cipherType;
+}*/
 
 char VowelsQnt[3];
 
 /*** prototypes ***/
 void switchHelp(int option, char* word);
-
-/*** vectors ***/
-char* words[0];
-char* exampleWords[0];
-cipherType cipherTypes[0];
 
 void displayTitle(){
 	printf("||##################### #$&!CRIPTOForca#$&! #####################>>");
