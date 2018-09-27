@@ -1,8 +1,8 @@
 // Menu Functions
 // Declarações para o Menu
 
-void switchHelp(int option, char* word);
-void getHelp(char* word);
+void switchHelp(int option, char* word, char* correct);
+void getHelp(char* word, char *correct);
 void displayTitle();
 void clrscreen();
 void resetGame();

@@ -54,7 +54,7 @@ void cipherStrategy(int strategy, char *uncrypted_word)
 }
 
 static char* shift(char *palavra) {
-	char *word = malloc(sizeof(char) * sizeof(palavra));
+	char *word = (char*) malloc(sizeof(char) * sizeof(palavra));
 	strcpy(word, palavra);
 	int i = 0;
 	while (word[i + 1] != '\0') {
@@ -67,7 +67,7 @@ static char* shift(char *palavra) {
 }
 
 static char* cesar1(char* palavra) {
-	char *word = malloc(sizeof(char) * sizeof(palavra));
+	char *word = (char*) malloc(sizeof(char) * sizeof(palavra));
 	strcpy(word, palavra);
 
 	int i = 0;

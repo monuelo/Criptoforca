@@ -5,12 +5,14 @@
 #include <ctype.h>
 #include <stdbool.h>
 #include "criptoFunctions.h"
+#include "time.h"
 
 /** prototypes **/
 
-void switchHelp(int option, char *word);
+bool usedCheck(char guess, char *word, char *correct, bool containsGuess);
+void switchHelp(int option, char *word, char *correct);
 static void resetUsedTips();
-void getHelp(char *word);
+void getHelp(char *word, char *correct);
 void displayTitle();
 void clrscreen();
 void resetGame();
@@ -20,8 +22,8 @@ static void resetUsedLetters();
 // Helps
 static void revealCategoryHelp(char *word);
 static void vowelsNumberHelp(char *word);
-static void revealLetterHelp();
-static void undergradHelp();
+static void revealLetterHelp(char* word, char* correct);
+static void undergradHelp(char* word);
 
 int vowels[5] = {'A', 'E', 'I', 'O', 'U'};
 char revealedTip[20];
@@ -29,7 +31,7 @@ char VowelsQnt[3];
 bool usedTips[4];
 char tip[20];
 char usedLetters[26];
-char prompt[30];
+char prompt[100];
 int numUsedLetters = 0;
 int erros = 0;
 bool used;
@@ -49,7 +51,14 @@ void clrscreen()
     displayTitle();
 }
 
-void getHelp(char *word)
+bool isUsed(char letter) {
+	for(int i = 0; i < sizeof(usedLetters); i++){
+		if(letter == usedLetters[i])
+			return true;
+	} return false;
+}
+
+void getHelp(char *word, char *correct)
 {
     clrscreen();
     int opc;
@@ -62,10 +71,10 @@ void getHelp(char *word)
     printf("\n\n Opção escolhida: ");
     scanf("%d", &opc);
 
-    switchHelp(opc, word);
+    switchHelp(opc, word, correct);
 }
 
-void switchHelp(int option, char *word)
+void switchHelp(int option, char *word, char *correct)
 {
     if (usedTips[option - 1] == true)
     {
@@ -79,16 +88,16 @@ void switchHelp(int option, char *word)
         revealCategoryHelp(word);
         break;
     case 2:
-        revealLetterHelp();
+        revealLetterHelp(word, correct);
         break;
     case 3:
-        undergradHelp();
+        undergradHelp(word);
         break;
     case 4:
         vowelsNumberHelp(word);
         break;
     default:
-        return switchHelp(option, word);
+        switchHelp(option, word, correct);
     }
 }
 
@@ -100,14 +109,20 @@ static void revealCategoryHelp(char *word)
     strcpy(revealedTip, tip);
 }
 
-static void revealLetterHelp()
+static void revealLetterHelp(char *word, char *correct)
 {
-    // TODO
+    usedTips[1] = true;
+    srand (time(NULL));
+    int num = rand() % sizeof(word);
+    usedCheck(word[num], word, correct, false);
 }
 
-static void undergradHelp()
+static void undergradHelp(char* word)
 {
-    // todo
+    usedTips[2] = true;
+    char text[120];
+    sprintf(text, "Hmm... Acho que a palavra é %s", word);
+    showOnPrompt(text);
 }
 
 static bool isVowel(char letter)
@@ -160,14 +175,14 @@ void resetGame()
 void renderMenu(char *correct, char *word)
 {
     clrscreen();
-    printf("\n||>> Categoria: %s | erros: %d | palavra: %s | Letras usadas: ", revealedTip, erros, word);
+    printf("\n||>> Categoria: %s | erros: %d | palavra: %s | Letras usadas: ", revealedTip, erros, encryptedWord);
     for (i = 0; i < numUsedLetters; i++)
     {
         printf("%c ", usedLetters[i]);
     }
     printf("\n||>> Número de Vogais: %s |", VowelsQnt);
 
-    printf("\n||>> Pressione [1] para obter uma Dica\n||\n");
+    printf("\n||>> Pressione [1] para obter uma Dica | [2] para SAIR --\n||\n");
     printf("|=$ %s\n||\n", prompt);
     displayTitle();
     printf("||\n||\n|/  ");
@@ -240,6 +255,7 @@ void encryptWord(char *word, int option, char* category)
 {
     strcpy(tip, category);
     strcpy(encryptedWord, word);
+    strcpy(encryptedWord, "**TEMP**");
     // cypherStrategy(option, encryptedWord);
 }
 

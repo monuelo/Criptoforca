@@ -8,15 +8,6 @@
 #include "dollDraw.h"
 #include "criptoFunctions.h"
 
-/*** prototypes ***/
-
-/*bool belongs(char letter, char* list) {
-	for(int i = 0; i < sizeof(list); i++){
-		if(letter == list[i])
-			return true;
-	} return false;
-}*/
-
 int main()
 {
 	// Number of itens for each category in the game
@@ -52,9 +43,6 @@ int main()
 	{
 
 		//Letras usadas pelo usuário e contador de letras usadas para repetições.
-		int numUsedLetters = 0;
-		int used;
-
 		do
 		{
 
@@ -140,15 +128,23 @@ int main()
 
 				if (strcmp(word, correct) != 0 && numErros() != 5)
 				{
-
-					used = 0;
-
 					guess = typeGuess(guess);
 
 					// Dica
 					if (guess == '1')
 					{
-						getHelp(word);
+						getHelp(word, correct);
+					} else if (guess == '2') {
+						clrscreen();
+						printf("\n||\n||\t\tDeseja Realmente Sair??");
+						printf("\n||\n||\t\t[1] - Sim | Não - [2]\n||\n");
+						displayTitle();
+						scanf("%s",&guess);
+						if(guess == '1'){
+							break;
+						} else if (guess == '2') {
+							continue;
+						}
 					}
 					else if (isalpha(guess))
 					{
@@ -162,7 +158,7 @@ int main()
 		{
 			printf("\n  YOU LOSE!!!\n  Palavra correta era %s", word);
 		}
-		else
+		else if (strcmp(word, correct) == 0)
 		{
 			printf("\n  YOU WIN!!!\n   Palavra correta era %s", word);
 		}
