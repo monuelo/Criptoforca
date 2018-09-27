@@ -1,13 +1,15 @@
 #include <time.h>
 #include <stdio.h>
 #include <ctype.h>
-#include <unistd.h> 
 #include <string.h>
 #include <stdlib.h>
 #include <stdbool.h>
 #include "dollDraw.h"
 #include "criptoFunctions.h"
 
+
+/*** prototypes ***/
+void switchHelp(int option, char* word);
 int vowels[5] = {'A', 'E', 'I', 'O', 'U'}; 
 
 char usedLetters[26];
@@ -26,9 +28,6 @@ char revealedTip[20];
 }*/
 
 char VowelsQnt[3];
-
-/*** prototypes ***/
-void switchHelp(int option, char* word);
 
 void displayTitle(){
 	printf("||##################### #$&!CRIPTOForca#$&! #####################>>");
@@ -122,7 +121,6 @@ int main() {
 
 	// Number of itens for each category in the game
 	const int NUM_ITENS = 20;
-
 	
 	char paises[20][12] = { "ALEMANHA", "BRASIL", "ARGENTINA",
 			"ITALIA", "ESCOCIA", "NIGERIA", "INGLATERRA", "CHINA",
