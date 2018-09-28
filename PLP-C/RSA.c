@@ -8,17 +8,17 @@
 
 
 
-static int mdc(int a, int b);
-static int ExtEuclid(int a, int b);
-static int rsa_modExp(int base, int exponent, int modulus);
+static long long mdc(long long a, long long b);
+static long long ExtEuclid(long long a, long long b);
+static long long modularMultiplicativeInverse(long long a, long long mod);
+static long long rsa_modExp(long long base, long long exponent, long long modulus);
+static long long mmc(long long a, long long b);
 
 /*
-
 struct public_key_class {
 	int modulus;
 	int exponent;
 };
-
 struct private_key_class {
 	int modulus;
 	int exponent;
@@ -28,15 +28,16 @@ struct private_key_class {
 void keyGen(struct public_key_class *pub, struct private_key_class *priv) //gera chaves públicas e privadas
 {
 	//select at random two LARGE prime number p and q.
-	int p = rand_prim(MAX_PRIME);
-	int q = rand_prim(MAX_PRIME);
-	int privateExponent;
-	int publicExponent;
+	long long p = randPrim(MAX_PRIME);
+	long long q = randPrim(MAX_PRIME);
+	long long privateExponent;
+	long long publicExponent;
 
-	int modulus = p * q;
+	long long modulus = p * q;
 
 	//Select a small odd integer, that will be the public key which is relatively prime to (p-1)(q-1)
-	int phi = TOTIENT(p, q);
+	long long phi = mmc((p-1), (q-1));
+
 	publicExponent = 2;
 	while (publicExponent < phi)
 	{
@@ -49,10 +50,7 @@ void keyGen(struct public_key_class *pub, struct private_key_class *priv) //gera
 
 	}
 
-	privateExponent = ExtEuclid(phi, publicExponent);
-	while (privateExponent < 0) {
-		privateExponent += phi;
-	}
+	privateExponent = modularMultiplicativeInverse(publicExponent, phi);
 
 	pub->modulus = modulus;
 	pub->exponent = publicExponent;
@@ -63,10 +61,14 @@ void keyGen(struct public_key_class *pub, struct private_key_class *priv) //gera
 }
 
 
+static long long mmc(long long a, long long b) {
+	return  (a*b) / mdc(a, b);
+}
+
 // acha o MDC entre A e B
-static int mdc(int a, int b)
+static long long mdc(long long a, long long b)
 {
-	int temp;
+	long long temp;
 	while (1)
 	{
 		temp = a % b;
@@ -77,18 +79,31 @@ static int mdc(int a, int b)
 	}
 }
 
-static int ExtEuclid(int a, int b)
+
+static long long ExtEuclid(long long a, long long b)
 {
-	int x = 0, y = 1, u = 1, v = 0, gcd = b, m, n, q, r;
+	long long x = 0, y = 1, u = 1, v = 0, gcd = b, m, n, q, r;
 	while (a != 0) {
 		q = gcd / a; r = gcd % a;
 		m = x - u * q; n = y - v * q;
 		gcd = a; a = r; x = u; y = v; u = m; v = n;
 	}
 	return y;
+} 
+
+static long long modularMultiplicativeInverse(long long a, long long mod) {
+	//aX + my = 1
+	//aX = 1  - my
+	long long y = ExtEuclid(a, mod);
+	long long x = (1 - mod * y) / a;
+	while (x <= 0) {
+		x += mod;
+	}
+	return x;
 }
 
-static int rsa_modExp(int base, int exponent, int modulus)
+
+static long long rsa_modExp(long long base, long long exponent, long long modulus)
 {
 	if (base < 0 || exponent < 0 || modulus <= 0) {
 		exit(1);
@@ -120,10 +135,10 @@ long long *rsa_encrypt(const char *message, const unsigned long message_size, co
 		encrypted[i] = rsa_modExp(message[i], public->exponent, public->modulus);
 	}
 	return encrypted;
-}
+} 
 
 
-char *rsa_decrypt(const long long *message,
+/*char *rsa_decrypt(const long long *message,
 	const unsigned long message_size,
 	const struct private_key_class *priv)
 {
@@ -153,6 +168,4 @@ char *rsa_decrypt(const long long *message,
 	}
 	free(temp);
 	return decrypted;
-}
-
-
+} */
