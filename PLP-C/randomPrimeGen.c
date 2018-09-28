@@ -3,14 +3,14 @@
 #include <time.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include "random_primeGen.h"
+#include "randomPrimeGen.h"
 
 static int rand_lim(int limit);
 static bool primeCheck(int n);
 
 static int rand_lim(int limit) {
 	// retorna um número aleatório, entre 0, e limit (inclusivo)
-	 
+
 
 	int divisor = RAND_MAX / (limit + 1);
 	int retval;
@@ -46,7 +46,7 @@ static bool primeCheck(int n) {
 	return true;
 }
 
-int rand_prim(int limit) {
+int randPrim(int limit) {
 	//retorna um número primo menor igual a limit
 
 	int prime;
