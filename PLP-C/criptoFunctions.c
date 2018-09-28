@@ -1,9 +1,11 @@
+#pragma warning(disable: 4996)
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include <time.h>
-#include "criptoFunctions.h"
 #include "RSA.h"
+#include "criptoFunctions.h"
+
 
 static int fibonacciSequence(int n);
 static char* complementarAscii(char* palavra);
@@ -27,34 +29,34 @@ void cipherStrategy(int strategy, char *uncrypted_word)
 		case: CIFRAGEM_DO_TIPO_A
 		funcao_de_cifragem_do_tipo_a(uncrypted_word);
 		*/
-		case CESAR: cesar1(uncrypted_word);
-			break;
+	case CESAR: cesar1(uncrypted_word);
+		break;
 
-		case SHIFT: shift(uncrypted_word);
-			break;
+	case SHIFT: shift(uncrypted_word);
+		break;
 
-		case RSA: rsa(uncrypted_word);
-			break;
+	case RSA: rsa(uncrypted_word);
+		break;
 
-		case FIBONACCI: fibonacciCripto(uncrypted_word);
-			break;
+	case FIBONACCI: fibonacciCripto(uncrypted_word);
+		break;
 
-		case COMPLEMENTAR_ASCII : complementarAscii(uncrypted_word);
-			break;
+	case COMPLEMENTAR_ASCII: complementarAscii(uncrypted_word);
+		break;
 
-		case SHUFFLE: shuffle(uncrypted_word);
-			break;
+	case SHUFFLE: shuffle(uncrypted_word);
+		break;
 
-		case CRIPTOMIX: criptoMix(uncrypted_word);
-			break;
+	case CRIPTOMIX: criptoMix(uncrypted_word);
+		break;
 
-		default:
-			break;
+	default:
+		break;
 	}
 }
 
 static char* shift(char *palavra) {
-	char *word = (char*) malloc(sizeof(char) * sizeof(palavra));
+	char *word = (char*)malloc(sizeof(char) * sizeof(palavra));
 	strcpy(word, palavra);
 	int i = 0;
 	while (word[i + 1] != '\0') {
@@ -67,7 +69,7 @@ static char* shift(char *palavra) {
 }
 
 static char* cesar1(char* palavra) {
-	char *word = (char*) malloc(sizeof(char) * sizeof(palavra));
+	char *word = (char*)malloc(sizeof(char) * sizeof(palavra));
 	strcpy(word, palavra);
 
 	int i = 0;
@@ -88,11 +90,13 @@ static char* rsa(char* palavra) {
 	struct public_key_class pub[1];
 	struct private_key_class priv[1];
 
-	void keyGen(struct public_key_class *pub, struct private_key_class *priv);
-	long long cifra = rsa_encrypt(palavra, messageSize, pub);
+	keyGen(pub, priv);
+	printf("a chave publica: %lld, e o modulo %lld\n", pub->exponent, pub->modulus);
+	long long* cifrada = rsa_encrypt(palavra, messageSize, pub);
 
-	char cifraString[sizeof(cifra)];
-	sprintf(cifraString, "%lld", cifra);
+	char* cifraString = malloc(sizeof(long) * sizeof(cifrada));
+
+	ltoa(cifrada, cifraString, 10);
 
 	return cifraString;
 }
