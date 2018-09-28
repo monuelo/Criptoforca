@@ -8,7 +8,7 @@
 #define CESAR 3
 #define COMPLEMENTAR_ASCII 4
 #define CRIPTOMIX 5
-// #define RSA 6
+#define RSA 6
 
 
 char* cipherStrategy(int strategy, char *uncrypted_word);

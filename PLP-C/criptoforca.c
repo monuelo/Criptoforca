@@ -28,7 +28,7 @@ int main()
 	int option = 0;
 	int level = 0;
 
-	while (option != 3)
+	while (option != 2)
 	{
 
 		//Letras usadas pelo usuário e contador de letras usadas para repetições.
@@ -38,12 +38,12 @@ int main()
 			system("clear");
 
 			clrscreen();
-			printf("||\n||\n||\n");			
+			printf("||\n||\n||\n");
 			printLogo();
 			printf("||\n||\n||\n||\t\tEscolha o que deseja fazer: ");
 			printf("\n||\n||\t\t1 - Jogar: ");
-			printf("\n||\n||\t\t2 - Cifrar uma palavra: ");
-			printf("\n||\n||\t\t3 - Sair: ");
+			// printf("\n||\n||\t\t2 - Cifrar uma palavra: ");
+			printf("\n||\n||\t\t2 - Sair: ");
 			printf("\n||\n||");
 			printf("\n||\n||");
 			printf("\n||\n||\nO=================> Opção escolhida: ");
@@ -87,7 +87,7 @@ int main()
 					break;
 					(1 + rand() % 3);
 				case 3:
-					encryptWord(word, (3 + rand() % 5), category);
+					encryptWord(word, rand() % 5 + 3, category);
 					break;
 				case 4:
 					encryptWord(word, 5, category);
@@ -109,14 +109,14 @@ int main()
 					word[i] = toupper(word[i]);
 				}
 			}
-			else if (option == 3)
+			else if (option == 2)
 			{
 				break;
 			}
 
-		} while (option != 1 && option != 2 && option != 3);
+		} while (option != 1 && option != 2 && option != 2);
 
-		if (option != 3)
+		if (option != 2)
 		{
 
 			for (i = 0; i < strlen(word); i++)

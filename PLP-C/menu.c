@@ -79,8 +79,11 @@ void getHelp(char *word, char *correct)
     printf("\n||\n||\t\t [4] - Revelar Quantidade de vogais: ");
     printf("\n||\n||\nO=039o22039rjdm00xnB(#NE0)$$$> Opção escolhida: ");
     scanf("%d", &opc);
-    printf("\nU=============================================|$ ");
-
+    
+    if(opc < 1 || opc > 4){
+        showOnPrompt("Por favor, insira uma entrada válida!");
+        return;
+    }
     switchHelp(opc, word, correct);
 }
 
@@ -116,9 +119,7 @@ void switchHelp(int option, char *word, char *correct)
 static void revealCategoryHelp(char *word)
 {
     usedTips[0] = false;
-    printf(tip);
     strcpy(revealedTip, tip);
-    printf(revealedTip);
 }
 
 static void revealLetterHelp(char *word, char *correct)
