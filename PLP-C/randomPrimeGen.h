@@ -1,3 +1,3 @@
-/*random_primeGen -- */
+/*randomPrimeGen -- */
 
-int rand_prim(int limit);
+int randPrim(int limit); 
