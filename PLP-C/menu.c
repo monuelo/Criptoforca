@@ -1,11 +1,12 @@
+#include "time.h"
+#include "menu.h"
+#include <ctype.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include "menu.h"
-#include <ctype.h>
 #include <stdbool.h>
+#include "dollDraw.h"
 #include "criptoFunctions.h"
-#include "time.h"
 
 /** prototypes **/
 
@@ -16,33 +17,38 @@ void getHelp(char *word, char *correct);
 void displayTitle();
 void clrscreen();
 void resetGame();
-void showOnPrompt(char *message);
+void showOnPrompt(const char *message);
 static void resetUsedLetters();
+void encryptWord(char *word, int option, char category[20]);
 
 // Helps
 static void revealCategoryHelp(char *word);
 static void vowelsNumberHelp(char *word);
-static void revealLetterHelp(char* word, char* correct);
-static void undergradHelp(char* word);
+static void revealLetterHelp(char *word, char *correct);
+static void undergradHelp(char *word);
 
+/* vowels */
 int vowels[5] = {'A', 'E', 'I', 'O', 'U'};
-char revealedTip[20];
 char VowelsQnt[3];
+
+/* Tips */
+char revealedTip[20];
 bool usedTips[4];
 char tip[20];
-char usedLetters[26];
-char prompt[100];
-int numUsedLetters = 0;
-int erros = 0;
-bool used;
-char encryptedWord[12];
 
-//For for :P
+/* Letters */
+int numUsedLetters = 0;
+char usedLetters[26];
+
+/* general */
+char encryptedWord[12];
+char prompt[100];
+int erros = 0;
 int i;
 
 void displayTitle()
 {
-    printf("||##################### #$&!CRIPTOForca#$&! #####################>>");
+    printf("O############################## #$&!CRIPTOForca#$&! ##############################>>\n");
 }
 
 void clrscreen()
@@ -51,11 +57,14 @@ void clrscreen()
     displayTitle();
 }
 
-bool isUsed(char letter) {
-	for(int i = 0; i < sizeof(usedLetters); i++){
-		if(letter == usedLetters[i])
-			return true;
-	} return false;
+bool isUsed(char letter)
+{
+    for (int i = 0; i < sizeof(usedLetters); i++)
+    {
+        if (letter == usedLetters[i])
+            return true;
+    }
+    return false;
 }
 
 void getHelp(char *word, char *correct)
@@ -63,13 +72,14 @@ void getHelp(char *word, char *correct)
     clrscreen();
     int opc;
 
-    printf("\n\n Selecione uma Dica: ");
-    printf("\n\n [1] - Revelar categoria: ");
-    printf("\n\n [2] - Revelar uma letra: ");
-    printf("\n\n [3] - Ajuda dos Universitários: ");
-    printf("\n\n [4] - Revelar Quantidade de vogais: ");
-    printf("\n\n Opção escolhida: ");
+    printf("||\n||\n||\t\t Selecione uma Dica: ");
+    printf("\n||\n||\t\t [1] - Revelar categoria: ");
+    printf("\n||\n||\t\t [2] - Revelar uma letra: ");
+    printf("\n||\n||\t\t [3] - Ajuda dos Universitários: ");
+    printf("\n||\n||\t\t [4] - Revelar Quantidade de vogais: ");
+    printf("\n||\n||\nO=039o22039rjdm00xnB(#NE0)$$$> Opção escolhida: ");
     scanf("%d", &opc);
+    printf("\nU=============================================|$ ");
 
     switchHelp(opc, word, correct);
 }
@@ -105,19 +115,21 @@ void switchHelp(int option, char *word, char *correct)
 
 static void revealCategoryHelp(char *word)
 {
-    usedTips[0] = true;
+    usedTips[0] = false;
+    printf(tip);
     strcpy(revealedTip, tip);
+    printf(revealedTip);
 }
 
 static void revealLetterHelp(char *word, char *correct)
 {
     usedTips[1] = true;
-    srand (time(NULL));
+    srand(time(NULL));
     int num = rand() % sizeof(word);
     usedCheck(word[num], word, correct, false);
 }
 
-static void undergradHelp(char* word)
+static void undergradHelp(char *word)
 {
     usedTips[2] = true;
     char text[120];
@@ -167,15 +179,21 @@ static void resetUsedLetters()
 
 void resetGame()
 {
+    erros = 0;
     resetUsedTips();
+    strcpy(tip, "");
+    resetUsedLetters();
+    numUsedLetters = 0;
     strcpy(VowelsQnt, "**");
+    strcpy(encryptedWord, "");
     strcpy(revealedTip, "***");
+    showOnPrompt("Bem Vindo à CriptoForca!");
 }
 
 void renderMenu(char *correct, char *word)
 {
     clrscreen();
-    printf("\n||>> Categoria: %s | erros: %d | palavra: %s | Letras usadas: ", revealedTip, erros, encryptedWord);
+    printf("||\n||>> Categoria: %s | erros: %d | palavra: %s | Letras usadas: ", revealedTip, erros, encryptedWord);
     for (i = 0; i < numUsedLetters; i++)
     {
         printf("%c ", usedLetters[i]);
@@ -185,8 +203,8 @@ void renderMenu(char *correct, char *word)
     printf("\n||>> Pressione [1] para obter uma Dica | [2] para SAIR --\n||\n");
     printf("|=$ %s\n||\n", prompt);
     displayTitle();
-    printf("||\n||\n|/  ");
-
+    printf("||\n||\n||  ");
+    printf("\t\t\t\t");
     for (i = 0; i < strlen(word); i++)
     {
         if (correct[i] == '*')
@@ -198,11 +216,12 @@ void renderMenu(char *correct, char *word)
             printf("%c ", correct[i]);
         }
     }
+    printDoll_state(erros);
 }
 
 char typeGuess(char guess)
 {
-    printf("\n\n  Digite seu palpite: ");
+    printf("||\n||\nO==15$I(@)*=ode0i49u83heebdg3289j0r%&*@**)83=> Digite seu palpite: ");
     scanf(" %c", &guess);
     guess = toupper(guess);
 
@@ -212,6 +231,9 @@ char typeGuess(char guess)
 
 bool usedCheck(char guess, char *word, char *correct, bool containsGuess)
 {
+
+    bool used;
+
     //checa se a letra já foi usada
     for (i = 0; i < 26; i++)
     {
@@ -240,7 +262,7 @@ bool usedCheck(char guess, char *word, char *correct, bool containsGuess)
         }
     }
 
-    if (containsGuess == false)
+    if (containsGuess == false && used == false)
     {
         erros++;
     }
@@ -251,15 +273,24 @@ int numErros()
     return erros;
 }
 
-void encryptWord(char *word, int option, char* category)
+void encryptWord(char *word, int option, char category[20])
 {
     strcpy(tip, category);
     strcpy(encryptedWord, word);
-    strcpy(encryptedWord, "**TEMP**");
-    // cypherStrategy(option, encryptedWord);
+    strcpy(encryptedWord, cipherStrategy(option, encryptedWord));
 }
 
-void showOnPrompt(char *message)
+void showOnPrompt(const char *message)
 {
     strcpy(prompt, message);
+}
+
+void throwLose()
+{
+    erros = 6;
+}
+
+void throwSave()
+{
+    erros = 7;
 }

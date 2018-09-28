@@ -3,14 +3,14 @@
 #include <stdlib.h>
 #include <time.h>
 #include "criptoFunctions.h"
-#include "RSA.h"
+// #include "RSA.h"
 
 static int fibonacciSequence(int n);
 static char* complementarAscii(char* palavra);
 static char* shift(char *palavra); //cifra de troca(?)
 static char* cesar1(char* palavra); //cifra de cesar
 static char* fibonacciCripto(char* palavra); //cifra que usa sequencia de Fibonnacci 
-static char* rsa(char* palavra);
+// static char* rsa(char* palavra);
 static char* shuffle(char* palavra);
 static char* criptoMix(char* palavra);
 static int checkIndex(int j, int* indices, int size);
@@ -18,7 +18,7 @@ static int checkIndex(int j, int* indices, int size);
 //Chama a função de cifragem adequada
 //adicionado por Laerson
 //Futuramente, seja melhor definir constantes com nomes significativos (ex: #define CESAR1 0), pra passar como argumento
-void cipherStrategy(int strategy, char *uncrypted_word)
+char* cipherStrategy(int strategy, char *uncrypted_word)
 {
 	switch (strategy)
 	{
@@ -27,26 +27,26 @@ void cipherStrategy(int strategy, char *uncrypted_word)
 		case: CIFRAGEM_DO_TIPO_A
 		funcao_de_cifragem_do_tipo_a(uncrypted_word);
 		*/
-		case CESAR: cesar1(uncrypted_word);
-			break;
+		case CESAR: 
+			return cesar1(uncrypted_word);
 
-		case SHIFT: shift(uncrypted_word);
-			break;
+		case SHIFT: 
+			return shift(uncrypted_word);
 
-		case RSA: rsa(uncrypted_word);
-			break;
+		// case RSA: rsa(uncrypted_word);
+		// 	break;
 
-		case FIBONACCI: fibonacciCripto(uncrypted_word);
-			break;
+		case FIBONACCI: 
+			return fibonacciCripto(uncrypted_word);
 
-		case COMPLEMENTAR_ASCII : complementarAscii(uncrypted_word);
-			break;
+		case COMPLEMENTAR_ASCII : 
+			return complementarAscii(uncrypted_word);
 
-		case SHUFFLE: shuffle(uncrypted_word);
-			break;
+		case SHUFFLE:	
+			return shuffle(uncrypted_word);
 
-		case CRIPTOMIX: criptoMix(uncrypted_word);
-			break;
+		case CRIPTOMIX: 
+			return criptoMix(uncrypted_word);
 
 		default:
 			break;
@@ -79,23 +79,23 @@ static char* cesar1(char* palavra) {
 	return word;
 }
 
-static char* rsa(char* palavra) {
-	int messageSize = sizeof(palavra);
+// static char* rsa(char* palavra) {
+// 	int messageSize = sizeof(palavra);
 
-	/*char *word = malloc(sizeof(char) * sizeof(palavra));
-	strcpy(word, palavra);*/
+// 	/*char *word = malloc(sizeof(char) * sizeof(palavra));
+// 	strcpy(word, palavra);*/
 
-	struct public_key_class pub[1];
-	struct private_key_class priv[1];
+// 	struct public_key_class pub[1];
+// 	struct private_key_class priv[1];
 
-	void keyGen(struct public_key_class *pub, struct private_key_class *priv);
-	long long cifra = rsa_encrypt(palavra, messageSize, pub);
+// 	void keyGen(struct public_key_class *pub, struct private_key_class *priv);
+// 	long long cifra = rsa_encrypt(palavra, messageSize, pub);
 
-	char cifraString[sizeof(cifra)];
-	sprintf(cifraString, "%lld", cifra);
+// 	char cifraString[sizeof(cifra)];
+// 	sprintf(cifraString, "%lld", cifra);
 
-	return cifraString;
-}
+// 	return cifraString;
+// }
 
 static int fibonacciSequence(int n) {
 	int auxiliar;
@@ -110,7 +110,7 @@ static int fibonacciSequence(int n) {
 }
 
 static char* fibonacciCripto(char* palavra) {
-	char *word = malloc(sizeof(char) * sizeof(palavra));
+	char *word = (char*) malloc(sizeof(char) * sizeof(palavra));
 	strcpy(word, palavra);
 	int i = 0;
 	while (word[i + 1] != '\0') {
@@ -119,13 +119,14 @@ static char* fibonacciCripto(char* palavra) {
 	}
 	return word;
 }
+
 /**
  * complementarAscii: substitui cada caractere pelo seu complementar da tabela AscII. Exemplo: AscII de 'A' é 65,
  * logo, seu complementar é 127-65 = 62.
  * PS.: Os caracteres de códigos complementares entre 0 e 31 sao deslocados 31 caracteres para frente
  */
 static char* complementarAscii(char* palavra) {
-	char *word = malloc(sizeof(char) * strlen(palavra));
+	char *word = (char*) malloc(sizeof(char) * strlen(palavra));
 	for (int i = 0; i < strlen(palavra); i++) {
 		int codeAsc = (127 - (int)palavra[i]);
 		if (codeAsc < 31)
@@ -150,8 +151,8 @@ static int checkIndex(int j, int* indices, int size) {
  */
 static char* shuffle(char* palavra) {
 	srand(time(NULL));
-	char *word = malloc(sizeof(char) * strlen(palavra));
-	int *indices = malloc(sizeof(int)* strlen(palavra));
+	char *word = (char*) malloc(sizeof(char) * strlen(palavra));
+	int *indices = (int*) malloc(sizeof(int)* strlen(palavra));
 
 	for (int i = 0; i < strlen(palavra); i++)
 		indices[i] = -1;
@@ -174,12 +175,11 @@ static char* shuffle(char* palavra) {
  * criptoMix: realiza 4 criptografias em sequencia para a mesma palavra
  */
 static char* criptoMix(char* palavra) {
-	char *word = malloc(sizeof(char) * strlen(palavra));
+	char *word = (char*) malloc(sizeof(char) * strlen(palavra));
 	word = shuffle(palavra);
 	word = cesar1(word);
 	word = complementarAscii(word);
 	word = fibonacciCripto(word);
-
 	return word;
 }
 

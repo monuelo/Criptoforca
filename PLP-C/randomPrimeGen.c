@@ -3,7 +3,7 @@
 #include <time.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include "random_primeGen.h"
+#include "randomPrimeGen.h"
 
 static int rand_lim(int limit);
 static bool primeCheck(int n);

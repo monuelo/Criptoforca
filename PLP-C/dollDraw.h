@@ -3,3 +3,5 @@
 
 //chamada da função adequada para desenhar na tela
 void printDoll_state(int nextState);
+void printTuring();
+void printLogo();
