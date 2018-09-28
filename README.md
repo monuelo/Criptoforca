@@ -11,7 +11,7 @@ Paradigmas de Linguagem de Programação - Computação@UFCG
 ## Integrantes
 
 - Héricles Emanuel ([@hericlesme](https://github.com/hericlesme/))  
-- Laerson Saraiva ([@LaersonSaraiva](https://github.com/LaersonSaraiva/))  
+- Laerson Saraiva ([@Laerson](https://github.com/Laerson/))  
 - Marcus Tenorio ([@dialmformart](https://github.com/dialmformart))  
 - Matheus Melo ([@matheuscmelo](https://github.com/matheuscmelo/))  
 - Vitor Diniz ([@dinizvitorr](https://github.com/dinizvitorr/))  
