@@ -118,7 +118,54 @@ main = do
     gs <- initialize  -- will initialize gamestate on start
     game gs -- begin the game with fresh state
 
-------------- HANGMAN IMAGES
+------------- CRIPTOFUNCTIONS -------------
+
+--SHIFT CRYPTOGRAPHY -- level: rasgado
+shift :: [Char] -> [Char]
+shift (x:xs) = xs ++ [x]
+
+--"NO THEN YES" CRYPTOGRAPHY -- level: rasgado
+noThenYes :: Int -> [Char] -> [Char]   --
+noThenYes n [] = []
+noThenYes n (x:xs) = [chr(ord(x)+n)] ++ noThenYes(mod(n+1)(2))(xs)
+
+--CESAR CRYPTOGRAPHY -- level: facil
+cesar1 :: [Char] -> [Char]
+cesar1 [] = []
+cesar1 (x:xs) = [chr(ord(x)+1)] ++ cesar1(xs)
+
+--ASCII CRYPTOGRAPHY -- level: facil
+ascii :: [Char] -> String
+ascii [] = ""
+ascii (x:xs) = show(ord(x)) ++ ascii (xs)
+
+--FIBONACCI CRYPTOGRAPHY -- level: medio
+fibonacciSequence :: Int -> Int
+fibonacciSequence 0 = 0
+fibonacciSequence 1 = 1
+fibonacciSequence n = fibonacciSequence(n-1) + fibonacciSequence(n-2)
+
+fibonacciCripto :: Int -> [Char] -> [Char]
+fibonacciCripto n [] = []
+fibonacciCripto n (x:xs) = [chr( mod(ord(x) + fibonacciSequence(n)) 128)] ++ fibonacciCripto (n+1)(xs)
+
+--COMPLEMENTARY CRYPTOGRAPHY -- level: medio
+complementary :: [Char] -> [Char]
+complementary [] = []
+complementary (x:xs) = [chr(ord('a') + ord('z') - ord(x))] ++ complementary(xs)
+
+--CRYPTOMIX CRYPTOGRAPHY  -- level: enigma
+cryptomix :: [Char] -> [Char]
+cryptomix (x) = fibonacciCrypto 1 (complementar (cesar1(shift (x))))
+
+--ALTERNATE CRYPTOGRAPHY  -- level: enigma
+alternate :: Int -> [Char] -> [Char]
+alternate n [] = []
+alternate n (x:xs) = [chr(ord(x) + n*((-1)^n))] ++ alternate(n+1)(xs)
+
+
+
+------------- HANGMAN IMAGES -------------
 
 guy0 :: IO ()
 guy0 = do
