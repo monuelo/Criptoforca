@@ -57,8 +57,7 @@ encryptWord 1 word = shift (text word)
 
 data Word = Word { 
     text :: String,
-    theme :: String,
-    level :: Int
+    theme :: String
 } deriving (Eq, Show)
 
 setUpWords :: IO [Main.Word]
@@ -71,7 +70,7 @@ setUpWords = do
               return $ lines contents
           createWordList [] = []
           createWordList (head:tail) = [createWord $ splitOnComma head] ++ createWordList tail
-              where createWord (text:theme:level:_) = Word text theme (read level)
+              where createWord (text:theme:_) = Word text theme
 
 splitOnComma :: String -> [String]
 splitOnComma s = splitOnComma' s ""
@@ -103,11 +102,11 @@ showOpening = do
     putStrLn "     | | / /       ||                                                                          "
     putStrLn "     | |/ /        ||              _____      _       _         __                             "
     putStrLn "     | | /         ||.-''.        / ____|    (_)     | |       / _|                            "
-    putStrLn "     | |/          |/  _  \\      | |     _ __ _ _ __ | |_ ___ | |_ ___  _ __ ___ __ _          "
+    putStrLn "     | |/          |/  _  \\      | |     _ __ _ _ __ | |_ ___ | |_ ___  _ __ ___ __ _         "
     putStrLn "     | |           ||  `/,|      | |    | '__| | '_ \\| __/ _ \\|  _/ _ \\| '__/ __/ _` |      "
-    putStrLn "     | |           (\\\\`_.'       | |____| |  | | |_) | || (_) | || (_) | | | (_| (_| |         "
+    putStrLn "     | |           (\\\\`_.'       | |____| |  | | |_) | || (_) | || (_) | | | (_| (_| |       "
     putStrLn "     | |          .-`--'.         \\_____|_|  |_| .__/ \\__\\___/|_| \\___/|_|  \\___\\__,_|   "
-    putStrLn "     | |         /Y . . Y\\                   | |                                             "
+    putStrLn "     | |         /Y . . Y\\                   | |                                              "
     putStrLn "     | |        // |   | \\\\                  |_|                                             "
     putStrLn "     | |       //  | . |  \\\\                                                                 "
     putStrLn "     | |      ')   | _ |   (`                                                                  "
@@ -118,8 +117,9 @@ showOpening = do
     putStrLn "     | |          / | | \\                                                                     "
     putStrLn "     | |          `-' `-'                                                                      "
     putStrLn "     |_|                                                                                       "
-    putStrLn "                                     Perae...                                                  "
-    sleep
+    putStrLn "                                        Pressione [Enter] para continuar...                    "
+    _ <- getLine
+    return()
 
 showMenu :: IO()
 showMenu = do
@@ -146,6 +146,25 @@ showHints word guesses = do
 
 -- Hints
 
+vowels = ['A','E','I','O','U', 'a','e','i','o','u']
+isVowel x = if elem x vowels then True else False
+
+countNumVowels :: Int -> [Char] -> Int
+countNumVowels n [] = n
+countNumVowels n (x:xs) = do
+    if isVowel x then do
+        countNumVowels (n+1) (xs)
+    else
+        countNumVowels n xs
+
+numVowels :: [Char] -> IO()
+numVowels word = do
+    let qnt = countNumVowels 0 word
+    putStrLn $ "\n                           O número de vogais é: " ++ (show qnt)
+    putStr "\n                         [ Pressione ENTER para voltar ]"
+    _ <- getLine
+    return()
+
 revealCategory :: String -> IO()
 revealCategory word = do
     putStrLn $ "\n                           A categoria é: " ++ word
@@ -157,7 +176,7 @@ selectHintOption :: Int -> Main.Word -> IO()
 selectHintOption 1 word = revealCategory (theme word) 
 -- selectHintOption 2 = getHint
 -- selectHintOption 3 = revealCategory
--- selectHintOption 4 = revea
+selectHintOption 4 word = numVowels (text word)
 selectHintOption n word = showInvalidOptionMessage
 
 getOption :: IO Int
@@ -274,12 +293,6 @@ getHiddenWord [] = []
 getHiddenWord (' ':tail) = [' '] ++ getHiddenWord tail
 getHiddenWord (head:tail) = ['_'] ++ getHiddenWord tail
 
-getScore :: Main.Word -> Int -> Int -> Int
-getScore word 0 hintsUsed = 0
-getScore word lives hintsUsed = wordLength * wordLevel * lives + 50 * wordLevel - 25 * hintsUsed
-    where wordLength = length $ text word
-          wordLevel = level word
-
 showGuesses :: String -> String
 showGuesses [] = []
 showGuesses (head:[]) = [head]
@@ -302,7 +315,7 @@ toUpper' s = map toUpper s
 
 guessLetter :: Int -> Main.Word -> [Char] -> IO (Char, Int)
 guessLetter hintsUsed word guesses = do
-    putStrLn "\nDigite uma letra ou pressione [1] para dica: "
+    putStr "\nDigite uma letra ou pressione [1] para dica: "
     letter <- getLetter
     (letter, hintsUsed') <- guessLetter' hintsUsed word guesses letter
     return (letter, hintsUsed')
@@ -414,10 +427,6 @@ showRules = do
     _ <- getLine
     return ()
 
-showHintLimitExceeded::Int -> IO()
-showHintLimitExceeded level =  
-    putStrLn $ "\n                    O limite de dicas para essa palavra é: " ++(show level)++ ".\n"
-
 showVictoryMessage :: IO()
 showVictoryMessage = do
     clearScreen
@@ -448,6 +457,19 @@ getLengthSpacing length scoreLength = do
 quit :: IO()
 quit = do
     clearScreen
+    putStrLn "\n-----------------------------     #$&!CRIPTOForca#$&!     -----------------------------\n\n"
+    putStrLn "\n\n                                                                                         "
+    putStrLn "            .oPYo.        o          o          d'b                                        "    
+    putStrLn "            8    8                   8          8                                          "
+    putStrLn "            8      oPYo. o8 .oPYo.  o8P .oPYo. o8P  .oPYo. oPYo. .oPYo. .oPYo.             "
+    putStrLn "            8      8  `'  8 8    8   8  8    8  8   8    8 8  `' 8    ' .oooo8             "
+    putStrLn "            8    8 8      8 8    8   8  8    8  8   8    8 8     8    . 8    8             "
+    putStrLn "            `YooP' 8      8 8YooP'   8  `YooP'  8   `YooP' 8     `YooP' `YooP8             "
+    putStrLn "            :.....:..:::::..8 ....:::..::.....::..:::.....:..:::::.....::.....:            "
+    putStrLn "            ::::::::::::::::8 :::::::::::::::::::::::::::::::::::::::::::::::::            "
+    putStrLn "            ::::::::::::::::..:::::::::::::::::::::::::::::::::::::::::::::::::            "    
+    putStrLn "\n\n                               - * - UM OFERECIMENTO - * -                              "
+    putStrLn "\n\n                     [PLP@UFCG] [Computação@UFCG] [Eles@Computação]                     "
     sleep
 
 main :: IO()
