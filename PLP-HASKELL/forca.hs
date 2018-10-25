@@ -462,6 +462,7 @@ showVictoryMessage n = do
     clearScreen
     putStrLn "                     \n Olha Só!!! Temos um Turing Aqui! :o \n"
     if (n == 7 || n == 8) then do
+        System.Process.system "display turing.jpg"
         putStrLn":------------------------/hmdmmmmmmmmmmmmmmNmmmmddhddmmm+------------:"
         putStrLn":-----------------------:dmdmmdhyssssssssooooosyyhddmmmddo:----------:"
         putStrLn":-----------------------hmdh+/:---------::::::ohddddmmmmmmy:---------:"
