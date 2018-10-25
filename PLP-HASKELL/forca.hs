@@ -9,26 +9,26 @@ import Control.Monad
 
 ------------- CRIPTOFUNCTIONS -------------
 
---SHIFT CRYPTOGRAPHY -- level: rasgado
+--SHIFT CRYPTOGRAPHY -- level 1: rasgado
 shift :: [Char] -> [Char]
 shift (x:xs) = xs ++ [x]
 
---"NO THEN YES" CRYPTOGRAPHY -- level: rasgado
-noThenYes :: Int -> [Char] -> [Char]   --
+--"NO THEN YES" CRYPTOGRAPHY -- level 1: rasgado
+noThenYes :: Int -> [Char] -> [Char]
 noThenYes n [] = []
 noThenYes n (x:xs) = [chr(ord(x)+n)] ++ noThenYes(mod(n+1)(2))(xs)
 
---CESAR CRYPTOGRAPHY -- level: facil
+--CESAR CRYPTOGRAPHY -- level 2: facil
 cesar1 :: [Char] -> [Char]
 cesar1 [] = []
 cesar1 (x:xs) = [chr(ord(x)+1)] ++ cesar1(xs)
 
---ASCII CRYPTOGRAPHY -- level: facil
-ascii :: [Char] -> String
+--ASCII CRYPTOGRAPHY -- level 2: facil
+ascii :: [Char] -> [Char]
 ascii [] = ""
 ascii (x:xs) = show(ord(x)) ++ ascii (xs)
 
---FIBONACCI CRYPTOGRAPHY -- level: medio
+--FIBONACCI CRYPTOGRAPHY -- level 3: medio
 fibonacciSequence :: Int -> Int
 fibonacciSequence 0 = 0
 fibonacciSequence 1 = 1
@@ -38,22 +38,29 @@ fibonacciCripto :: Int -> [Char] -> [Char]
 fibonacciCripto n [] = []
 fibonacciCripto n (x:xs) = [chr( mod(ord(x) + fibonacciSequence(n)) 128)] ++ fibonacciCripto (n+1)(xs)
 
---COMPLEMENTARY CRYPTOGRAPHY -- level: medio
+--COMPLEMENTARY CRYPTOGRAPHY -- level 3: medio
 complementary :: [Char] -> [Char]
 complementary [] = []
 complementary (x:xs) = [chr(ord('a') + ord('z') - ord(x))] ++ complementary(xs)
 
---CRYPTOMIX CRYPTOGRAPHY  -- level: enigma
+--CRYPTOMIX CRYPTOGRAPHY  -- level 4: enigma
 cryptomix :: [Char] -> [Char]
 cryptomix (x) = fibonacciCripto 1 (complementary (cesar1(shift (x))))
 
---ALTERNATE CRYPTOGRAPHY  -- level: enigma
+--ALTERNATE CRYPTOGRAPHY  -- level 4: enigma
 alternate :: Int -> [Char] -> [Char]
 alternate n [] = []
-alternate n (x:xs) = [chr(ord(x) + n*((-1)^n))] ++ alternate(n+1)(xs)
+alternate n (x:xs) = [chr(ord(x) + 2*n*((-1)^n))] ++ alternate(n+1)(xs)
 
 encryptWord :: Int -> Main.Word -> String
 encryptWord 1 word = shift (text word)
+encryptWord 2 word = noThenYes 0(text word)
+encryptWord 3 word = cesar1 (text word)
+encryptWord 4 word = ascii (text word)
+encryptWord 5 word = fibonacciCripto 1 (text word)
+encryptWord 6 word = complementary (text word)
+encryptWord 7 word = cryptomix (text word)
+encryptWord 8 word = alternate 1(text word)
 
 data Word = Word { 
     text :: String,
@@ -211,7 +218,7 @@ selectLevel = do
     showLevels
     level <- getOption
 
-    if (level < 1 || level > 3) 
+    if (level < 1 || level > 4) 
         then do
             showInvalidOptionMessage
             selectLevel
