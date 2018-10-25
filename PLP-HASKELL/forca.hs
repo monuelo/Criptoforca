@@ -9,26 +9,37 @@ import Control.Monad
 
 ------------- CRIPTOFUNCTIONS -------------
 
---SHIFT CRYPTOGRAPHY -- level 1: rasgado
+--------SHIFT CRYPTOGRAPHY -- level 1: rasgado
+----DESCRICAO:
+--Desloca a primeira letra para a ultima posicao
 shift :: [Char] -> [Char]
 shift (x:xs) = xs ++ [x]
 
---"NO THEN YES" CRYPTOGRAPHY -- level 1: rasgado
+--------"NO THEN YES" CRYPTOGRAPHY -- level 1: rasgado
+----DESCRICAO:
+--utiliza a criptografia cesar1 em letras alternadas
 noThenYes :: Int -> [Char] -> [Char]
 noThenYes n [] = []
-noThenYes n (x:xs) = [chr(ord(x)+n)] ++ noThenYes(mod(n+1)(2))(xs)
+noThenYes 0 (x:xs) = [x] ++ noThenYes (1)(xs)
+noThenYes 1 (x:xs) = cesar1 ([x]) ++ noThenYes (0)(xs)
 
---CESAR CRYPTOGRAPHY -- level 2: facil
+--------CESAR CRYPTOGRAPHY -- level 2: facil
+----DESCRICAO:
+--troca cada letra por seu caracter sucessor na tabela ascii
 cesar1 :: [Char] -> [Char]
 cesar1 [] = []
 cesar1 (x:xs) = [chr(ord(x)+1)] ++ cesar1(xs)
 
---ASCII CRYPTOGRAPHY -- level 2: facil
+--------ASCII CRYPTOGRAPHY -- level 2: facil
+----DESCRICAO:
+--substitui cada letra por seu codigo ascii
 ascii :: [Char] -> [Char]
 ascii [] = ""
 ascii (x:xs) = show(ord(x)) ++ ascii (xs)
 
---FIBONACCI CRYPTOGRAPHY -- level 3: medio
+--------FIBONACCI CRYPTOGRAPHY -- level 3: medio
+----DESCRICAO:
+--incrementa ao codigo ascii da k-esima letra da palavra o k-esimo valor da sequencia de Fibonacci, para uma palavra de n letras e para 0 < k <= n
 fibonacciSequence :: Int -> Int
 fibonacciSequence 0 = 0
 fibonacciSequence 1 = 1
@@ -38,16 +49,22 @@ fibonacciCripto :: Int -> [Char] -> [Char]
 fibonacciCripto n [] = []
 fibonacciCripto n (x:xs) = [chr( mod(ord(x) + fibonacciSequence(n)) 128)] ++ fibonacciCripto (n+1)(xs)
 
---COMPLEMENTARY CRYPTOGRAPHY -- level 3: medio
+--------COMPLEMENTARY CRYPTOGRAPHY -- level 3: medio
+----DESCRICAO:
+--substitui a cada letra por sua complementar no alfabeto. Por exemplo: a -> z; b -> y; c -> x etc
 complementary :: [Char] -> [Char]
 complementary [] = []
-complementary (x:xs) = [chr(ord('a') + ord('z') - ord(x))] ++ complementary(xs)
+complementary (x:xs) = [chr(ord('A') + ord('Z') - ord(x))] ++ complementary(xs)
 
---CRYPTOMIX CRYPTOGRAPHY  -- level 4: enigma
+--------CRYPTOMIX CRYPTOGRAPHY  -- level 4: enigma
+----DESCRICAO:
+--realiza a seguinte sequencia de criptografias: shift, cesar, complementary e fibonacci
 cryptomix :: [Char] -> [Char]
 cryptomix (x) = fibonacciCripto 1 (complementary (cesar1(shift (x))))
 
---ALTERNATE CRYPTOGRAPHY  -- level 4: enigma
+--------ALTERNATE CRYPTOGRAPHY  -- level 4: enigma
+----DESCRICAO:
+--soma o codigo ascii de cada letra a cada valor da sequencia alternada a(n); a(n) = 2*n*(-1)^n
 alternate :: Int -> [Char] -> [Char]
 alternate n [] = []
 alternate n (x:xs) = [chr(ord(x) + 2*n*((-1)^n))] ++ alternate(n+1)(xs)
@@ -179,20 +196,10 @@ revealCategory word = do
     _ <- getLine
     return()
 
-undergradHelp :: String -> IO()
-undergradHelp word = do
-    currTimestamp <- getCurrentTimestamp
-    let rand = currTimestamp `mod` (10)
-    let phrase = if rand < 6 then do "Hmmm... Acho que a palavra é... " ++ word else "Cara, sinceramente, não faço ideia..."
-    putStrLn $ "\n                  Os Universitários dizem: " ++ phrase
-    putStr "\n                         [ Pressione ENTER para voltar ]"
-    _ <- getLine
-    return()
-
 selectHintOption :: Int -> Main.Word -> IO()
 selectHintOption 1 word = revealCategory (theme word) 
 -- selectHintOption 2 = getHint
-selectHintOption 3 word = undergradHelp (text word)
+-- selectHintOption 3 = revealCategory
 selectHintOption 4 word = numVowels (text word)
 selectHintOption n word = showInvalidOptionMessage
 
