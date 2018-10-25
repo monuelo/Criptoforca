@@ -234,12 +234,25 @@ showLevels = do
     putStrLn "                              3  -  Medio"
     putStrLn "                              4  -  Enigma\n\n"
 
+criptoByLevel :: Int -> IO Int
+criptoByLevel 1 = randomChoice 1 2
+criptoByLevel 2 = randomChoice 3 4
+criptoByLevel 3 = randomChoice 5 6
+criptoByLevel 4 = randomChoice 7 8
+
+randomChoice :: Int -> Int -> IO Int
+randomChoice a b = do
+    currTimestamp <- getCurrentTimestamp
+    let rand = currTimestamp `mod` 2
+    let choice = if (rand == 1) then do a else b
+    return(choice)
 
 fastMatch :: Int -> IO()
 fastMatch level = do
     words <- setUpWords
     randomWord <- getRandomWord words
-    startGame level randomWord
+    cripto <- criptoByLevel level
+    startGame (cripto) randomWord
     
 getCurrentTimestamp :: IO Int
 getCurrentTimestamp = do
@@ -290,7 +303,7 @@ runGame level originalWord hiddenWord guesses lives hintsUsed = do
     let lives' = if letter == '1' then do lives else getLives hiddenWord hiddenWord' lives
 
     if hiddenWord' == text originalWord then do
-        showVictoryMessage
+        showVictoryMessage level
         revealWord originalWord
         return (lives', hintsUsed')
     else if lives' > 0 then do
@@ -444,11 +457,32 @@ showRules = do
     _ <- getLine
     return ()
 
-showVictoryMessage :: IO()
-showVictoryMessage = do
+showVictoryMessage :: Int -> IO()
+showVictoryMessage n = do
     clearScreen
-    putStrLn "                     \n Hmmm... Preciso melhorar meus algoritmos!\n\n"
-    drawVictoryDoll
+    putStrLn "                     \n Olha Só!!! Temos um Turing Aqui! :o \n"
+    if (n == 7 || n == 8) then do
+        putStrLn":------------------------/hmdmmmmmmmmmmmmmmNmmmmddhddmmm+------------:"
+        putStrLn":-----------------------:dmdmmdhyssssssssooooosyyhddmmmddo:----------:"
+        putStrLn":-----------------------hmdh+/:---------::::::ohddddmmmmmmy:---------:"
+        putStrLn":----------------------/Nm+-----------::::::::/sdmmmmmNNNNms--------::"
+        putStrLn":----------------------:m+----------:::::::://+sdmmNmNNNNNNd--------::"
+        putStrLn":-----------------------+---------:::::::////+osyhdmmNNNNNNd-------:::"
+        putStrLn"::---------------------:++/:::::/+oooooo+++++++osyyddddmmmmy------::::"
+        putStrLn"::-----------:::::::::::ohhho:/odmmmmdddhyso++++oossssydmmm+------::::"
+        putStrLn"::------------:::::::::::ooso::+yhhyhhddhysso++++ooo+/oosyo-------::::"
+        putStrLn"::------------::::::::::::::::////////++++/++++++ooo+ss++o+--------:::"
+        putStrLn"::------------::::::::::::::///////::::////+++++oo+/sys+++/--------:::"
+        putStrLn"::------------::::::::::::/shhyo+////////++ooooooo+/++oo+:---------:::"
+        putStrLn":-------------:::::::::::::/oooo+//++++++ooooooooo+//+o/-----------:::"
+        putStrLn":---------------::::::::::///++oooo++oooooooooooooooos:------------:::"
+        putStrLn":----------------::::::::/o+osyyyhhhysoooooooooossshhs-------------:::"
+        putStrLn":----------------::::::::::/oyhysoosyssssoooosssyyyssys:-----------:::"
+        putStrLn":-------------------:::::::::///++ossssssssssyyhhysoosdh/----------:::"
+        putStrLn":---------------------::::/+ooosssyyyhhhhhhhdddhyoo+/hddho/::-----::::"
+        putStrLn":::::::::::::::::::::::::::/+syhddmmmmmmNNNmmdysoo++hdddddhyo+//::::/:"
+    else
+        drawVictoryDoll
 
 showGameOverMessage :: IO()
 showGameOverMessage = do
