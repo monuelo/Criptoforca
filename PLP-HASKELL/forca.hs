@@ -172,10 +172,20 @@ revealCategory word = do
     _ <- getLine
     return()
 
+undergradHelp :: String -> IO()
+undergradHelp word = do
+    currTimestamp <- getCurrentTimestamp
+    let rand = currTimestamp `mod` (10)
+    let phrase = if rand < 6 then do "Hmmm... Acho que a palavra é... " ++ word else "Cara, sinceramente, não faço ideia..."
+    putStrLn $ "\n                  Os Universitários dizem: " ++ phrase
+    putStr "\n                         [ Pressione ENTER para voltar ]"
+    _ <- getLine
+    return()
+
 selectHintOption :: Int -> Main.Word -> IO()
 selectHintOption 1 word = revealCategory (theme word) 
 -- selectHintOption 2 = getHint
--- selectHintOption 3 = revealCategory
+selectHintOption 3 word = undergradHelp (text word)
 selectHintOption 4 word = numVowels (text word)
 selectHintOption n word = showInvalidOptionMessage
 
