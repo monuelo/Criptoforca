@@ -158,7 +158,7 @@ showMenu = do
     clearScreen
     when (not $ option == 3) $ do clearScreen; showMenu
     
-showHints :: Main.Word -> [Char] -> [Bool]  -> IO()
+showHints :: Main.Word -> [Char] -> [Bool]  -> IO [Bool]
 showHints word guesses usedHints = do
     clearScreen
     putStrLn "\n---------------------------------     DICAS     ---------------------------------\n\n"
@@ -167,7 +167,16 @@ showHints word guesses usedHints = do
     putStrLn "                                3  -  Ajuda dos universitários"
     putStrLn "                                4  -  Revelar quantidade de vogais"
     option <- getOption
-    selectHintOption option word guesses
+
+    let usedHints' = if usedHints!!(option-1) then do markAsUsed (option - 1) False usedHints else usedHints
+    let current = usedHints!!(option-1)
+ 
+    if not current then do
+        showUsedHintMessage
+    else do
+        selectHintOption option word guesses usedHints
+    
+    return(usedHints')
 
 -- Hints
 
@@ -219,12 +228,21 @@ undergradHelp word = do
     putStr "\n                         [ Pressione ENTER para voltar ]"
     pause
 
-selectHintOption :: Int -> Main.Word -> [Char] -> IO()
-selectHintOption 1 word guesses = revealCategory (theme word) 
-selectHintOption 2 word guesses = revealOneLetter word guesses
-selectHintOption 3 word guesses = undergradHelp (text word)
-selectHintOption 4 word guesses = numVowels (text word)
-selectHintOption n word guesses = showInvalidOptionMessage
+selectHintOption :: Int -> Main.Word -> [Char] -> [Bool]  -> IO()
+selectHintOption n word guesses 
+    | n == 1 = do revealCategory (theme word)
+    | n == 2 = do revealOneLetter word guesses
+    | n == 3 = do undergradHelp (text word)
+    | n == 4 = do numVowels (text word)
+    | otherwise = do 
+        showInvalidOptionMessage
+
+
+markAsUsed :: Int -> Bool -> [Bool] -> [Bool]
+markAsUsed _ _ [] = []
+markAsUsed n newVal (x:xs)
+  | n == 0 = newVal:xs
+  | otherwise = x:markAsUsed (n-1) newVal xs
 
 getOption :: IO Int
 getOption = do
@@ -237,6 +255,12 @@ selectMenuOption 1 = selectLevel
 selectMenuOption 2 = showRules
 selectMenuOption 3 = quit
 selectMenuOption n = showInvalidOptionMessage
+
+showUsedHintMessage :: IO()
+showUsedHintMessage = do
+    putStrLn "\n                           Esperto... Mas você já usou isso... =/ "
+    putStr   "\n                         [ Pressione ENTER para voltar ]"
+    pause
 
 showInvalidOptionMessage :: IO()
 showInvalidOptionMessage = do
@@ -315,7 +339,7 @@ getRandomOrderWord randomOrderWords currentLevelWords = do
     
 startGame :: Int -> Main.Word -> IO()
 startGame level word = do
-    let hints = [False, False, False, False]    
+    let hints =[True, True, True, True]
     let hiddenWord = getHiddenWord $ text word
     runGame level word hiddenWord [] 5 hints
 
@@ -327,7 +351,8 @@ runGame level originalWord hiddenWord guesses lives usedHints = do
     putStrLn $ "\nPalavra: " ++ hiddenWord
     putStrLn $ "Letras já usadas: " ++ showGuesses guesses
     putStrLn $ "Erros Restantes: " ++ (show lives)
-    (letter) <- guessLetter originalWord guesses usedHints
+    (letter, usedHints') <- guessLetter originalWord guesses usedHints
+    
     let hiddenWord' = revealLetter letter (text originalWord) hiddenWord
     
     let guesses' = if letter == '1' then do guesses else guesses ++ [letter]
@@ -339,7 +364,7 @@ runGame level originalWord hiddenWord guesses lives usedHints = do
         showCriptoInfo level
     
     else if lives' > 0 then do
-        runGame level originalWord hiddenWord' guesses' lives' usedHints 
+        runGame level originalWord hiddenWord' guesses' lives' usedHints' 
     else do
         showGameOverMessage
         revealWord originalWord
@@ -375,20 +400,20 @@ getLetter = do
 toUpper' :: String -> String
 toUpper' s = map toUpper s
 
-guessLetter :: Main.Word -> [Char] -> [Bool] -> IO Char
+guessLetter :: Main.Word -> [Char] -> [Bool] -> IO (Char, [Bool])
 guessLetter word guesses usedHints= do
     putStr "\nDigite uma letra ou pressione [1] para dica: "
     letter <- getLetter
-    (letter) <- guessLetter' word guesses letter usedHints
-    return (letter)
+    (letter, usedHints') <- guessLetter' word guesses letter usedHints
+    return (letter, usedHints')
 
-guessLetter' :: Main.Word -> [Char] -> Char -> [Bool] -> IO Char
+guessLetter' :: Main.Word -> [Char] -> Char -> [Bool] -> IO (Char, [Bool])
 guessLetter' word guesses letter usedHints
     | letter == '1' = do
-        showHints word guesses usedHints
-        return (letter)
+        (usedHints') <- showHints word guesses usedHints
+        return (letter, usedHints')
     | isLetter letter && not(letter `elem` guesses) = do 
-        return (letter)
+        return (letter, usedHints)
     | not (isLetter letter) = do
         putStrLn "Hmmm... Acho que isto não é uma letra..."
         guessLetter word guesses usedHints
