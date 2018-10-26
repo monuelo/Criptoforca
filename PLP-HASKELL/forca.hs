@@ -8,6 +8,7 @@ import Data.List
 import Data.Ord
 import Data.Time.Clock.POSIX
 import qualified System.Process
+import System.Exit (exitSuccess)
 import Control.Monad
 
 ----------[ DATA ]
@@ -487,17 +488,17 @@ quit = do
     clearScreen
     putStrLn "\n-----------------------------     #$&!CRIPTOForca#$&!     -----------------------------\n\n"
     putStrLn "\n\n                                                                                         "
-    putStrLn "            .oPYo.        o          o          d'b                                        "    
-    putStrLn "            8    8                   8          8                                          "
-    putStrLn "            8      oPYo. o8 .oPYo.  o8P .oPYo. o8P  .oPYo. oPYo. .oPYo. .oPYo.             "
-    putStrLn "            8      8  `'  8 8    8   8  8    8  8   8    8 8  `' 8    ' .oooo8             "
-    putStrLn "            8    8 8      8 8    8   8  8    8  8   8    8 8     8    . 8    8             "
-    putStrLn "            `YooP' 8      8 8YooP'   8  `YooP'  8   `YooP' 8     `YooP' `YooP8             "
-    putStrLn "            :.....:..:::::..8 ....:::..::.....::..:::.....:..:::::.....::.....:            "
-    putStrLn "            ::::::::::::::::8 :::::::::::::::::::::::::::::::::::::::::::::::::            "
-    putStrLn "            ::::::::::::::::..:::::::::::::::::::::::::::::::::::::::::::::::::            "    
-    putStrLn "\n\n                               - * - UM OFERECIMENTO - * -                              "
-    putStrLn "\n\n                     [PLP@UFCG] [Computação@UFCG] [Eles@Computação]                     "
+    putStrLn "            .oPYo.        o          o          d'b                                          "    
+    putStrLn "            8    8                   8          8                                            "
+    putStrLn "            8      oPYo. o8 .oPYo.  o8P .oPYo. o8P  .oPYo. oPYo. .oPYo. .oPYo.               "
+    putStrLn "            8      8  `'  8 8    8   8  8    8  8   8    8 8  `' 8    ' .oooo8               "
+    putStrLn "            8    8 8      8 8    8   8  8    8  8   8    8 8     8    . 8    8               "
+    putStrLn "            `YooP' 8      8 8YooP'   8  `YooP'  8   `YooP' 8     `YooP' `YooP8               "
+    putStrLn "            :.....:..:::::..8 ....:::..::.....::..:::.....:..:::::.....::.....:              "
+    putStrLn "            ::::::::::::::::8 :::::::::::::::::::::::::::::::::::::::::::::::::              "
+    putStrLn "            ::::::::::::::::..:::::::::::::::::::::::::::::::::::::::::::::::::              "    
+    putStrLn "\n\n                               - * - UM OFERECIMENTO - * -                               "
+    putStrLn "\n\n                     [PLP@UFCG] [Computação@UFCG] [Eles@Computação]                  \n\n"
     sleep
 
 
@@ -701,7 +702,7 @@ revealLetter letter (head:tail) (head':tail')
 
 guessLetter :: Main.Word -> [Char] -> [Bool] -> IO (Char, [Bool])
 guessLetter word guesses usedHints= do
-    putStr "\nDigite uma letra ou pressione [1] para dica: "
+    putStr "\nDigite uma letra ou pressione [1] para dica ou [2] para sair: "
     letter <- getLetter
     (letter, usedHints') <- guessLetter' word guesses letter usedHints
     return (letter, usedHints')
@@ -711,6 +712,9 @@ guessLetter' word guesses letter usedHints
     | letter == '1' = do
         (usedHints') <- showHints word guesses usedHints
         return (letter, usedHints')
+    | letter == '2' = do
+        quit
+        exitSuccess
     | isLetter letter && not(letter `elem` guesses) = do 
         return (letter, usedHints)
     | not (isLetter letter) = do
