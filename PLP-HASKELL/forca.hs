@@ -601,7 +601,7 @@ showVictoryMessage n = do
     clearScreen
     if (n == 7 || n == 8) then do
         putStrLn "                     \n Olha Só!!! Temos um Turing Aqui! :o \n"
-        System.Process.system "display turing.jpg"
+        System.Process.system "display turing.jpg &"
         putStrLn":------------------------/hmdmmmmmmmmmmmmmmNmmmmddhddmmm+------------:"
         putStrLn":-----------------------:dmdmmdhyssssssssooooosyyhddmmmddo:----------:"
         putStrLn":-----------------------hmdh+/:---------::::::ohddddmmmmmmy:---------:"
@@ -642,7 +642,7 @@ getSpaces 0 = ""
 getSpaces n = " " ++ getSpaces (n - 1)
 
 getLengthSpacing :: Int -> Int -> String
-getLengthSpacing length scoreLength = do
+getLengthSpacing length scoreLength = do  
     if (scoreLength > 2) then getSpaces (length - (scoreLength - 2)) else getSpaces length
 
 quit :: IO()
