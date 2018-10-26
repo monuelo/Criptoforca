@@ -1,6 +1,6 @@
 ---- : UFCG - UNIVERSIDADE FEDERAL DE CAMPINA GRANDE
 ---- : PARADIGMAS DE LINGUAGENS DE PROGRAMAÇÃO - COMPUTAÇÃO@UFCG
----- : CRIPTOFORCA - PARADIGMA FUNCIONAL - IMPLEMENTACAO EM HASKELL 
+---- : CRIPTOFORCA - PARADIGMA FUNCIONAL - IMPLEMENTACAO EM HASKELL
 
 import System.IO
 import Data.Char
@@ -13,7 +13,7 @@ import Control.Monad
 
 ----------[ DATA ]
 
-data Word = Word { 
+data Word = Word {
     text :: String,
     theme :: String
 
@@ -51,7 +51,7 @@ getLetter = do
     letter <- getChar
     _ <- getChar
     return (toUpper letter)
-    
+
 toUpper' :: String -> String
 toUpper' s = map toUpper s
 
@@ -275,11 +275,11 @@ revealOneLetter word guesses = do
     let value = text word
     let index = currTimestamp `mod` (length value)
     let hint = value !! index
-    
+
     if hint `elem` guesses || hint == ' ' then do
         revealOneLetter word guesses
     else do
-        putStrLn $ "\n\n                              Já tentou a letra " ++ (show hint) ++ "?" 
+        putStrLn $ "\n\n                              Já tentou a letra " ++ (show hint) ++ "?"
         putStr     "\n                         [ Pressione ENTER para voltar ]"
         pause
 
@@ -293,12 +293,12 @@ undergradHelp word = do
     pause
 
 selectHintOption :: Int -> Main.Word -> [Char] -> IO()
-selectHintOption n word guesses 
+selectHintOption n word guesses
     | n == 1 = do revealCategory (theme word)
     | n == 2 = do revealOneLetter word guesses
     | n == 3 = do undergradHelp (text word)
     | n == 4 = do numVowels (text word)
-    | otherwise = do 
+    | otherwise = do
         showInvalidOptionMessage
 
 
@@ -320,12 +320,12 @@ showHints word guesses usedHints = do
 
     let usedHints' = if usedHints!!(option-1) then do markAsUsed (option - 1) False usedHints else usedHints
     let current = usedHints!!(option-1)
- 
+
     if not current then do
         showUsedHintMessage
     else do
         selectHintOption option word guesses
-    
+
     return(usedHints')
 
 
@@ -422,7 +422,7 @@ dollDrawBody 1 = do
     putStrLn("    _|_")
     putStrLn("   |   |______")
     putStrLn("   |__________|\n\n")
-    
+
 drawVictoryDoll :: IO()
 drawVictoryDoll = do
     putStrLn("\n\n      _______")
@@ -488,7 +488,7 @@ quit = do
     clearScreen
     putStrLn "\n-----------------------------     #$&!CRIPTOForca#$&!     -----------------------------\n\n"
     putStrLn "\n\n                                                                                         "
-    putStrLn "            .oPYo.        o          o          d'b                                          "    
+    putStrLn "            .oPYo.        o          o          d'b                                          "
     putStrLn "            8    8                   8          8                                            "
     putStrLn "            8      oPYo. o8 .oPYo.  o8P .oPYo. o8P  .oPYo. oPYo. .oPYo. .oPYo.               "
     putStrLn "            8      8  `'  8 8    8   8  8    8  8   8    8 8  `' 8    ' .oooo8               "
@@ -496,7 +496,7 @@ quit = do
     putStrLn "            `YooP' 8      8 8YooP'   8  `YooP'  8   `YooP' 8     `YooP' `YooP8               "
     putStrLn "            :.....:..:::::..8 ....:::..::.....::..:::.....:..:::::.....::.....:              "
     putStrLn "            ::::::::::::::::8 :::::::::::::::::::::::::::::::::::::::::::::::::              "
-    putStrLn "            ::::::::::::::::..:::::::::::::::::::::::::::::::::::::::::::::::::              "    
+    putStrLn "            ::::::::::::::::..:::::::::::::::::::::::::::::::::::::::::::::::::              "
     putStrLn "\n\n                               - * - UM OFERECIMENTO - * -                               "
     putStrLn "\n\n                     [PLP@UFCG] [Computação@UFCG] [Eles@Computação]                  \n\n"
     sleep
@@ -526,8 +526,33 @@ showUsedHintMessage = do
 selectMenuOption :: Int -> IO()
 selectMenuOption 1 = selectLevel
 selectMenuOption 2 = showRules
-selectMenuOption 3 = quit
+selectMenuOption 3 = encryptUserWord
+selectMenuOption 4 = quit
 selectMenuOption n = showInvalidOptionMessage
+
+encryptUserWord :: IO()
+encryptUserWord = do
+    putStrLn "\n---------------------------------     MENU     ---------------------------------\n\n"
+    putStr "                                Digite a palavra que você quer encriptar: "
+    word <- getLine
+    putStrLn ""
+    putStrLn "                                Selecione a criptografia que você quer usar "
+    putStrLn "                                1 shift"
+    putStrLn "                                2 noThenYes"
+    putStrLn "                                3 cesar1"
+    putStrLn "                                4 ascii"
+    putStrLn "                                5 fibonacciCripto"
+    putStrLn "                                6 complementary"
+    putStrLn "                                7 cryptomix "
+    putStrLn "                                8 alternate "
+    putStrLn ""
+    putStr "                                Criptografia: "
+    option <- getOption
+    putStrLn ""
+    putStr "                                Palavra encriptada: "
+    putStr (encryptWord option (Word word "User"))
+    sleep
+    showMenu
 
 
 showMenu :: IO()
@@ -536,7 +561,8 @@ showMenu = do
     putStrLn "\n---------------------------------     MENU     ---------------------------------\n\n"
     putStrLn "                                1  -  Jogar"
     putStrLn "                                2  -  Regras"
-    putStrLn "                                3  -  Sair"
+    putStrLn "                                3  -  Encriptar uma palavra"
+    putStrLn "                                4  -  Sair"
     option <- getOption
     selectMenuOption option
     clearScreen
@@ -550,11 +576,11 @@ showInvalidOptionMessage = do
 
 
 showRules :: IO()
-showRules = do 
+showRules = do
     clearScreen
     putStrLn "\n--------------------------------     REGRAS     --------------------------------  \n\n"
     putStrLn "     O jogo funciona como um jogo da forca comum, porém o jogador terá acesso à uma     "
-    putStrLn " criptografia da palavra a ser adivinhada. O jogador poderá escolher entre 4 niveis     "    
+    putStrLn " criptografia da palavra a ser adivinhada. O jogador poderá escolher entre 4 niveis     "
     putStrLn " de dificuldade ( Rasgado, Fácil, Médio e Enigma ) os quais farão uso das seguintes     "
     putStrLn " seguintes criptografias:                                                             \n"
     putStrLn " 1 - Shift         = Transporta a primeira letra para o fim da palavra                \n"
@@ -593,7 +619,7 @@ selectLevel = do
     showLevels
     level <- getOption
 
-    if (level < 1 || level > 4) 
+    if (level < 1 || level > 4)
         then do
             showInvalidOptionMessage
             selectLevel
@@ -628,23 +654,23 @@ getRandomWord words = do
     let index = currTimestamp `mod` (length words)
     let word = words !! index
     return word
-    
+
 getRandomOrderWords' :: [Main.Word] -> [Main.Word] -> IO [Main.Word]
 getRandomOrderWords' randomOrderWords currentLevelWords = do
-    if (length randomOrderWords) < (length currentLevelWords) then do 
+    if (length randomOrderWords) < (length currentLevelWords) then do
         randomOrderWord <- getRandomOrderWord randomOrderWords currentLevelWords
         getRandomOrderWords' (randomOrderWords++[randomOrderWord]) currentLevelWords
     else
         return randomOrderWords
 
 getRandomOrderWord :: [Main.Word] -> [Main.Word] -> IO Main.Word
-getRandomOrderWord randomOrderWords currentLevelWords = do 
+getRandomOrderWord randomOrderWords currentLevelWords = do
     word <- getRandomWord currentLevelWords
     if word `elem` randomOrderWords then
         getRandomOrderWord randomOrderWords currentLevelWords
     else
         return word
-    
+
 startGame :: Int -> Main.Word -> IO()
 startGame level word = do
     let hints =[True, True, True, True]
@@ -661,9 +687,9 @@ runGame level originalWord hiddenWord guesses lives usedHints = do
     putStrLn $ "| Letras já usadas: " ++ showGuesses guesses
     putStrLn $ "| Erros Restantes: " ++ (show lives)
     (letter, usedHints') <- guessLetter originalWord guesses usedHints
-    
+
     let hiddenWord' = revealLetter letter (text originalWord) hiddenWord
-    
+
     let guesses' = if letter == '1' then do guesses else guesses ++ [letter]
     let lives' = if letter == '1' then do lives else getLives hiddenWord hiddenWord' lives
 
@@ -671,9 +697,9 @@ runGame level originalWord hiddenWord guesses lives usedHints = do
         showVictoryMessage level
         revealWord originalWord
         showCriptoInfo level
-    
+
     else if lives' > 0 then do
-        runGame level originalWord hiddenWord' guesses' lives' usedHints' 
+        runGame level originalWord hiddenWord' guesses' lives' usedHints'
     else do
         showGameOverMessage
         revealWord originalWord
@@ -694,7 +720,7 @@ showGuesses [] = []
 showGuesses (head:[]) = [head]
 showGuesses (head:tail) = [head] ++ [' '] ++ showGuesses tail
 
-revealLetter :: Char -> String -> String -> String 
+revealLetter :: Char -> String -> String -> String
 revealLetter letter [] [] = []
 revealLetter letter (head:tail) (head':tail')
     | letter == head = [letter] ++ revealLetter letter tail tail'
@@ -715,7 +741,7 @@ guessLetter' word guesses letter usedHints
     | letter == '2' = do
         quit
         exitSuccess
-    | isLetter letter && not(letter `elem` guesses) = do 
+    | isLetter letter && not(letter `elem` guesses) = do
         return (letter, usedHints)
     | not (isLetter letter) = do
         putStrLn "Hmmm... Acho que isto não é uma letra..."
