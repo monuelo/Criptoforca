@@ -471,7 +471,23 @@ showRules :: IO()
 showRules = do 
     clearScreen
     putStrLn "\n--------------------------------     REGRAS     --------------------------------\n\n"
-    putStrLn "                         [ Pressione ENTER para voltar ]\n\n"
+    putStrLn "     O jogo funciona como um jogo da forca comum, porém o jogador terá acesso à uma   "
+    putStrLn " criptografia da palavra a ser adivinhada. O jogador poderá escolher entre 4 niveis   "    
+    putStrLn " de dificuldade ( Rasgado, Fácil, Médio e Enigma ) os quais farão uso das seguintes   "
+    putStrLn " seguintes criptografias:                                                           \n"
+    putStrLn " 1 - Shift         = Transporta a primeira letra para o fim da palavra                \n"
+    putStrLn " 2 - Cesar         = Soma 1 no codigo ASCII de cada letra da palavra                  \n"
+    putStrLn " 3 - NoThenYes     = Realiza Cesar em letras alternadas                               \n"
+    putStrLn " 4 - ASCII         = Mostra o codigo ASCII de cada letra da palavra                   \n"
+    putStrLn " 5 - Fibonacci     = Incrementa ao código ascii da k-ésima letra da palavra o k-esimo   "
+    putStrLn "    valor da sequencia de Fibonacci, para uma palavra de n letras e para 0 < k <= n   \n"
+    putStrLn " 6 - Complementar  = substitui a cada letra por sua complementar no alfabeto.           "
+    putStrLn "    Por exemplo: a -> z; b -> y; c -> x etc                                           \n"
+    putStrLn " 7 - Cryptomix     = realiza a seguinte sequencia de criptografias: shift, cesar,       "
+    putStrLn "    complementary e fibonacci                                                         \n"
+    putStrLn " 8 - Alternate     = soma o codigo ascii de cada letra a cada valor da sequencia        "
+    putStrLn "    alternada a(n); a(n) = 2*n*(-1)^n                                                 \n"
+    putStrLn "\n\n                         [ Pressione ENTER para voltar ]\n\n                      \n"
     _ <- getLine
     return ()
 
