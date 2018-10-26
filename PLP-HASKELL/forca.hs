@@ -304,10 +304,10 @@ getRandomOrderWord randomOrderWords currentLevelWords = do
 startGame :: Int -> Main.Word -> IO()
 startGame level word = do
     let hiddenWord = getHiddenWord $ text word
-    (lives, hintsUsed) <- runGame level word hiddenWord [] 5 0
+    runGame level word hiddenWord [] 5 0
     return()
 
-runGame :: Int -> Main.Word -> String -> [Char] -> Int -> Int -> IO (Int, Int)
+runGame :: Int -> Main.Word -> String -> [Char] -> Int -> Int -> IO()
 runGame level originalWord hiddenWord guesses lives hintsUsed = do
     dollDraw lives
     putStrLn $ "Palavra Cifrada: " ++ encryptWord level originalWord
@@ -323,13 +323,14 @@ runGame level originalWord hiddenWord guesses lives hintsUsed = do
     if hiddenWord' == text originalWord then do
         showVictoryMessage level
         revealWord originalWord
-        return (lives', hintsUsed')
+        showCriptoInfo level
+        return()
     else if lives' > 0 then do
         runGame level originalWord hiddenWord' guesses' lives' hintsUsed'
     else do
         showGameOverMessage
         revealWord originalWord
-        return (0, hintsUsed')
+        return ()
 
 getLives :: String -> String -> Int -> Int
 getLives word word' currentLives
@@ -470,19 +471,19 @@ drawDefeatDoll = do
 showRules :: IO()
 showRules = do 
     clearScreen
-    putStrLn "\n--------------------------------     REGRAS     --------------------------------\n\n"
-    putStrLn "     O jogo funciona como um jogo da forca comum, porém o jogador terá acesso à uma   "
-    putStrLn " criptografia da palavra a ser adivinhada. O jogador poderá escolher entre 4 niveis   "    
-    putStrLn " de dificuldade ( Rasgado, Fácil, Médio e Enigma ) os quais farão uso das seguintes   "
-    putStrLn " seguintes criptografias:                                                           \n"
+    putStrLn "\n--------------------------------     REGRAS     --------------------------------  \n\n"
+    putStrLn "     O jogo funciona como um jogo da forca comum, porém o jogador terá acesso à uma     "
+    putStrLn " criptografia da palavra a ser adivinhada. O jogador poderá escolher entre 4 niveis     "    
+    putStrLn " de dificuldade ( Rasgado, Fácil, Médio e Enigma ) os quais farão uso das seguintes     "
+    putStrLn " seguintes criptografias:                                                             \n"
     putStrLn " 1 - Shift         = Transporta a primeira letra para o fim da palavra                \n"
     putStrLn " 2 - Cesar         = Soma 1 no codigo ASCII de cada letra da palavra                  \n"
     putStrLn " 3 - NoThenYes     = Realiza Cesar em letras alternadas                               \n"
     putStrLn " 4 - ASCII         = Mostra o codigo ASCII de cada letra da palavra                   \n"
     putStrLn " 5 - Fibonacci     = Incrementa ao código ascii da k-ésima letra da palavra o k-esimo   "
     putStrLn "    valor da sequencia de Fibonacci, para uma palavra de n letras e para 0 < k <= n   \n"
-    putStrLn " 6 - Complementar  = substitui a cada letra por sua complementar no alfabeto.           "
-    putStrLn "    Por exemplo: a -> z; b -> y; c -> x etc                                           \n"
+    putStrLn " 6 - Complementary  = substitui a cada letra por sua complementar no alfabeto.          "
+    putStrLn "    Por exemplo: a -> z; b -> y; c -> x; etc...                                        \n"
     putStrLn " 7 - Cryptomix     = realiza a seguinte sequencia de criptografias: shift, cesar,       "
     putStrLn "    complementary e fibonacci                                                         \n"
     putStrLn " 8 - Alternate     = soma o codigo ascii de cada letra a cada valor da sequencia        "
@@ -490,6 +491,110 @@ showRules = do
     putStrLn "\n\n                         [ Pressione ENTER para voltar ]\n\n                      \n"
     _ <- getLine
     return ()
+
+showCriptoInfo :: Int -> IO()
+showCriptoInfo 1 = do shiftInfo
+showCriptoInfo 2 = do noThenYesInfo
+showCriptoInfo 3 = do cesarInfo
+showCriptoInfo 4 = do asciiInfo
+showCriptoInfo 5 = do fibonacciInfo
+showCriptoInfo 6 = do complementaryInfo
+showCriptoInfo 7 = do cryptomixInfo
+showCriptoInfo 8 = do alternateInfo
+
+-- Cripto Infos
+
+-- Shift
+shiftInfo :: IO()
+shiftInfo = do
+    putStrLn "\n---------------------------------     INFO     ---------------------------------\n\n"
+    putStrLn "                          A Criptografia utilizada foi: SHIFT                         "
+    putStrLn "\n         Esta criptografia transporta a primeira letra para o fim da palavra        "
+    putStrLn "\n                            Exemplo: PEIXE -> EIXEP                                 "
+    putStrLn   "\n\n                         [ Pressione ENTER para voltar ]                          "
+    _ <- getLine
+    return()
+
+-- No then Yes
+noThenYesInfo :: IO()
+noThenYesInfo = do
+    putStrLn "\n---------------------------------     INFO     ---------------------------------\n\n"
+    putStrLn "                    A Criptografia utilizada foi: NO THEN YES                         "
+    putStrLn "\n     Esta criptografia soma o codigo ASCII de letras alternadas da palavra em 1     "
+    putStrLn "\n                            Exemplo: BRASIL -> BSATIM                               "
+    putStrLn   "\n\n                         [ Pressione ENTER para voltar ]                          "
+    _ <- getLine
+    return()
+
+-- Cesar
+cesarInfo :: IO()
+cesarInfo = do
+    putStrLn "\n---------------------------------     INFO     ---------------------------------\n\n"
+    putStrLn "                          A Criptografia utilizada foi: CESAR                         "
+    putStrLn "\n         Esta criptografia soma o codigo ASCII de cada letra da palavra em 1        "
+    putStrLn "\n                             Exemplo: FOCA -> GPDB                                  "
+    putStrLn   "\n\n                         [ Pressione ENTER para voltar ]                          "
+    _ <- getLine
+    return()
+
+-- ASCII
+asciiInfo :: IO()
+asciiInfo = do
+    putStrLn "\n---------------------------------     INFO     ---------------------------------\n\n"
+    putStrLn "                          A Criptografia utilizada foi: ASCII                         "
+    putStrLn "\n           Esta criptografia exibe o codigo ASCII de cada letra da palavra          "
+    putStrLn "\n                    Exemplo: ENGENHEIRO -> 69787169787269738279                     "
+    putStrLn   "\n\n                         [ Pressione ENTER para voltar ]                          "
+    _ <- getLine
+    return()
+
+-- Fibonacci
+fibonacciInfo :: IO()
+fibonacciInfo = do
+    putStrLn "\n---------------------------------     INFO     ---------------------------------\n\n"
+    putStrLn "                        A Criptografia utilizada foi: FIBONACCI                       "
+    putStrLn "\n Esta criptografia Incrementa ao código ascii da k-ésima letra da palavra o k-esimo "
+    putStrLn "   valor da sequencia de Fibonacci, para uma palavra de n letras e para 0 < k <= n    "
+    putStrLn "\n                         Exemplo: sanduiche -> tbpgzqp}’                                "
+    putStrLn   "\n\n                         [ Pressione ENTER para voltar ]                          "
+    _ <- getLine
+    return()
+
+-- Complementary
+complementaryInfo :: IO()
+complementaryInfo = do
+    putStrLn "\n---------------------------------     INFO     ---------------------------------\n\n"
+    putStrLn "                      A Criptografia utilizada foi: COMPLEMENTARY                     "
+    putStrLn "\n     Esta criptografia substitui a cada letra por sua complementar no alfabeto.     "
+    putStrLn "                    Como por exemplo: a -> z; b -> y; c -> x; etc...                  "
+    putStrLn "\n                            Exemplo: MACACO -> NZXZXL                               "
+    putStrLn   "\n\n                         [ Pressione ENTER para voltar ]                          "
+    _ <- getLine
+    return()
+
+-- Cryptomix
+cryptomixInfo :: IO()
+cryptomixInfo = do
+    putStrLn "\n---------------------------------     INFO     ---------------------------------\n\n"
+    putStrLn "                       A Criptografia utilizada foi: CRYPTOMIX                        "
+    putStrLn "\n          Esta criptografia realiza a seguinte sequencia de criptografias:          "
+    putStrLn "                     SHIFT -> CESAR -> COMPLEMENTARY -> FIBONACCI                     "
+    putStrLn "\n                             Exemplo: BOLO -> @SFW                                  "
+    putStrLn   "\n\n                         [ Pressione ENTER para voltar ]                          "
+    _ <- getLine
+    return()
+
+-- Alternate
+alternateInfo :: IO()
+alternateInfo = do
+    putStrLn "\n---------------------------------     INFO     ---------------------------------\n\n"
+    putStrLn "                       A Criptografia utilizada foi: ALTERNATE                        "
+    putStrLn "\n       Esta criptografia soma o codigo ascii de cada letra a cada valor da          "
+    putStrLn "                     Sequencia Alternada a(n); a(n) = 2*n*(-1)^n                      "
+    putStrLn "\n                           Exemplo: HOLANDA -> FSFIDP3                              "
+    putStrLn   "\n\n                         [ Pressione ENTER para voltar ]                          "
+    _ <- getLine
+    return()
 
 showVictoryMessage :: Int -> IO()
 showVictoryMessage n = do
@@ -528,7 +633,7 @@ showGameOverMessage = do
 revealWord :: Main.Word -> IO()
 revealWord word = do
     putStrLn $ "\nA palavra era: "++ (text word) ++".\n\n"
-    putStr "                         [ Pressione ENTER para voltar ]"
+    putStr "                         [ Pressione ENTER para continuar ]"
     _ <- getLine
     return ()
     
