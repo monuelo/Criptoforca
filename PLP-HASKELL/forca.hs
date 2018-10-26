@@ -527,6 +527,7 @@ selectMenuOption :: Int -> IO()
 selectMenuOption 1 = selectLevel
 selectMenuOption 2 = showRules
 selectMenuOption 3 = quit
+selectMenuOption 4 = sandboxMode
 selectMenuOption n = showInvalidOptionMessage
 
 
@@ -537,6 +538,7 @@ showMenu = do
     putStrLn "                                1  -  Jogar"
     putStrLn "                                2  -  Regras"
     putStrLn "                                3  -  Sair"
+    putStrLn "                          -*-   4  -  Sandbox Mode   -*- "
     option <- getOption
     selectMenuOption option
     clearScreen
@@ -730,6 +732,46 @@ revealWord word = do
     putStr "                         [ Pressione ENTER para continuar ]"
     pause
     return ()
+
+sandboxMode :: IO()
+sandboxMode = do
+    clearScreen
+    putStrLn "\n--------------------------------     SANDBOX     ---------------------------------\n\n"
+    putStrLn "                           Olá, Bem vindo ao *SandBox Mode*                           \n"
+    putStrLn "    Aqui, você pode digitar sua própria palavra, e testar com um de nossos algoritmos   "
+    putStrLn "  Você pode selecionar um algoritmo e decidir, se vai tentar criptografar ou desvendar\n"
+    putStrLn "                Vamos lá! aperte [1] para continuar, ou [2] para voltar               \n"
+    option <- getOption
+    if (option == 1) then do
+        sandboxMenu
+    else if (option == 2) then do
+        return ()
+    else do
+        sandboxMode
+
+sandboxMenu :: IO()
+sandboxMenu = do
+    putStrLn "\n--------------------------------     SANDBOX     ---------------------------------\n\n"
+    putStrLn "                           SELECIONE UM MODO PARA CONTINUAR                         \n\n"
+    putStrLn "                                  1  -  Criptografar"
+    putStrLn "                                  2  -  Desvendar"
+    option <- getOption
+    selectSandBoxCrypto
+
+selectSandBoxCrypto :: IO()
+selectSandBoxCrypto = do
+    putStrLn "\n--------------------------------     SANDBOX     ---------------------------------\n\n"
+    putStrLn "                           SELECIONE UM MODO PARA CONTINUAR                         \n\n"
+    putStrLn "                                  1  -  SHIFT"
+    putStrLn "                                  2  -  NO THEN YES"
+    putStrLn "                                  3  -  CESAR"
+    putStrLn "                                  4  -  ASCII"
+    putStrLn "                                  5  -  FIBONACCI"
+    putStrLn "                                  6  -  COMPLEMENTARY"
+    putStrLn "                                  7  -  CRYPTOMIX"
+    putStrLn "                                  8  -  ALTERNATE"
+    option <- getOption
+    putStrLn (show option)
 
 ----------[ / GENERAL ]
 main :: IO()
