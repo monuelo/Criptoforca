@@ -142,8 +142,8 @@ showOpening = do
     putStrLn "     | |          `-' `-'                                                                      "
     putStrLn "     |_|                                                                                       "
     putStrLn "                                        Pressione [Enter] para continuar...                    "
-    _ <- getLine
-    return()
+    pause
+
 
 showMenu :: IO()
 showMenu = do
@@ -186,15 +186,14 @@ numVowels word = do
     let qnt = countNumVowels 0 word
     putStrLn $ "\n                           O número de vogais é: " ++ (show qnt)
     putStr "\n                         [ Pressione ENTER para voltar ]"
-    _ <- getLine
-    return()
+    pause
+
 
 revealCategory :: String -> IO()
 revealCategory word = do
     putStrLn $ "\n                           A categoria é: " ++ word
     putStr "\n                         [ Pressione ENTER para voltar ]"
-    _ <- getLine
-    return()
+    pause
 
 revealOneLetter :: Main.Word -> [Char] -> IO()
 revealOneLetter word guesses = do
@@ -208,8 +207,7 @@ revealOneLetter word guesses = do
     else do
         putStrLn $ "\n\n                              Já tentou a letra " ++ (show hint) ++ "?" 
         putStr     "\n                         [ Pressione ENTER para voltar ]"
-        _ <- getLine
-        return()
+        pause
 
 undergradHelp :: String -> IO()
 undergradHelp word = do
@@ -218,8 +216,7 @@ undergradHelp word = do
     let phrase = if rand < 6 then do "Hmmm... Acho que a palavra é... " ++ word else "Cara, sinceramente, não faço ideia..."
     putStrLn $ "\n           Os Universitários dizem: \"" ++ phrase ++ "\""
     putStr "\n                         [ Pressione ENTER para voltar ]"
-    _ <- getLine
-    return()
+    pause
 
 selectHintOption :: Int -> Main.Word -> [Char] -> IO()
 selectHintOption 1 word guesses = revealCategory (theme word) 
@@ -319,7 +316,7 @@ startGame :: Int -> Main.Word -> IO()
 startGame level word = do
     let hiddenWord = getHiddenWord $ text word
     runGame level word hiddenWord [] 5 0
-    return()
+
 
 runGame :: Int -> Main.Word -> String -> [Char] -> Int -> Int -> IO()
 runGame level originalWord hiddenWord guesses lives hintsUsed = do
@@ -338,7 +335,7 @@ runGame level originalWord hiddenWord guesses lives hintsUsed = do
         showVictoryMessage level
         revealWord originalWord
         showCriptoInfo level
-        return()
+    
     else if lives' > 0 then do
         runGame level originalWord hiddenWord' guesses' lives' hintsUsed'
     else do
@@ -503,7 +500,7 @@ showRules = do
     putStrLn " 8 - Alternate     = soma o codigo ascii de cada letra a cada valor da sequencia        "
     putStrLn "    alternada a(n); a(n) = 2*n*(-1)^n                                                 \n"
     putStrLn "\n\n                         [ Pressione ENTER para voltar ]\n\n                      \n"
-    _ <- getLine
+    pause
     return ()
 
 showCriptoInfo :: Int -> IO()
@@ -526,8 +523,8 @@ shiftInfo = do
     putStrLn "\n         Esta criptografia transporta a primeira letra para o fim da palavra        "
     putStrLn "\n                            Exemplo: PEIXE -> EIXEP                                 "
     putStrLn   "\n\n                         [ Pressione ENTER para voltar ]                          "
-    _ <- getLine
-    return()
+    pause
+
 
 -- No then Yes
 noThenYesInfo :: IO()
@@ -537,8 +534,8 @@ noThenYesInfo = do
     putStrLn "\n     Esta criptografia soma o codigo ASCII de letras alternadas da palavra em 1     "
     putStrLn "\n                            Exemplo: BRASIL -> BSATIM                               "
     putStrLn   "\n\n                         [ Pressione ENTER para voltar ]                          "
-    _ <- getLine
-    return()
+    pause
+
 
 -- Cesar
 cesarInfo :: IO()
@@ -548,8 +545,8 @@ cesarInfo = do
     putStrLn "\n         Esta criptografia soma o codigo ASCII de cada letra da palavra em 1        "
     putStrLn "\n                             Exemplo: FOCA -> GPDB                                  "
     putStrLn   "\n\n                         [ Pressione ENTER para voltar ]                          "
-    _ <- getLine
-    return()
+    pause
+
 
 -- ASCII
 asciiInfo :: IO()
@@ -559,8 +556,8 @@ asciiInfo = do
     putStrLn "\n           Esta criptografia exibe o codigo ASCII de cada letra da palavra          "
     putStrLn "\n                    Exemplo: ENGENHEIRO -> 69787169787269738279                     "
     putStrLn   "\n\n                         [ Pressione ENTER para voltar ]                          "
-    _ <- getLine
-    return()
+    pause
+
 
 -- Fibonacci
 fibonacciInfo :: IO()
@@ -571,8 +568,8 @@ fibonacciInfo = do
     putStrLn "   valor da sequencia de Fibonacci, para uma palavra de n letras e para 0 < k <= n    "
     putStrLn "\n                         Exemplo: sanduiche -> tbpgzqp}’                                "
     putStrLn   "\n\n                         [ Pressione ENTER para voltar ]                          "
-    _ <- getLine
-    return()
+    pause
+
 
 -- Complementary
 complementaryInfo :: IO()
@@ -583,8 +580,8 @@ complementaryInfo = do
     putStrLn "                    Como por exemplo: a -> z; b -> y; c -> x; etc...                  "
     putStrLn "\n                            Exemplo: MACACO -> NZXZXL                               "
     putStrLn   "\n\n                         [ Pressione ENTER para voltar ]                          "
-    _ <- getLine
-    return()
+    pause
+
 
 -- Cryptomix
 cryptomixInfo :: IO()
@@ -595,8 +592,8 @@ cryptomixInfo = do
     putStrLn "                     SHIFT -> CESAR -> COMPLEMENTARY -> FIBONACCI                     "
     putStrLn "\n                             Exemplo: BOLO -> @SFW                                  "
     putStrLn   "\n\n                         [ Pressione ENTER para voltar ]                          "
-    _ <- getLine
-    return()
+    pause
+
 
 -- Alternate
 alternateInfo :: IO()
@@ -607,8 +604,8 @@ alternateInfo = do
     putStrLn "                     Sequencia Alternada a(n); a(n) = 2*n*(-1)^n                      "
     putStrLn "\n                           Exemplo: HOLANDA -> FSFIDP3                              "
     putStrLn   "\n\n                         [ Pressione ENTER para voltar ]                          "
-    _ <- getLine
-    return()
+    pause
+
 
 showVictoryMessage :: Int -> IO()
 showVictoryMessage n = do
@@ -648,7 +645,7 @@ revealWord :: Main.Word -> IO()
 revealWord word = do
     putStrLn $ "\nA palavra era: "++ (text word) ++".\n\n"
     putStr "                         [ Pressione ENTER para continuar ]"
-    _ <- getLine
+    pause
     return ()
     
 getSpaces :: Int -> String
