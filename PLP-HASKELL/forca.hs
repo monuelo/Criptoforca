@@ -311,9 +311,9 @@ runGame :: Int -> Main.Word -> String -> [Char] -> Int -> Int -> IO (Int, Int)
 runGame level originalWord hiddenWord guesses lives hintsUsed = do
     dollDraw lives
     putStrLn $ "Palavra Cifrada: " ++ encryptWord level originalWord
-    putStrLn $ "Palavra: " ++ hiddenWord
+    putStrLn $ "\nPalavra: " ++ hiddenWord
     putStrLn $ "Letras já usadas: " ++ showGuesses guesses
-
+    putStrLn $ "Erros Restantes: " ++ (show lives)
     (letter, hintsUsed') <- guessLetter hintsUsed originalWord guesses
     let hiddenWord' = revealLetter letter (text originalWord) hiddenWord
     
