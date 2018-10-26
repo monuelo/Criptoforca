@@ -82,6 +82,7 @@ encryptWord 8 word = alternate 1(text word)
 data Word = Word { 
     text :: String,
     theme :: String
+
 } deriving (Eq, Show)
 
 setUpWords :: IO [Main.Word]
@@ -157,8 +158,8 @@ showMenu = do
     clearScreen
     when (not $ option == 3) $ do clearScreen; showMenu
     
-showHints :: Main.Word -> [Char] -> IO()
-showHints word guesses = do
+showHints :: Main.Word -> [Char] -> [Bool]  -> IO()
+showHints word guesses usedHints = do
     clearScreen
     putStrLn "\n---------------------------------     DICAS     ---------------------------------\n\n"
     putStrLn "                                1  -  Revelar Categoria"
@@ -314,18 +315,19 @@ getRandomOrderWord randomOrderWords currentLevelWords = do
     
 startGame :: Int -> Main.Word -> IO()
 startGame level word = do
+    let hints = [False, False, False, False]    
     let hiddenWord = getHiddenWord $ text word
-    runGame level word hiddenWord [] 5 0
+    runGame level word hiddenWord [] 5 hints
 
 
-runGame :: Int -> Main.Word -> String -> [Char] -> Int -> Int -> IO()
-runGame level originalWord hiddenWord guesses lives hintsUsed = do
+runGame :: Int -> Main.Word -> String -> [Char] -> Int -> [Bool] -> IO()
+runGame level originalWord hiddenWord guesses lives usedHints = do
     dollDraw lives
     putStrLn $ "Palavra Cifrada: " ++ encryptWord level originalWord
     putStrLn $ "\nPalavra: " ++ hiddenWord
     putStrLn $ "Letras já usadas: " ++ showGuesses guesses
     putStrLn $ "Erros Restantes: " ++ (show lives)
-    (letter, hintsUsed') <- guessLetter hintsUsed originalWord guesses
+    (letter) <- guessLetter originalWord guesses usedHints
     let hiddenWord' = revealLetter letter (text originalWord) hiddenWord
     
     let guesses' = if letter == '1' then do guesses else guesses ++ [letter]
@@ -337,7 +339,7 @@ runGame level originalWord hiddenWord guesses lives hintsUsed = do
         showCriptoInfo level
     
     else if lives' > 0 then do
-        runGame level originalWord hiddenWord' guesses' lives' hintsUsed'
+        runGame level originalWord hiddenWord' guesses' lives' usedHints 
     else do
         showGameOverMessage
         revealWord originalWord
@@ -373,26 +375,26 @@ getLetter = do
 toUpper' :: String -> String
 toUpper' s = map toUpper s
 
-guessLetter :: Int -> Main.Word -> [Char] -> IO (Char, Int)
-guessLetter hintsUsed word guesses = do
+guessLetter :: Main.Word -> [Char] -> [Bool] -> IO Char
+guessLetter word guesses usedHints= do
     putStr "\nDigite uma letra ou pressione [1] para dica: "
     letter <- getLetter
-    (letter, hintsUsed') <- guessLetter' hintsUsed word guesses letter
-    return (letter, hintsUsed')
+    (letter) <- guessLetter' word guesses letter usedHints
+    return (letter)
 
-guessLetter' :: Int -> Main.Word -> [Char] -> Char -> IO (Char, Int)
-guessLetter' hintsUsed word guesses letter 
+guessLetter' :: Main.Word -> [Char] -> Char -> [Bool] -> IO Char
+guessLetter' word guesses letter usedHints
     | letter == '1' = do
-        showHints word guesses 
-        return (letter, hintsUsed)
+        showHints word guesses usedHints
+        return (letter)
     | isLetter letter && not(letter `elem` guesses) = do 
-        return (letter, hintsUsed)
+        return (letter)
     | not (isLetter letter) = do
         putStrLn "Hmmm... Acho que isto não é uma letra..."
-        guessLetter hintsUsed word guesses
+        guessLetter word guesses usedHints
     | otherwise = do
         putStrLn "Amnésia, né? Você já usou isso aí!"
-        guessLetter hintsUsed word guesses
+        guessLetter word guesses usedHints
 
 dollDraw :: Int -> IO()
 dollDraw lives = do
