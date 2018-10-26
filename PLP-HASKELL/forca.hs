@@ -47,7 +47,7 @@ fibonacciSequence n = fibonacciSequence(n-1) + fibonacciSequence(n-2)
 
 fibonacciCripto :: Int -> [Char] -> [Char]
 fibonacciCripto n [] = []
-fibonacciCripto n (x:xs) = [chr( mod(ord(x) + fibonacciSequence(n)) 128)] ++ fibonacciCripto (n+1)(xs)
+fibonacciCripto n (x:xs) = [chr( (mod(ord(x) + fibonacciSequence(n)) 96) + 32)] ++ fibonacciCripto (n+1)(xs)
 
 --------COMPLEMENTARY CRYPTOGRAPHY -- level 3: medio
 ----DESCRICAO:
