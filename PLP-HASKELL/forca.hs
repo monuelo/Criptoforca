@@ -174,7 +174,7 @@ showHints word guesses usedHints = do
     if not current then do
         showUsedHintMessage
     else do
-        selectHintOption option word guesses usedHints
+        selectHintOption option word guesses
     
     return(usedHints')
 
@@ -228,7 +228,7 @@ undergradHelp word = do
     putStr "\n                         [ Pressione ENTER para voltar ]"
     pause
 
-selectHintOption :: Int -> Main.Word -> [Char] -> [Bool]  -> IO()
+selectHintOption :: Int -> Main.Word -> [Char] -> IO()
 selectHintOption n word guesses 
     | n == 1 = do revealCategory (theme word)
     | n == 2 = do revealOneLetter word guesses
@@ -258,7 +258,7 @@ selectMenuOption n = showInvalidOptionMessage
 
 showUsedHintMessage :: IO()
 showUsedHintMessage = do
-    putStrLn "\n                           Esperto... Mas você já usou isso... =/ "
+    putStrLn "\n                       Esperto... Mas você já usou isso... =/ "
     putStr   "\n                         [ Pressione ENTER para voltar ]"
     pause
 
@@ -347,10 +347,11 @@ startGame level word = do
 runGame :: Int -> Main.Word -> String -> [Char] -> Int -> [Bool] -> IO()
 runGame level originalWord hiddenWord guesses lives usedHints = do
     dollDraw lives
-    putStrLn $ "Palavra Cifrada: " ++ encryptWord level originalWord
-    putStrLn $ "\nPalavra: " ++ hiddenWord
-    putStrLn $ "Letras já usadas: " ++ showGuesses guesses
-    putStrLn $ "Erros Restantes: " ++ (show lives)
+    putStrLn $ "| Palavra Cifrada: " ++ encryptWord level originalWord
+    putStrLn   ":--------------------------------------------------"
+    putStrLn $ "| Palavra: " ++ hiddenWord
+    putStrLn $ "| Letras já usadas: " ++ showGuesses guesses
+    putStrLn $ "| Erros Restantes: " ++ (show lives)
     (letter, usedHints') <- guessLetter originalWord guesses usedHints
     
     let hiddenWord' = revealLetter letter (text originalWord) hiddenWord
