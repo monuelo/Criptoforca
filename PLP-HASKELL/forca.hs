@@ -166,7 +166,7 @@ showHints word guesses = do
     putStrLn "                                3  -  Ajuda dos universitários"
     putStrLn "                                4  -  Revelar quantidade de vogais"
     option <- getOption
-    selectHintOption option word
+    selectHintOption option word guesses
 
 -- Hints
 
@@ -196,23 +196,37 @@ revealCategory word = do
     _ <- getLine
     return()
 
+revealOneLetter :: Main.Word -> [Char] -> IO()
+revealOneLetter word guesses = do
+    currTimestamp <- getCurrentTimestamp
+    let value = text word
+    let index = currTimestamp `mod` (length value)
+    let hint = value !! index
+    
+    if hint `elem` guesses || hint == ' ' then do
+        revealOneLetter word guesses
+    else do
+        putStrLn $ "\n\n                              Já tentou a letra " ++ (show hint) ++ "?" 
+        putStr     "\n                         [ Pressione ENTER para voltar ]"
+        _ <- getLine
+        return()
+
 undergradHelp :: String -> IO()
 undergradHelp word = do
     currTimestamp <- getCurrentTimestamp
     let rand = currTimestamp `mod` (10)
     let phrase = if rand < 6 then do "Hmmm... Acho que a palavra é... " ++ word else "Cara, sinceramente, não faço ideia..."
-    putStrLn $ "\n                  Os Universitários dizem: " ++ phrase
+    putStrLn $ "\n           Os Universitários dizem: \"" ++ phrase ++ "\""
     putStr "\n                         [ Pressione ENTER para voltar ]"
     _ <- getLine
     return()
 
-
-selectHintOption :: Int -> Main.Word -> IO()
-selectHintOption 1 word = revealCategory (theme word) 
--- selectHintOption 2 = getHint
-selectHintOption 3 word = undergradHelp (text word)
-selectHintOption 4 word = numVowels (text word)
-selectHintOption n word = showInvalidOptionMessage
+selectHintOption :: Int -> Main.Word -> [Char] -> IO()
+selectHintOption 1 word guesses = revealCategory (theme word) 
+selectHintOption 2 word guesses = revealOneLetter word guesses
+selectHintOption 3 word guesses = undergradHelp (text word)
+selectHintOption 4 word guesses = numVowels (text word)
+selectHintOption n word guesses = showInvalidOptionMessage
 
 getOption :: IO Int
 getOption = do
@@ -347,7 +361,7 @@ showGuesses [] = []
 showGuesses (head:[]) = [head]
 showGuesses (head:tail) = [head] ++ [' '] ++ showGuesses tail
 
-revealLetter :: Char -> String -> String -> String
+revealLetter :: Char -> String -> String -> String 
 revealLetter letter [] [] = []
 revealLetter letter (head:tail) (head':tail')
     | letter == head = [letter] ++ revealLetter letter tail tail'
