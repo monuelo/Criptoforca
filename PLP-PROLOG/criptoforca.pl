@@ -190,96 +190,96 @@ select_game_mode(1) :- fast_match_mode.
 select_game_mode(2) :- menu.
 select_game_mode(_) :- show_invalid_option_message.
 
-show_hangman(Lives) :-
-	clear_screen,
-    writeln("                                 ###############"),
-    writeln("                                 #### FORCA ####"),
-    writeln("                                 ###############"),
-    writeln("                                 #      |      #"),
 
-    show_hangman_body(Lives),
+doll_draw(Lives) :-
+        clear_screen,
+    doll_draw_body(Lives).
 
-    writeln("                                 ###############"),
-    writeln("                                  /\\         /\\"),
-    writeln("                                 /  \\       /  \\ \n").
+doll_draw_body(5) :-
+    writeln("\n\n      _______"),
+    writeln("     |"),
+    writeln("     |"),
+    writeln("     |"),
+    writeln("     |"),
+    writeln("     |"),
+    writeln("    _|_"),
+    writeln("   |   |______"),
+    writeln("   |__________|\n\n").
 
-show_hangman_body(7) :-
-    writeln("                                 #             #"),
-    writeln("                                 #             #"),
-    writeln("                                 #             #"),
-    writeln("                                 #             #").
+doll_draw_body(4) :-
+    writeln("\n\n      _______"),
+    writeln("     |       |"),
+    writeln("     |      (_)"),
+    writeln("     |"),
+    writeln("     |"),
+    writeln("     |"),
+    writeln("    _|_"),
+    writeln("   |   |______"),
+    writeln("   |__________|\n\n").
 
-show_hangman_body(6) :-
-    writeln("                                 #    ('-')    #"),
-    writeln("                                 #             #"),
-    writeln("                                 #             #"),
-    writeln("                                 #             #").
+doll_draw_body(3) :-
+    writeln("\n\n      _______"),
+    writeln("     |       |"),
+    writeln("     |      (_)"),
+    writeln("     |      /|"),
+    writeln("     |"),
+    writeln("     |"),
+    writeln("    _|_"),
+    writeln("   |   |______"),
+    writeln("   |__________|\n\n").
 
-show_hangman_body(5) :-
-    writeln("                                 #    ('-')__  #"),
-    writeln("                                 #             #"),
-    writeln("                                 #             #"),
-    writeln("                                 #             #").
+doll_draw_body(2) :-
+    writeln("\n\n      _______"),
+    writeln("     |       |"),
+    writeln("     |      (_)"),
+    writeln("     |      /|\\"),
+    writeln("     |"),
+    writeln("     |"),
+    writeln("    _|_"),
+    writeln("   |   |______"),
+    writeln("   |__________|\n\n").
 
-show_hangman_body(4) :-
-    writeln("                                 #  __('-')__  #"),
-    writeln("                                 #             #"),
-    writeln("                                 #             #"),
-    writeln("                                 #             #").
+doll_draw_body(1) :-
+    writeln("\n\n      _______"),
+    writeln("     |       |"),
+    writeln("     |      (_)"),
+    writeln("     |      /|\\"),
+    writeln("     |      /"),
+    writeln("     |"),
+    writeln("    _|_"),
+    writeln("   |   |______"),
+    writeln("   |__________|\n\n").
 
-show_hangman_body(3) :-
-    writeln("                                 #  __('-')__  #"),
-    writeln("                                 #      |      #"),
-    writeln("                                 #             #"),
-    writeln("                                 #             #").
-
-show_hangman_body(2) :-
-    writeln("                                 #  __('-')__  #"),
-    writeln("                                 #      |      #"),
-    writeln("                                 #     /       #"),
-    writeln("                                 #             #").
-
-show_hangman_body(1) :-
-    writeln("                                 #  __('-')__  #"),
-    writeln("                                 #      |      #"),
-    writeln("                                 #     / \\     #"),
-    writeln("                                 #             #").
-
-show_hangman_body(0) :-
-    writeln("                                 #      |      #"),
-    writeln("                                 #    (-.-)    #"),
-    writeln("                                 #     /|\\     #"),
-    writeln("                                 #     / \\     #").
-
-show_victory_hangman :-
-	clear_screen,
-    writeln("                                 ###############"),
-    writeln("                                 #### FORCA ####"),
-    writeln("                                 ###############"),
-    writeln("                                 #      |      #"),
-    writeln("                                 #             #"),
-    writeln("                                 #             #"),
-    writeln("                                 #             #"),
-    writeln("                                 #             #"),
-    writeln("                                 ###############     \\('◡')/"),
-    writeln("                                  /\\         /\\         |"),
-    writeln("                                 /  \\       /  \\       / \\ \n\n"),
+draw_victory_doll :-
+    clear_screen,
+    writeln("\n\n      _______"),
+    writeln("     | *    *     *"),
+    writeln("     |   *   *"),
+    writeln("     |  *      *"),
+    writeln("     |      *      *"),
+    writeln("     |   \\(*-*)/"),
+    writeln("    _|_     | "),
+    writeln("   |   |___/_\\_"),
+    writeln("   |__________|\n\n"),
     writeln("YOU WIN!"),
     sleep_3s,
     menu.
 
-show_defeat_hangman :-
-	clear_screen,
-    writeln("                                 ###############"),
-    writeln("                                 #### FORCA ####"),
-    writeln("                                 ###############"),
-	show_hangman_body(0),
-    writeln("                                 ###############"),
-    writeln("                                  /\\         /\\"),
-    writeln("                                 /  \\       /  \\ \n"),
+draw_defeat_doll :-
+    clear_screen,
+    writeln("\n\n      _______"),
+    writeln("     |       |"),
+    writeln("     |     (x_x)"),
+    writeln("     |      /|\\"),
+    writeln("     |      / \\"),
+    writeln("     |"),
+    writeln("    _|_"),
+    writeln("   |   |______"),
+    writeln("   |__________|\n\n"),
     writeln("YOU LOSE!"),
     sleep_3s,
     menu.
+
 
 fast_match_mode :-
     clear_screen,
@@ -361,12 +361,12 @@ show_rules :-
 show_victory_message :-
     clear_screen,
     writeln("                     Parabéns, você acaba de salvar uma vida!\n\n"),
-    show_victory_hangman.
+    draw_victory_doll.
 
 show_game_over_message :-
     clear_screen,
     writeln("                       É realmente uma pena, fim de jogo...\n\n"),
-    show_defeat_hangman.
+    draw_defeat_doll.
 
 
 
@@ -482,7 +482,7 @@ guess_letter_aux(Word, Guesses, Letter, HintsUsed, HintsUsedAux, Result):-
 
 start_game(Word, Score):-
     get_hidden_word(Word, HiddenWord),
-    run_game(Word, HiddenWord, [], 7, 0, Score).
+    run_game(Word, HiddenWord, [], 5, 0, Score).
 
 run_game(Word, HiddenWord, Guesses, 0, HintsUsed, 0):-
     show_game_over_message,
@@ -512,7 +512,7 @@ all_letters_revealed(Word):-
     \+ member('_', Chars).
 
 show_game_info(Word, HiddenWord, Guesses, Lives, HintsUsed):-
-    show_hangman(Lives),
+    doll_draw(Lives),
     setup_words,
     word(Word, Theme, _),
     write("Palavra que deveria ser cifrada: "), writeln(Word),
