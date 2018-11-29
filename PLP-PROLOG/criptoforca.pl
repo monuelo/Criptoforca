@@ -1,9 +1,21 @@
 :- use_module(library(apply)).
 :- use_module(library(csv)).
+:- consult(algorithms).
 
 setup_words :-
     reconsult('palavras.pl').
 
+encrypt(Word, 1, Result) :-
+    shift(Word, Result).
+
+encrypt(Word, 2, Result) :-
+    caesar1(Word, Result).
+
+encrypt(Word, 3, Result) :-
+    no_then_yes(Word, Result).
+
+encrypt(Word, 4, Result) :-
+    ascii(Word, Result).
 
 write_word_file :-
     setup_words,
@@ -11,15 +23,15 @@ write_word_file :-
 	listing(word/3),
 	told.
 
-compare_to(<,A,B) :- 
+compare_to(<,A,B) :-
     nth0(1,A,X),
-    nth0(1,B,Y), 
+    nth0(1,B,Y),
     X =< Y.
 compare_to(>,_,_).
 
-compare_to(<,A,B) :- 
+compare_to(<,A,B) :-
     nth0(1,A,X),
-    nth0(1,B,Y), 
+    nth0(1,B,Y),
     X =< Y.
 compare_to(>,_,_).
 
@@ -58,12 +70,12 @@ get_themes(Result):-
     findall(Theme, word(_, Theme, _), Queries),
     list_to_set(Queries, Result).
 
-get_level(Text, Level):- 
+get_level(Text, Level):-
     atom_length(Text, Size),
     (compare(<, Size, 6) -> Level is 1;
     compare(<, Size, 10) -> Level is 2;
     Level is 3).
-    
+
 filter_by_theme(Theme, Result):-
     setup_words,
     findall([Text, Theme, Level], word(Text, Theme, Level), Result).
@@ -72,7 +84,7 @@ filter_by_level(Level,Result):-
     setup_words,
     findall([Text, Theme, Level], word(Text, Theme, Level), Result).
 
-themed_fast_match:- 
+themed_fast_match:-
     select_theme(Theme),
     filter_by_theme(Theme, Result),
     get_random_word(Result, RandomWord),
@@ -100,10 +112,10 @@ get_random_word(Words, RandomWord):-
     length(Words, Size),
     random(0, Size, RandomIndex),
     nth0(RandomIndex, Words, RandomWord).
-    
+
 get_option(Option) :-
     write("\n\n                    Informe o número da opção desejada: "),
-    read(Option). 
+    read(Option).
 
 select_menu_option(1) :- show_game_modes.
 select_menu_option(2) :- show_rules.
@@ -156,16 +168,16 @@ menu :-
     writeln("\n---------------------------------     MENU     ---------------------------------\n\n"),
     writeln("                                1  -  Jogar"),
     writeln("                                2  -  Explicacao"),
-    writeln("                                3  -  Nova Palavra"),
+    writeln("                                3  -  Cifrar Palavra"),
     writeln("                                4  -  Sair"),
     get_option(Option),
     select_menu_option(Option).
-    
+
 show_invalid_option_message :-
     writeln("           Opção inválida... Pressione ENTER para tentar novamente!\n"),
     pause,
     menu.
-    
+
 show_game_modes :-
     clear_screen,
     writeln("\n-----------------------------     MODO DE JOGO     -----------------------------\n\n"),
@@ -184,9 +196,9 @@ show_hangman(Lives) :-
     writeln("                                 #### FORCA ####"),
     writeln("                                 ###############"),
     writeln("                                 #      |      #"),
-    
+
     show_hangman_body(Lives),
-    
+
     writeln("                                 ###############"),
     writeln("                                  /\\         /\\"),
     writeln("                                 /  \\       /  \\ \n").
@@ -232,13 +244,13 @@ show_hangman_body(1) :-
     writeln("                                 #      |      #"),
     writeln("                                 #     / \\     #"),
     writeln("                                 #             #").
-    
+
 show_hangman_body(0) :-
     writeln("                                 #      |      #"),
     writeln("                                 #    (-.-)    #"),
     writeln("                                 #     /|\\     #"),
     writeln("                                 #     / \\     #").
-    
+
 show_victory_hangman :-
 	clear_screen,
     writeln("                                 ###############"),
@@ -322,10 +334,10 @@ show_levels :-
     writeln("                              4  -  Enigma").
     % get_option
 
-show_rules :- 
+show_rules :-
     clear_screen,
     writeln("\n--------------------------------     REGRAS     --------------------------------\n\n\n"),
-    
+
     writeln("     O jogo funciona como um jogo da forca comum, porém o jogador terá acesso à uma "),
     writeln("criptografia da palavra a ser adivinhada. O jogador poderá escolher entre 4 niveis  "),
     writeln(" de dificuldade ( Rasgado, Fácil, Médio e Enigma ) os quais farão uso das seguintes    "),
@@ -341,7 +353,7 @@ show_rules :-
     writeln(" 7 - Cryptomix     = realiza a seguinte sequencia de criptografias: shift, cesar,      "),
     writeln("    complementary e fibonacci                                                         "),
     writeln(" 8 - Alternate     = soma o codigo ascii de cada letra a cada valor da sequencia      "),
-    writeln("    alternada a(n); a(n) = 2*n*(-1)^n                                                 "),   
+    writeln("    alternada a(n); a(n) = 2*n*(-1)^n                                                 "),
     writeln("                         [ Pressione ENTER para voltar ]\n\n\n"),
     pause,
     menu.
@@ -361,9 +373,17 @@ show_game_over_message :-
 get_word_data :-
     clear_screen,
     writeln("\n---------------------------     CIFRAR PALAVRA     --------------------------\n\n\n"),
-    write("          Informe a nova palavra: "),
+    write("          Informe a palavra: "),
     read(Word),
-    writeln(" Palavra Cifrada: "),
+    writeln(""),
+    writeln("        1 - Shift         = Transporta a primeira letra para o fim da palavra                "),
+    writeln("        2 - Cesar         = Soma 1 no codigo ASCII de cada letra da palavra                  "),
+    writeln("        3 - NoThenYes     = Realiza Cesar em letras alternadas                               "),
+    writeln("        4 - ASCII         = Mostra o codigo ASCII de cada letra da palavra                   "),
+    write("          Selecione a cifragem: "),
+    read(Cipher),
+    encrypt(Word, Cipher, Result),
+    write("          Palavra Cifrada: "), writeln(Result),
     sleep_3s,
     menu.
 
@@ -483,7 +503,7 @@ run_game(Word, HiddenWord, Guesses, Lives, HintsUsed, Score):-
     run_game(Word, HiddenWordAux, [Letter|Guesses], LivesAux, HintsUsedAux, Score).
 
 get_lives(HiddenWord, HiddenWordAux, CurrentLives, Lives):-
-    HiddenWord == HiddenWordAux -> 
+    HiddenWord == HiddenWordAux ->
         Lives is CurrentLives - 1;
         Lives is CurrentLives.
 
