@@ -42,16 +42,16 @@ ascii(Word, Result):-    %nivel medio
 
 fibonacci(Word, Result):-  %nivel medio
     string_codes(Word,Aux),
-    fibonacciAux(Aux, Aux2, 0),
+    Aux = [A,B,C,D|E],
+    fib(4,Temp1),    fib(5,Temp2),    fib(6,Temp3),    fib(7,Temp4),
+    H is Temp1 + A,  I is Temp2 + B,  J is Temp3 + C,  K is Temp4 + D,
+    is_in_ascii(H,W),
+    is_in_ascii(I,X),
+    is_in_ascii(J,Y),
+    is_in_ascii(K,Z),
+    maplist(plus(2), E, F),
+    Aux2 = [W,X,Y,Z|F],
     string_codes(Result, Aux2).
-
-fibonacciAux(List, Result, N):-
-    List = [X|Y],
-    fib(N,Fib),
-    X1 is X + Fib,
-    sum(N,1,M),
-    append([X1], Result),
-    (Y =\= [] -> fibonacciAux(Y, Result, M); !).
 
 fib(0, 1) :- !.
 fib(1, 1) :- !.
