@@ -60,43 +60,13 @@ write_word(Text, Theme):-
     assertz(word(TextAtom, ThemeAtom, Level)),
     write_word_file.
 
-write_player(Nickname, Score):-
-    string_lower(Nickname, NicknameLowerCase),
-    assertz(player(NicknameLowerCase, Score)),
-    write_player_file.
-
-get_themes(Result):-
-    setup_words,
-    findall(Theme, word(_, Theme, _), Queries),
-    list_to_set(Queries, Result).
-
-get_level(Text, Level):-
-    atom_length(Text, Size),
-    (compare(<, Size, 6) -> Level is 1;
-    compare(<, Size, 10) -> Level is 2;
-    Level is 3).
-
-filter_by_theme(Theme, Result):-
-    setup_words,
-    findall([Text, Theme, Level], word(Text, Theme, Level), Result).
-
-filter_by_level(Level,Result):-
-    setup_words,
-    findall([Text, Theme, Level], word(Text, Theme, Level), Result).
-
-themed_fast_match:-
-    select_theme(Theme),
-    filter_by_theme(Theme, Result),
-    get_random_word(Result, RandomWord),
-    get_word_text(RandomWord, WordText),
-    start_game(WordText, Score).
-
 get_word_text(Word, Text):-
     nth0(0, Word, Text).
 
 leveled_fast_match:-
+    setup_words,
     select_level(Level),
-    filter_by_level(Level, Result),
+    findall([Text, Theme, Level], word(Text, Theme, Level), Result),
     get_random_word(Result, RandomWord),
     get_word_text(RandomWord, WordText),
     start_game(WordText, Score).
@@ -117,7 +87,7 @@ get_option(Option) :-
     write("\n\n                    Informe o número da opção desejada: "),
     read(Option).
 
-select_menu_option(1) :- show_game_modes.
+select_menu_option(1) :- leveled_fast_match.
 select_menu_option(2) :- show_rules.
 select_menu_option(3) :- get_word_data.
 select_menu_option(4) :- quit.
@@ -167,7 +137,7 @@ menu :-
     clear_screen,
     writeln("\n---------------------------------     MENU     ---------------------------------\n\n"),
     writeln("                                1  -  Jogar"),
-    writeln("                                2  -  Explicacao"),
+    writeln("                                2  -  Instruções"),
     writeln("                                3  -  Cifrar Palavra"),
     writeln("                                4  -  Sair"),
     get_option(Option),
@@ -177,19 +147,6 @@ show_invalid_option_message :-
     writeln("           Opção inválida... Pressione ENTER para tentar novamente!\n"),
     pause,
     menu.
-
-show_game_modes :-
-    clear_screen,
-    writeln("\n-----------------------------     MODO DE JOGO     -----------------------------\n\n"),
-    writeln("                                1  -  Jogo Rápido"),
-    writeln("                                2  -  Voltar"),
-    get_option(Option),
-    select_game_mode(Option).
-
-select_game_mode(1) :- fast_match_mode.
-select_game_mode(2) :- menu.
-select_game_mode(_) :- show_invalid_option_message.
-
 
 doll_draw(Lives) :-
         clear_screen,
@@ -280,23 +237,6 @@ draw_defeat_doll :-
     sleep_3s,
     menu.
 
-
-fast_match_mode :-
-    clear_screen,
-    writeln("\n-----------------------------     JOGO RÁPIDO     ------------------------------\n\n"),
-    writeln("                      Como sua palavra deve ser escolhida?\n"),
-    writeln("                              1  -  Por Tema"),
-    writeln("                              2  -  Por Dificuldade"),
-    writeln("                              3  -  Aleatoriamente"),
-    writeln("                              4  -  Voltar"),
-    get_option(Option),
-    fast_match_mode_aux(Option).
-
-fast_match_mode_aux(1):- themed_fast_match.
-fast_match_mode_aux(2):- leveled_fast_match.
-fast_match_mode_aux(3):- random_fast_match.
-fast_match_mode_aux(_):- show_invalid_option_message.
-
 select_theme(Theme) :-
     clear_screen,
     writeln("\n----------------------------     SELECIONAR TEMA     ---------------------------\n\n"),
@@ -360,14 +300,13 @@ show_rules :-
 
 show_victory_message :-
     clear_screen,
-    writeln("                     Parabéns, você acaba de salvar uma vida!\n\n"),
+    writeln("                       \n Você é esperto... Foi um bom jogo.\n\n"),
     draw_victory_doll.
 
 show_game_over_message :-
     clear_screen,
-    writeln("                       É realmente uma pena, fim de jogo...\n\n"),
+    writeln("                       \n Parece que essa cifra é forte demais pra você, né? HAHA...\n\n"),
     draw_defeat_doll.
-
 
 
 get_word_data :-
@@ -404,13 +343,6 @@ quit :-
      writeln("                              - * - UM OFERECIMENTO - * -                               "),
      writeln("                   [PLP@UFCG] [Computação@UFCG] [Eles@Computação]                  \n\n"),
     exit.
-
-
-
-
-
-
-
 
 
 get_hidden_word(Word, HiddenWord):-
@@ -459,11 +391,11 @@ string_add_space(String, StringWithSpace):-
     string_concat(String, ' ', StringWithSpace).
 
 guess_letter(Word, Guesses, HintsUsed, HintsUsedAux, Result):-
-    writeln("Digite uma letra ou ç para dica: "),
+    writeln("Digite uma letra ou [1] para dica: "),
     read(Letter),
     guess_letter_aux(Word, Guesses, Letter, HintsUsed, HintsUsedAux, Result).
 
-guess_letter_aux(Word, Guesses, 'ç', HintsUsed, HintsUsedAux, Tip):-
+guess_letter_aux(Word, Guesses, 1, HintsUsed, HintsUsedAux, Tip):-
     get_tip(Word, Guesses, Tip),
     HintsUsedAux is HintsUsed + 1, !.
 

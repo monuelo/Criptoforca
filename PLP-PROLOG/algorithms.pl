@@ -72,7 +72,7 @@ fibonacci(Word, Result):-  %nivel enigma
 
 fib(0, 1) :- !.
 fib(1, 1) :- !.
-fib(N, Result) :-
+fib(N, Result) :-,
     N1 is N - 1,
     N2 is N - 2,
     fib(N1, Result1),
@@ -96,11 +96,3 @@ concatenar([], L, L).
 concatenar([H|T], L, [H|D]) :- concatenar(T, L, D).
 inverte([], []).
 inverte([H|T], L) :- inverte(T, X), concatenar(X, [H], L).
-
-:- initialization(main).
-
-main:-
-	cryptomix("interessante", Result),
-    write(Result), write("\n"),
-
-    halt.
