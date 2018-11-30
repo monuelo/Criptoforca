@@ -81,7 +81,11 @@ leveled_fast_match:-
     findall([Text, Theme, Level], word(Text, Theme, Level), Result),
     get_random_word(Result, RandomWord),
     get_word_text(RandomWord, WordText),
-    start_game(WordText, Score).
+    X is Level*2+1,
+    Y is X-2,
+    random(Y, X, Cryptography),
+    encrypt(WordText, Cryptography, EncryptedWord),
+    start_game(WordText, Score, EncryptedWord).
 
 random_fast_match:-
     setup_words,
@@ -294,8 +298,8 @@ show_rules :-
     writeln(" de dificuldade ( Rasgado, Fácil, Médio e Enigma ) os quais farão uso das seguintes    "),
     writeln(" seguintes criptografias:                                                             "),
     writeln(" 1 - Shift         = Transporta a primeira letra para o fim da palavra                "),
-    writeln(" 2 - Cesar1        = Soma 1 no codigo ASCII de cada letra da palavra                  "),
-    writeln(" 3 - Cesar2        = Soma 2 no codigo ASCII de cada letra da palavra                  "),
+    writeln(" 2 - Cesar1         = Soma 1 no codigo ASCII de cada letra da palavra                  "),
+    writeln(" 3 - Cesar2         = Soma 2 no codigo ASCII de cada letra da palavra                  "),
     writeln(" 4 - NoThenYes     = Realiza Cesar1 em letras alternadas                               "),
     writeln(" 5 - ASCII         = Mostra o codigo ASCII de cada letra da palavra                   "),
     write(" 6 - Fibonacci       = Incrementa ao código ascii das 4 primeiras letras da palavra valores "),
@@ -324,14 +328,16 @@ get_word_data :-
     read(Word),
     writeln(""),
     writeln(" 1 - Shift         = Transporta a primeira letra para o fim da palavra                "),
-    writeln(" 2 - Cesar1        = Soma 1 no codigo ASCII de cada letra da palavra                  "),
-    writeln(" 3 - Cesar2        = Soma 2 no codigo ASCII de cada letra da palavra                  "),
-    writeln(" 4 - NoThenYes     = Realiza Cesar1 em letras alternadas                               "),
+    writeln(" 2 - Cesar1         = Soma 1 no codigo ASCII de cada letra da palavra                  "),
+    writeln(" 3 - Cesar2         = Soma 2 no codigo ASCII de cada letra da palavra                  "),
+    writeln(" 4 - NoThenYes     = Realiza Cesar em letras alternadas                               "),
     writeln(" 5 - ASCII         = Mostra o codigo ASCII de cada letra da palavra                   "),
-    write(" 6 - Fibonacci       = Incrementa ao código ascii das 4 primeiras letras da palavra valores "),
-    writeln("da sequencia de Fibonacci e realiza Cesar5 no restante"),
-    writeln(" 7 - Complementary = substitui as 4 primeiras letras por sua complementar no alfabeto e realiza cesar4 no restante."),
-    writeln(" 8 - Cryptomix     = realiza a seguinte sequencia de criptografias: shift, cesar2, NoThenYes, Fibonacci e inverte a palavra"),
+    writeln(" 6 - Fibonacci     = Incrementa ao código ascii da k-ésima letra da palavra o k-esimo   "),
+    writeln("    valor da sequencia de Fibonacci, para uma palavra de n letras e para 0 < k <= n   "),
+    writeln(" 7 - Complementary  = substitui a cada letra por sua complementar no alfabeto.          "),
+    writeln("    Por exemplo: a -> z; b -> y; c -> x; etc...                                        "),
+    writeln(" 8 - Cryptomix     = realiza a seguinte sequencia de criptografias: shift, cesar,      "),
+    writeln("    complementary e fibonacci                                                         "),
     write("          Selecione a cifragem: "),
     read(Cipher),
     encrypt(Word, Cipher, Result),
@@ -425,27 +431,27 @@ guess_letter_aux(Word, Guesses, Letter, HintsUsed, HintsUsedAux, Result):-
     writeln("Digite uma LETRA"),
     guess_letter(Word, Guesses, HintsUsed, HintsUsedAux, Result).
 
-start_game(Word, Score):-
+start_game(Word, Score, EncryptedWord):-
     get_hidden_word(Word, HiddenWord),
-    run_game(Word, HiddenWord, [], 5, 0, Score).
+    run_game(Word, HiddenWord, [], 5, 0, Score, EncryptedWord).
 
-run_game(Word, HiddenWord, Guesses, 0, HintsUsed, 0):-
+run_game(Word, HiddenWord, Guesses, 0, HintsUsed, 0, EncryptedWord):-
     show_game_over_message,
     reveal_word(Word), !.
 
-run_game(Word, HiddenWord, Guesses, Lives, HintsUsed, Score):-
+run_game(Word, HiddenWord, Guesses, Lives, HintsUsed, Score, EncryptedWord):-
     all_letters_revealed(HiddenWord),
     get_score(Word, Lives, HintsUsed, Score),
     show_victory_message,
     reveal_word(Word), !.
 
-run_game(Word, HiddenWord, Guesses, Lives, HintsUsed, Score):-
+run_game(Word, HiddenWord, Guesses, Lives, HintsUsed, Score, EncryptedWord):-
     clear_screen,
-    show_game_info(Word, HiddenWord, Guesses, Lives, HintsUsed),
+    show_game_info(Word, HiddenWord, Guesses, Lives, HintsUsed, EncryptedWord),
     guess_letter(Word, Guesses, HintsUsed, HintsUsedAux, Letter),
     reveal_letter(Word, HiddenWord, Letter, HiddenWordAux),
     get_lives(HiddenWord, HiddenWordAux, Lives, LivesAux),
-    run_game(Word, HiddenWordAux, [Letter|Guesses], LivesAux, HintsUsedAux, Score).
+    run_game(Word, HiddenWordAux, [Letter|Guesses], LivesAux, HintsUsedAux, Score, EncryptedWord).
 
 get_lives(HiddenWord, HiddenWordAux, CurrentLives, Lives):-
     HiddenWord == HiddenWordAux ->
@@ -456,11 +462,11 @@ all_letters_revealed(Word):-
     string_chars(Word, Chars),
     \+ member('_', Chars).
 
-show_game_info(Word, HiddenWord, Guesses, Lives, HintsUsed):-
+show_game_info(Word, HiddenWord, Guesses, Lives, HintsUsed, EncryptedWord):-
     doll_draw(Lives),
     setup_words,
     word(Word, Theme, _),
-    write("Palavra que deveria ser cifrada: "), writeln(Word),
+    write("Palavra cifrada: "), writeln(EncryptedWord),
     write("Tema: "), writeln(Theme),
     write("Palavra: "), writeln(HiddenWord),
     write("Letras já usadas: "),
