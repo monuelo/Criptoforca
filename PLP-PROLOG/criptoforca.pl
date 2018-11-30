@@ -348,19 +348,19 @@ get_word_data :-
 
 quit :-
     clear_screen,
-  writeln("\n-----------------------------     #$&!CRIPTOForca#$&!     -----------------------------\n\n"),
+    writeln("\n-----------------------------     #$&!CRIPTOForca#$&!     -----------------------------\n\n"),
     writeln("\n\n                                                                                         "),
-     writeln("            .oPYo.        o          o          d'b                                         "),
-     writeln("           8    8                   8          8                                            "),
-    writeln("            8      oPYo. o8 .oPYo.  o8P .oPYo. o8P  .oPYo. oPYo. .oPYo. .oPYo.              "),
-     writeln("           8      8  `'  8 8    8   8  8    8  8   8    8 8  `' 8    ' .oooo8               "),
+    writeln("            .oPYo.        o          o          d'b                                          "),
+    writeln("           8    8                   8          8                                             "),
+    writeln("            8      oPYo. o8 .oPYo.  o8P .oPYo. o8P  .oPYo. oPYo. .oPYo. .oPYo.               "),
+    writeln("           8      8  `'  8 8    8   8  8    8  8   8    8 8  `' 8    ' .oooo8                "),
     writeln("            8    8 8      8 8    8   8  8    8  8   8    8 8     8    . 8    8               "),
-     writeln("           `YooP' 8      8 8YooP'   8  `YooP'  8   `YooP' 8     `YooP' `YooP8              "),
-     writeln("            :.....:..:::::..8 ....:::..::.....::..:::.....:..:::::.....::.....:              "),
-     writeln("            ::::::::::::::::8 :::::::::::::::::::::::::::::::::::::::::::::::::              "),
-     writeln("          ::::::::::::::::..:::::::::::::::::::::::::::::::::::::::::::::::::          "),
-     writeln("                              - * - UM OFERECIMENTO - * -                               "),
-     writeln("                   [PLP@UFCG] [Computação@UFCG] [Eles@Computação]                  \n\n"),
+    writeln("           `YooP' 8      8 8YooP'   8  `YooP'  8   `YooP' 8     `YooP' `YooP8                "),
+    writeln("            :.....:..:::::..8 ....:::..::.....::..:::.....:..:::::.....::.....:              "),
+    writeln("            ::::::::::::::::8 :::::::::::::::::::::::::::::::::::::::::::::::::              "),
+    writeln("          ::::::::::::::::..:::::::::::::::::::::::::::::::::::::::::::::::::                "),
+    writeln("                              - * - UM OFERECIMENTO - * -                                    "),
+    writeln("                   [PLP@UFCG] [Computação@UFCG] [Eles@Computação]                        \n\n"),
     exit.
 
 
@@ -414,6 +414,10 @@ guess_letter(Word, Guesses, HintsUsed, HintsUsedAux, Result):-
     read(Letter),
     guess_letter_aux(Word, Guesses, Letter, HintsUsed, HintsUsedAux, Result).
 
+guess_letter_aux(Word, Guesses, 1, 1, HintsUsedAux, Tip):- 
+    writeln("Voce ja usou uma dica."),
+    guess_letter(Word, Guesses, HintsUsed, HintsUsedAux, Result).
+    
 guess_letter_aux(Word, Guesses, 1, HintsUsed, HintsUsedAux, Tip):-
     get_tip(Word, Guesses, Tip),
     HintsUsedAux is HintsUsed + 1, !.
