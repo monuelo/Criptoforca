@@ -1,3 +1,5 @@
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% NIVEL RASGADO
 shift(Word, Result):-   %nivel rasgado
     string_codes(Word, Aux),
     Aux = [A | B],
@@ -22,6 +24,7 @@ no_then_yes_aux2([H|T], Result) :-
     no_then_yes_aux1(T, Rest),
     append([H], Rest, Result).
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% NIVEL FACIL
 
 caesar1(Word, Result):-    %nivel facil
     string_codes(Word, Aux),
@@ -33,6 +36,7 @@ caesar2(Word, Result):-    %nivel facil
     maplist(plus(2), Aux, Aux2),
     string_codes(Result, Aux2).
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% NIVEL MEDIO
 
 ascii(Word, Result):-    %nivel medio
     string_codes(Word, Aux),
@@ -40,18 +44,31 @@ ascii(Word, Result):-    %nivel medio
     atom_string(Aux2, Result).
 
 
-fibonacci(Word, Result):-  %nivel medio
+complementary(Word, Result):- %nivel medio
     string_codes(Word,Aux),
-    fibonacciAux(Aux, Aux2, 0),
-    string_codes(Result, Aux2).
+    Aux = [A,B,C,D|F],
+    G is 122 - (A-97),
+    H is 122 - (B-97),
+    I is 122 - (C-97),
+    J is 122 - (D-97),
+    maplist(plus(4), F, N),
+    Aux2 = [G,H,I,J|N],
+    string_codes(Result,Aux2).
 
-fibonacciAux(List, Result, N):-
-    List = [X|Y],
-    fib(N,Fib),
-    X1 is X + Fib,
-    sum(N,1,M),
-    append([X1], Result),
-    (Y =\= [] -> fibonacciAux(Y, Result, M); !).
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% NIVEL ENIGMA
+
+fibonacci(Word, Result):-  %nivel enigma
+    string_codes(Word,Aux),
+    Aux = [A,B,C,D|E],
+    fib(4,Temp1),    fib(5,Temp2),    fib(6,Temp3),    fib(7,Temp4),
+    H is Temp1 + A,  I is Temp2 + B,  J is Temp3 + C,  K is Temp4 + D,
+    is_in_ascii(H,W),
+    is_in_ascii(I,X),
+    is_in_ascii(J,Y),
+    is_in_ascii(K,Z),
+    maplist(plus(7), E, F),
+    Aux2 = [W,X,Y,Z|F],
+    string_codes(Result, Aux2).
 
 fib(0, 1) :- !.
 fib(1, 1) :- !.
@@ -63,18 +80,27 @@ fib(N, Result) :-
     Result is Result1 + Result2.
 
 
-complementary(Word, Result):- %nivel medio
-    string_codes(Word,Aux),
-    Aux = [X|Y],
-    X is 122 - X,
-    append(X,Result),
-    complementary(Y, Result).
+cryptomix(Word, Result):-  %nivel enigma
+    shift(Word, Aux2),
+    caesar2(Aux2, Aux3),
+    no_then_yes(Aux3, Aux4),
+    fibonacci(Aux4, Aux5),
+    string_codes(Aux5,T),
+    inverte(T,Aux6),
+    string_codes(Result, Aux6).
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% FUNÇÕES AUXILIARES
 
+is_in_ascii(Char, Result):- (Char < 128 -> Result is Char; Result is (mod(Char, 128) + 32) ).
+
+concatenar([], L, L).
+concatenar([H|T], L, [H|D]) :- concatenar(T, L, D).
+inverte([], []).
+inverte([H|T], L) :- inverte(T, X), concatenar(X, [H], L).
 
 :- initialization(main).
 
 main:-
-	fibonacci("interessante", Result),
+	cryptomix("interessante", Result),
     write(Result), write("\n"),
 
     halt.
