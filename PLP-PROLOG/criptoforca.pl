@@ -17,6 +17,15 @@ encrypt(Word, 3, Result) :-
 encrypt(Word, 4, Result) :-
     ascii(Word, Result).
 
+encrypt(Word, 5, Result) :-
+    fibonacci(Word, Result).
+
+encrypt(Word, 6, Result) :-
+    complementary(Word, Result).
+
+encrypt(Word, 7, Result) :-
+    cryptomix(Word, Result).
+
 write_word_file :-
     setup_words,
 	tell('palavras.pl'),nl,
@@ -272,7 +281,6 @@ show_levels :-
     writeln("                              2  -  Facil"),
     writeln("                              3  -  Medio"),
     writeln("                              4  -  Enigma").
-    % get_option
 
 show_rules :-
     clear_screen,
@@ -319,6 +327,9 @@ get_word_data :-
     writeln("        2 - Cesar         = Soma 1 no codigo ASCII de cada letra da palavra                  "),
     writeln("        3 - NoThenYes     = Realiza Cesar em letras alternadas                               "),
     writeln("        4 - ASCII         = Mostra o codigo ASCII de cada letra da palavra                   "),
+    writeln("        5 - Fibonacci     = Incrementa ao código ascii da k-ésima letra da palavra o k-esimo   "),
+    writeln("             valor da sequencia de Fibonacci, para uma palavra de n letras e para 0 < k <= n   "),
+    writeln("        6 - Complementary  = substitui a cada letra por sua complementar no alfabeto.          "),
     write("          Selecione a cifragem: "),
     read(Cipher),
     encrypt(Word, Cipher, Result),
