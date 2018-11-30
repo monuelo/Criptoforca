@@ -1,31 +1,95 @@
 :- dynamic word/3.
-
-word(banana, comida, 2).
-word(lhama, animal, 1).
-word(barata, animal, 1).
-word(camelo, animal, 1).
-word(rato, animal, 1).
-word(gato, animal, 1).
-word(cachorro, animal, 3).
-word(panda, animal, 1).
-word(pombo, animal, 1).
-word(batata, comida, 2).
-word(pato, animal, 3).
+word(medico, profissoes, 1).
+word(engenheiro, profissoes, 1).
+word(bombeiro, profissoes, 1).
+word(cientista, profissoes, 1).
+word(advogado, profissoes, 1).
+word(designer, profissoes, 2).
+word(professor, profissoes, 2).
+word(dentista, profissoes, 2).
+word(juiz, profissoes, 2).
+word(economista, profissoes, 2).
+word(fotografo, profissoes, 3).
+word(gerente, profissoes, 3).
+word(cantor, profissoes, 3).
+word(analista, profissoes, 3).
+word(contador, profissoes, 3).
+word(programador, profissoes, 4).
+word(historiador, profissoes, 4).
+word(reporter, profissoes, 4).
+word(arquiteto, profissoes, 4).
+word(politico, profissoes, 4).
+word(alemanha, paises, 1).
+word(brasil, paises, 1).
+word(argentina, paises, 1).
+word(italia, paises, 1).
+word(escocia, paises, 1).
+word(nigeria, paises, 2).
+word(inglaterra, paises, 2).
+word(china, paises, 2).
+word(holanda, paises, 2).
+word(australia, paises, 2).
+word(russia, paises, 3).
+word(croacia, paises, 3).
+word(india, paises, 3).
+word(espanha, paises, 3).
+word(dinamarca, paises, 3).
+word(canada, paises, 4).
+word(equador, paises, 4).
+word(mexico, paises, 4).
+word(cuba, paises, 4).
+word(venezuela, paises, 4).
+word(vim, computacao, 1).
+word(java, computacao, 1).
+word(grafo, computacao, 1).
+word(python, computacao, 1).
+word(eclipse, computacao, 2).
+word(compilador, computacao, 2).
+word(polimorfismo, computacao, 2).
+word(haskell, computacao, 2).
+word(software, computacao, 3).
+word(algoritmo, computacao, 3).
+word(terminal, computacao, 3).
+word(framework, computacao, 3).
+word(redes, computacao, 4).
+word(opensource, computacao, 4).
+word(git, computacao, 4).
+word(automato, computacao, 4).
+word(hardware, computacao, 5).
+word(foca, animal, 1).
+word(pato, animal, 1).
 word(urso, animal, 1).
-word(salamandra, animal, 3).
-word(rinoceronte, animal, 3).
-word(ornitorrinco, animal, 3).
-word(everton,professor,3).
-word(motorista,profissao,2).
-word(analista,profissao,2).
-word(rondonia,estado,4).
-word(acre,estado,4).
-word(iguana,animal,4).
-word(vinho,bebida,4).
-word(cadeira,objeto,2).
-word(livro,objeto,3).
-word(einstein,cientista,4).
-word(macron,presidente,2).
-word(carvalho,arvore,4).
-word(onibus,objeto,2).
-
+word(ovelha, animal, 1).
+word(cavalo, animal, 1).
+word(iguana, animal, 2).
+word(rouxinol, animal, 2).
+word(salamandra, animal, 2).
+word(rinoceronte, animal, 2).
+word(ornitorrinco, animal, 2).
+word(leao, animal, 3).
+word(jacare, animal, 3).
+word(tartaruga, animal, 3).
+word(peixe, animal, 3).
+word(gato, animal, 3).
+word(lagartixa, animal, 4).
+word(cachoro, animal, 4).
+word(pinguim, animal, 4).
+word(macaco, animal, 4).
+word(coruja, animal, 4).
+word(carne, comida, 1).
+word(pizza, comida, 1).
+word(pudim, comida, 1).
+word(cuscuz, comida, 1).
+word(tapioca, comida, 2).
+word(tempero, comida, 2).
+word(lasanha, comida, 2).
+word(hamburguer, comida, 2).
+word(feijao, comida, 3).
+word(arroz, comida, 3).
+word(brownie, comida, 3).
+word(sanduiche, comida, 3).
+word(leite, comida, 4).
+word(empada, comida, 4).
+word(quiabo, comida, 4).
+word(sushi, comida, 4).
+word(bolo, comida, 5).
