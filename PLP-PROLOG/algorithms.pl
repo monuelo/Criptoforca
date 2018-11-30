@@ -62,6 +62,7 @@ fib(N, Result) :-
     fib(N2, Result2),
     Result is Result1 + Result2.
 
+is_in_ascii(Char, Result):- (Char < 128 -> Result is Char; Result is (mod(Char, 128) + 32) ).
 
 complementary(Word, Result):- %nivel medio
     string_codes(Word,Aux),
