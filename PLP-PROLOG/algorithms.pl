@@ -40,29 +40,10 @@ ascii(Word, Result):-    %nivel medio
     atom_string(Aux2, Result).
 
 
-fibonacci(Word, Result):-  %nivel medio
-    string_codes(Word,Aux),
-    Aux = [A,B,C,D|E],
-    fib(4,Temp1),    fib(5,Temp2),    fib(6,Temp3),    fib(7,Temp4),
-    H is Temp1 + A,  I is Temp2 + B,  J is Temp3 + C,  K is Temp4 + D,
-    is_in_ascii(H,W),
-    is_in_ascii(I,X),
-    is_in_ascii(J,Y),
-    is_in_ascii(K,Z),
-    maplist(plus(2), E, F),
-    Aux2 = [W,X,Y,Z|F],
-    string_codes(Result, Aux2).
-
-fib(0, 1) :- !.
-fib(1, 1) :- !.
-fib(N, Result) :-
-    N1 is N - 1,
-    N2 is N - 2,
-    fib(N1, Result1),
-    fib(N2, Result2),
-    Result is Result1 + Result2.
-
 is_in_ascii(Char, Result):- (Char < 128 -> Result is Char; Result is (mod(Char, 128) + 32) ).
+
+
+
 
 complementary(Word, Result):- %nivel medio
     string_codes(Word,Aux),
@@ -76,10 +57,33 @@ complementary(Word, Result):- %nivel medio
     string_codes(Result,Aux2).
 
 
+fibonacci(Word, Result):-  %nivel enigma
+    string_codes(Word,Aux),
+    Aux = [A,B,C,D|E],
+    fib(4,Temp1),    fib(5,Temp2),    fib(6,Temp3),    fib(7,Temp4),
+    H is Temp1 + A,  I is Temp2 + B,  J is Temp3 + C,  K is Temp4 + D,
+    is_in_ascii(H,W),
+    is_in_ascii(I,X),
+    is_in_ascii(J,Y),
+    is_in_ascii(K,Z),
+    maplist(plus(5), E, F),
+    Aux2 = [W,X,Y,Z|F],
+    string_codes(Result, Aux2).
+
+fib(0, 1) :- !.
+fib(1, 1) :- !.
+fib(N, Result) :-
+    N1 is N - 1,
+    N2 is N - 2,
+    fib(N1, Result1),
+    fib(N2, Result2),
+    Result is Result1 + Result2.
+
+
 :- initialization(main).
 
 main:-
-	fibonacci("interessante", Result),
+	complementary("interessante", Result),
     write(Result), write("\n"),
 
     halt.
