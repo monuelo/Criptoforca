@@ -298,13 +298,12 @@ show_rules :-
     writeln(" de dificuldade ( Rasgado, Fácil, Médio e Enigma ) os quais farão uso das seguintes    "),
     writeln(" seguintes criptografias:                                                             "),
     writeln(" 1 - Shift         = Transporta a primeira letra para o fim da palavra                "),
-    writeln(" 2 - Cesar1         = Soma 1 no codigo ASCII de cada letra da palavra                  "),
-    writeln(" 3 - Cesar2         = Soma 2 no codigo ASCII de cada letra da palavra                  "),
-    writeln(" 4 - NoThenYes     = Realiza Cesar1 em letras alternadas                               "),
+    writeln(" 2 - NoThenYes     = Realiza Cesar1 em letras alternadas                              "),
+    writeln(" 3 - Cesar1         = Soma 1 no codigo ASCII de cada letra da palavra                  "),
+    writeln(" 4 - Cesar2         = Soma 2 no codigo ASCII de cada letra da palavra                   "),
     writeln(" 5 - ASCII         = Mostra o codigo ASCII de cada letra da palavra                   "),
-    write(" 6 - Fibonacci       = Incrementa ao código ascii das 4 primeiras letras da palavra valores "),
-    writeln("da sequencia de Fibonacci e realiza Cesar5 no restante"),
-    writeln(" 7 - Complementary = substitui as 4 primeiras letras por sua complementar no alfabeto e realiza cesar4 no restante."),
+    writeln(" 6 - Complementary = substitui as 4 primeiras letras por sua complementar no alfabeto e realiza cesar4 no restante."),
+    writeln(" 7 - Fibonacci       = Incrementa ao código ascii das 4 primeiras letras da palavra valores da sequencia de Fibonacci e realiza Cesar5 no restante"),
     writeln(" 8 - Cryptomix     = realiza a seguinte sequencia de criptografias: shift, cesar2, NoThenYes, Fibonacci e inverte a palavra"),
     writeln("                         [ Pressione ENTER para voltar ]\n\n\n"),
     pause,
@@ -342,7 +341,7 @@ get_word_data :-
     read(Cipher),
     encrypt(Word, Cipher, Result),
     write("          Palavra Cifrada: "), writeln(Result),
-    sleep_3s,
+    sleep(7),
     menu.
 
 
