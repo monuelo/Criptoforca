@@ -414,17 +414,17 @@ guess_letter(Word, Guesses, HintsUsed, HintsUsedAux, Result):-
     read(Letter),
     guess_letter_aux(Word, Guesses, Letter, HintsUsed, HintsUsedAux, Result).
 
-guess_letter_aux(Word, Guesses, 1, 1, HintsUsedAux, Tip):- 
+guess_letter_aux(Word, Guesses, 1, 1, HintsUsedAux, Tip):-
     writeln("Voce ja usou uma dica."),
     guess_letter(Word, Guesses, HintsUsed, HintsUsedAux, Result).
-    
+
 guess_letter_aux(Word, Guesses, 1, HintsUsed, HintsUsedAux, Tip):-
     get_tip(Word, Guesses, Tip),
     HintsUsedAux is HintsUsed + 1, !.
 
 guess_letter_aux(Word, Guesses, Letter, HintsUsed, HintsUsedAux, Result):-
     member(Letter, Guesses),
-    writeln("Essa letra já foi sugerida. Tente outra!"),
+    writeln("Essa letra já foi usada. Tente outra!"),
     guess_letter(Word, Guesses, HintsUsed, HintsUsedAux, Result), !.
 
 guess_letter_aux(Word, Guesses, Letter, HintsUsed, HintsUsed, Letter):-
