@@ -477,7 +477,7 @@ guess_letter_aux(Word, Guesses, Letter, HintsUsed, HintsUsed, Letter):-
 
 guess_letter_aux(Word, Guesses, Letter, HintsUsed, HintsUsedAux, Result):-
     \+ is_alpha(Letter),
-    writeln("Uma letra, meu anjo..."),
+    writeln("Digite uma LETRA"),
     guess_letter(Word, Guesses, HintsUsed, HintsUsedAux, Result).
 
 start_game(Word, Score):-
