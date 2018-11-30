@@ -21,10 +21,10 @@ encrypt(Word, 5, Result) :-
     ascii(Word, Result).
 
 encrypt(Word, 6, Result) :-
-    fibonacci(Word, Result).
+    complementary(Word, Result).
 
 encrypt(Word, 7, Result) :-
-    complementary(Word, Result).
+    fibonacci(Word, Result).
 
 encrypt(Word, 8, Result) :-
     cryptomix(Word, Result).
@@ -298,13 +298,12 @@ show_rules :-
     writeln(" de dificuldade ( Rasgado, Fácil, Médio e Enigma ) os quais farão uso das seguintes    "),
     writeln(" seguintes criptografias:                                                             "),
     writeln(" 1 - Shift         = Transporta a primeira letra para o fim da palavra                "),
-    writeln(" 2 - Cesar1         = Soma 1 no codigo ASCII de cada letra da palavra                  "),
-    writeln(" 3 - Cesar2         = Soma 2 no codigo ASCII de cada letra da palavra                  "),
-    writeln(" 4 - NoThenYes     = Realiza Cesar1 em letras alternadas                               "),
+    writeln(" 2 - NoThenYes     = Realiza Cesar1 em letras alternadas                              "),
+    writeln(" 3 - Cesar1         = Soma 1 no codigo ASCII de cada letra da palavra                  "),
+    writeln(" 4 - Cesar2         = Soma 2 no codigo ASCII de cada letra da palavra                   "),
     writeln(" 5 - ASCII         = Mostra o codigo ASCII de cada letra da palavra                   "),
-    write(" 6 - Fibonacci       = Incrementa ao código ascii das 4 primeiras letras da palavra valores "),
-    writeln("da sequencia de Fibonacci e realiza Cesar5 no restante"),
-    writeln(" 7 - Complementary = substitui as 4 primeiras letras por sua complementar no alfabeto e realiza cesar4 no restante."),
+    writeln(" 6 - Complementary = substitui as 4 primeiras letras por sua complementar no alfabeto e realiza cesar4 no restante."),
+    writeln(" 7 - Fibonacci       = Incrementa ao código ascii das 4 primeiras letras da palavra valores da sequencia de Fibonacci e realiza Cesar5 no restante"),
     writeln(" 8 - Cryptomix     = realiza a seguinte sequencia de criptografias: shift, cesar2, NoThenYes, Fibonacci e inverte a palavra"),
     writeln("                         [ Pressione ENTER para voltar ]\n\n\n"),
     pause,
@@ -328,21 +327,18 @@ get_word_data :-
     read(Word),
     writeln(""),
     writeln(" 1 - Shift         = Transporta a primeira letra para o fim da palavra                "),
-    writeln(" 2 - Cesar1         = Soma 1 no codigo ASCII de cada letra da palavra                  "),
-    writeln(" 3 - Cesar2         = Soma 2 no codigo ASCII de cada letra da palavra                  "),
-    writeln(" 4 - NoThenYes     = Realiza Cesar em letras alternadas                               "),
+    writeln(" 2 - NoThenYes     = Realiza Cesar1 em letras alternadas                              "),
+    writeln(" 3 - Cesar1         = Soma 1 no codigo ASCII de cada letra da palavra                  "),
+    writeln(" 4 - Cesar2         = Soma 2 no codigo ASCII de cada letra da palavra                   "),
     writeln(" 5 - ASCII         = Mostra o codigo ASCII de cada letra da palavra                   "),
-    writeln(" 6 - Fibonacci     = Incrementa ao código ascii da k-ésima letra da palavra o k-esimo   "),
-    writeln("    valor da sequencia de Fibonacci, para uma palavra de n letras e para 0 < k <= n   "),
-    writeln(" 7 - Complementary  = substitui a cada letra por sua complementar no alfabeto.          "),
-    writeln("    Por exemplo: a -> z; b -> y; c -> x; etc...                                        "),
-    writeln(" 8 - Cryptomix     = realiza a seguinte sequencia de criptografias: shift, cesar,      "),
-    writeln("    complementary e fibonacci                                                         "),
+    writeln(" 6 - Complementary = substitui as 4 primeiras letras por sua complementar no alfabeto e realiza cesar4 no restante."),
+    writeln(" 7 - Fibonacci       = Incrementa ao código ascii das 4 primeiras letras da palavra valores da sequencia de Fibonacci e realiza Cesar5 no restante"),
+    writeln(" 8 - Cryptomix     = realiza a seguinte sequencia de criptografias: shift, cesar2, NoThenYes, Fibonacci e inverte a palavra"),
     write("          Selecione a cifragem: "),
     read(Cipher),
     encrypt(Word, Cipher, Result),
     write("          Palavra Cifrada: "), writeln(Result),
-    sleep_3s,
+    sleep(7),
     menu.
 
 
@@ -414,7 +410,7 @@ guess_letter(Word, Guesses, HintsUsed, HintsUsedAux, Result):-
     read(Letter),
     guess_letter_aux(Word, Guesses, Letter, HintsUsed, HintsUsedAux, Result).
 
-guess_letter_aux(Word, Guesses, 1, 1, HintsUsedAux, Tip):-
+guess_letter_aux(Word, Guesses, 1, 1, HintsUsedAux, Tip):- 
     writeln("Voce ja usou uma dica."),
     guess_letter(Word, Guesses, HintsUsed, HintsUsedAux, Result).
 
@@ -424,7 +420,7 @@ guess_letter_aux(Word, Guesses, 1, HintsUsed, HintsUsedAux, Tip):-
 
 guess_letter_aux(Word, Guesses, Letter, HintsUsed, HintsUsedAux, Result):-
     member(Letter, Guesses),
-    writeln("Essa letra já foi usada. Tente outra!"),
+    writeln("Essa letra já foi sugerida. Tente outra!"),
     guess_letter(Word, Guesses, HintsUsed, HintsUsedAux, Result), !.
 
 guess_letter_aux(Word, Guesses, Letter, HintsUsed, HintsUsed, Letter):-
