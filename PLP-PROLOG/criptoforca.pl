@@ -21,10 +21,10 @@ encrypt(Word, 5, Result) :-
     ascii(Word, Result).
 
 encrypt(Word, 6, Result) :-
-    fibonacci(Word, Result).
+    complementary(Word, Result).
 
 encrypt(Word, 7, Result) :-
-    complementary(Word, Result).
+    fibonacci(Word, Result).
 
 encrypt(Word, 8, Result) :-
     cryptomix(Word, Result).
@@ -414,7 +414,7 @@ guess_letter(Word, Guesses, HintsUsed, HintsUsedAux, Result):-
     read(Letter),
     guess_letter_aux(Word, Guesses, Letter, HintsUsed, HintsUsedAux, Result).
 
-guess_letter_aux(Word, Guesses, 1, 1, HintsUsedAux, Tip):-
+guess_letter_aux(Word, Guesses, 1, 1, HintsUsedAux, Tip):- 
     writeln("Voce ja usou uma dica."),
     guess_letter(Word, Guesses, HintsUsed, HintsUsedAux, Result).
 
@@ -424,7 +424,7 @@ guess_letter_aux(Word, Guesses, 1, HintsUsed, HintsUsedAux, Tip):-
 
 guess_letter_aux(Word, Guesses, Letter, HintsUsed, HintsUsedAux, Result):-
     member(Letter, Guesses),
-    writeln("Essa letra já foi usada. Tente outra!"),
+    writeln("Essa letra já foi sugerida. Tente outra!"),
     guess_letter(Word, Guesses, HintsUsed, HintsUsedAux, Result), !.
 
 guess_letter_aux(Word, Guesses, Letter, HintsUsed, HintsUsed, Letter):-
