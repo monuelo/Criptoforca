@@ -66,10 +66,14 @@ is_in_ascii(Char, Result):- (Char < 128 -> Result is Char; Result is (mod(Char, 
 
 complementary(Word, Result):- %nivel medio
     string_codes(Word,Aux),
-    Aux = [X|Y],
-    X is 122 - X,
-    append(X,Result),
-    complementary(Y, Result).
+    Aux = [A,B,C,D|F],
+    G is 122 - (A-97),
+    H is 122 - (B-97),
+    I is 122 - (C-97),
+    J is 122 - (D-97),
+    maplist(plus(4), F, N),
+    Aux2 = [G,H,I,J|N],
+    string_codes(Result,Aux2).
 
 
 :- initialization(main).
