@@ -1,3 +1,5 @@
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% NIVEL RASGADO
 shift(Word, Result):-   %nivel rasgado
     string_codes(Word, Aux),
     Aux = [A | B],
@@ -22,6 +24,7 @@ no_then_yes_aux2([H|T], Result) :-
     no_then_yes_aux1(T, Rest),
     append([H], Rest, Result).
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% NIVEL FACIL
 
 caesar1(Word, Result):-    %nivel facil
     string_codes(Word, Aux),
@@ -33,16 +36,12 @@ caesar2(Word, Result):-    %nivel facil
     maplist(plus(2), Aux, Aux2),
     string_codes(Result, Aux2).
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% NIVEL MEDIO
 
 ascii(Word, Result):-    %nivel medio
     string_codes(Word, Aux),
     atomic_list_concat(Aux, '', Aux2),
     atom_string(Aux2, Result).
-
-
-is_in_ascii(Char, Result):- (Char < 128 -> Result is Char; Result is (mod(Char, 128) + 32) ).
-
-
 
 
 complementary(Word, Result):- %nivel medio
@@ -56,6 +55,7 @@ complementary(Word, Result):- %nivel medio
     Aux2 = [G,H,I,J|N],
     string_codes(Result,Aux2).
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% NIVEL ENIGMA
 
 fibonacci(Word, Result):-  %nivel enigma
     string_codes(Word,Aux),
@@ -66,7 +66,7 @@ fibonacci(Word, Result):-  %nivel enigma
     is_in_ascii(I,X),
     is_in_ascii(J,Y),
     is_in_ascii(K,Z),
-    maplist(plus(5), E, F),
+    maplist(plus(7), E, F),
     Aux2 = [W,X,Y,Z|F],
     string_codes(Result, Aux2).
 
@@ -80,10 +80,27 @@ fib(N, Result) :-
     Result is Result1 + Result2.
 
 
+cryptomix(Word, Result):-  %nivel enigma
+    shift(Word, Aux2),
+    caesar2(Aux2, Aux3),
+    no_then_yes(Aux3, Aux4),
+    fibonacci(Aux4, Aux5),
+    string_codes(Aux5,T),
+    inverte(T,Aux6),
+    string_codes(Result, Aux6).
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% FUNÇÕES AUXILIARES
+
+is_in_ascii(Char, Result):- (Char < 128 -> Result is Char; Result is (mod(Char, 128) + 32) ).
+
+concatenar([], L, L).
+concatenar([H|T], L, [H|D]) :- concatenar(T, L, D).
+inverte([], []).
+inverte([H|T], L) :- inverte(T, X), concatenar(X, [H], L).
+
 :- initialization(main).
 
 main:-
-	complementary("interessante", Result),
+	cryptomix("interessante", Result),
     write(Result), write("\n"),
 
     halt.
